@@ -49,6 +49,15 @@ folgenden Fragen stellen, bevor Code generiert wird**:
 | 2 | `artifactId` | `order-service` |
 | 3 | **Framework** | `Spring Boot` oder `Quarkus` |
 
+### Schritt 1b – OpenAPI Spec vorhanden? (optional)
+
+**Vor dem Scaffold fragen:** Gibt es eine OpenAPI-Spezifikation für dieses Projekt?
+
+- **Ja** → zuerst `openapi-skill` ausführen lassen; danach beim Scaffold
+  `boundary/rest/` und `entity/dto/` **nicht** nochmal generieren – nur Rahmen
+  (pom.xml, docker-compose, application.properties, Flyway, Architekturtest, Dockerfile).
+- **Nein** → normal weitermachen, alle Schichten generieren.
+
 ### Schritt 2 – Benötigte Dienste
 
 Explizit abfragen, welche Dienste tatsächlich benötigt werden:

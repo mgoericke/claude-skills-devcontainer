@@ -18,10 +18,12 @@ jederzeit per `git` eingespielt werden.
 GitHub: Schaltfläche **"Fork"** oben rechts auf der Repository-Seite.
 Dadurch entsteht `github.com/<deine-org>/<dein-repo>` als eigene Kopie.
 
-### Schritt 2 – Fork klonen und Upstream einrichten
+### Schritt 2 – Upstream einrichten
+
+#### Option A – Fork auf GitHub geklont (empfohlen)
 
 ```bash
-# Fork klonen
+# Fork klonen (Dateien sind bereits vorhanden)
 git clone git@github.com:<deine-org>/<dein-repo>.git
 cd <dein-repo>
 
@@ -35,6 +37,25 @@ git fetch upstream
 git remote -v
 # origin    git@github.com:<deine-org>/<dein-repo>.git  (fetch/push)
 # upstream  git@github.com:<template-org>/claude-skills-devcontainer.git  (fetch/push)
+```
+
+#### Option B – Leeres Repo mit `git init`
+
+Falls du ein leeres Repo angelegt hast (z.B. auf GitHub ohne Inhalt, dann `git init` lokal):
+
+```bash
+cd <dein-repo>
+
+# Upstream hinzufügen und fetchen
+git remote add upstream git@github.com:<template-org>/claude-skills-devcontainer.git
+git fetch upstream
+
+# Template-Inhalt in lokalen main-Branch auschecken
+git checkout -b main upstream/main
+
+# Eigenes Remote setzen und pushen
+git remote add origin git@github.com:<deine-org>/<dein-repo>.git
+git push -u origin main
 ```
 
 ### Schritt 3 – VS Code öffnen
@@ -53,19 +74,26 @@ Beim ersten Start ~3–5 Min. Alle Tools werden automatisch installiert.
 Wenn das Template verbessert wird (neue Skills, DevContainer-Updates, neue Regeln),
 können diese Änderungen in den Fork übernommen werden.
 
+> **Regel:** Upstream-Sync **niemals** direkt auf `main` – immer über einen
+> separaten Branch und Pull Request. So bleiben Konflikte kontrollierbar.
+
 ### Ablauf
 
 ```bash
-# 1. Aktuelle Änderungen vom Template holen
+# 1. Neue Commits vom Template herunterladen (kein Merge, kein Push)
+#    "fetch" statt "pull upstream main" – nur holen, nicht automatisch mergen
 git fetch upstream
 
-# 2. Neuen Branch für das Update anlegen (Pflicht – niemals direkt auf main!)
+# 2. Prüfen ob überhaupt etwas Neues vorliegt
+git log HEAD..upstream/main --oneline
+
+# 3. Branch für den Sync anlegen (Pflicht – niemals direkt auf main!)
 git checkout -b chore/upstream-sync
 
-# 3. Upstream-main in den Branch mergen
+# 4. Upstream-main in den Branch mergen
 git merge upstream/main
 
-# 4. Konflikte lösen (falls vorhanden)
+# 5. Konflikte lösen (falls vorhanden)
 #    Eigene Anpassungen (z.B. CLAUDE.md, devcontainer.json) prüfen –
 #    Upstream-Änderungen gezielt übernehmen oder ablehnen.
 git status
@@ -73,8 +101,9 @@ git status
 git add .
 git commit -m "chore: sync upstream template changes"
 
-# 5. Branch in den Fork pushen und Pull Request erstellen
+# 6. Branch pushen und Pull Request auf GitHub erstellen
 git push origin chore/upstream-sync
+# → GitHub: Pull Request von chore/upstream-sync → main öffnen und mergen
 ```
 
 ### Was kann zu Konflikten führen?
@@ -88,12 +117,8 @@ git push origin chore/upstream-sync
 
 ### Upstream-Updates regelmäßig einspielen
 
-Empfehlung: **bei jedem neuen Feature-Branch** kurz prüfen ob neue Upstream-Commits vorliegen:
-
-```bash
-git fetch upstream
-git log HEAD..upstream/main --oneline   # Zeigt neue Commits im Template
-```
+Empfehlung: **bei jedem neuen Feature-Branch** kurz prüfen ob neue Upstream-Commits vorliegen –
+die beiden Befehle aus Schritt 1 und 2 des Ablaufs reichen dafür aus.
 
 ---
 

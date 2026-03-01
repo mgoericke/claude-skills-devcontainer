@@ -1,36 +1,74 @@
-# Java DevContainer Template
+# Java DevContainer – KI-gestütztes Projekt-Scaffolding
 
-DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.
+Dieses Template ermöglicht das schnelle Aufsetzen neuer Java-Projekte mit vollständiger
+KI-Unterstützung durch Claude Code. Du beschreibst dein Vorhaben in natürlicher Sprache –
+Claude übernimmt Scaffolding, Spezifikation, Architektur und Code-Generierung.
 
-## Voraussetzungen
+## Was dieses Template bietet
+
+- **Spring Boot 3.x oder Quarkus 3.x** – vollständig vorkonfiguriert, inklusive Health Checks
+- **PostgreSQL + RabbitMQ** – lokale Infrastruktur per `docker compose up -d` startklar
+- **BCE-Architektur** (Boundary / Control / Entity) mit automatischen Architekturtests via Taikai
+- **Spec Driven Development** – strukturiertes Feature-Interview erzeugt eine Spec-Datei, bevor Code entsteht
+- **Flyway** für Datenbankmigrationen – kein unsicheres `ddl-auto=create`
+- **Persistenter Maven-Cache** – kürzere Build-Zeiten nach dem ersten Start
+- **Infografik-Skill** – KI-Bildgenerierung via Hugging Face FLUX.1 (optional)
+- **Fork-Workflow** – Template-Updates lassen sich jederzeit per `git merge` einspielen
+
+## Beispiel-Prompts
+
+```
+Erstelle ein neues Quarkus-Projekt
+```
+```
+Ich möchte ein neues Feature spezifizieren
+```
+```
+Implementiere das Feature gemäß specs/order-creation.md
+```
+```
+Erstelle eine Infografik zum Thema Microservice-Kommunikation
+```
+
+---
+
+## Stack
+
+| Schicht           | Technologie                              |
+| ----------------- | ---------------------------------------- |
+| Java              | 25 (Microsoft OpenJDK)                   |
+| Frameworks        | Spring Boot 3.x oder Quarkus 3.x         |
+| Datenbank         | PostgreSQL 17                            |
+| Messaging         | RabbitMQ 4 (SmallRye Reactive Messaging) |
+| Build             | Maven 3.9                                |
+| Architektur-Tests | Taikai (ArchUnit)                        |
+| KI                | Claude Code                              |
+
+---
+
+## Setup
+
+### Voraussetzungen (Host-System)
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [VS Code](https://code.visualstudio.com/) + [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-## Neues Projekt anlegen (Fork-Workflow)
+### 1 – Fork erstellen
 
 Neue Projekte werden als **Fork** dieses Repositories angelegt. Dadurch können
 Template-Updates (neue Skills, DevContainer-Verbesserungen, neue Coding-Standards)
 jederzeit per `git` eingespielt werden.
 
-### Schritt 1 – Fork erstellen
-
 GitHub: Schaltfläche **"Fork"** oben rechts auf der Repository-Seite.
 Dadurch entsteht `github.com/<deine-org>/<dein-repo>` als eigene Kopie.
 
-### Schritt 2 – Upstream einrichten
-
-#### Option A – Fork auf GitHub geklont (empfohlen)
-
 ```bash
-# Fork klonen (Dateien sind bereits vorhanden)
+# Fork klonen
 git clone git@github.com:<deine-org>/<dein-repo>.git
 cd <dein-repo>
 
-# Dieses Template als "upstream" Remote hinzufügen
+# Template als "upstream" Remote einrichten
 git remote add upstream git@github.com:<template-org>/claude-skills-devcontainer.git
-
-# Upstream initial fetchen (einmalig – lädt alle Branches und Tags)
 git fetch upstream
 
 # Remotes prüfen
@@ -39,122 +77,20 @@ git remote -v
 # upstream  git@github.com:<template-org>/claude-skills-devcontainer.git  (fetch/push)
 ```
 
-#### Option B – Leeres Repo mit `git init`
+### 2 – Umgebungsvariablen setzen
 
-Falls du ein leeres Repo angelegt hast (z.B. auf GitHub ohne Inhalt, dann `git init` lokal):
-
-```bash
-cd <dein-repo>
-
-# Upstream hinzufügen und fetchen
-git remote add upstream git@github.com:<template-org>/claude-skills-devcontainer.git
-git fetch upstream
-
-# Template-Inhalt in lokalen main-Branch auschecken
-git checkout -b main upstream/main
-
-# Eigenes Remote setzen und pushen
-git remote add origin git@github.com:<deine-org>/<dein-repo>.git
-git push -u origin main
-```
-
-### Schritt 3 – VS Code öffnen
-
-```bash
-code .
-# → "Reopen in Container" wählen
-```
-
-Beim ersten Start ~3–5 Min. Alle Tools werden automatisch installiert.
-
----
-
-## Updates aus dem Template einspielen (Upstream-Sync)
-
-Wenn das Template verbessert wird (neue Skills, DevContainer-Updates, neue Regeln),
-können diese Änderungen in den Fork übernommen werden.
-
-> **Regel:** Upstream-Sync **niemals** direkt auf `main` – immer über einen
-> separaten Branch und Pull Request. So bleiben Konflikte kontrollierbar.
-
-### Ablauf
-
-```bash
-# 1. Neue Commits vom Template herunterladen (kein Merge, kein Push)
-#    "fetch" statt "pull upstream main" – nur holen, nicht automatisch mergen
-git fetch upstream
-
-# 2. Prüfen ob überhaupt etwas Neues vorliegt
-git log HEAD..upstream/main --oneline
-
-# 3. Branch für den Sync anlegen (Pflicht – niemals direkt auf main!)
-git checkout -b chore/upstream-sync
-
-# 4. Upstream-main in den Branch mergen
-git merge upstream/main
-
-# 5. Konflikte lösen (falls vorhanden)
-#    Eigene Anpassungen (z.B. CLAUDE.md, devcontainer.json) prüfen –
-#    Upstream-Änderungen gezielt übernehmen oder ablehnen.
-git status
-# → Konflikte in Editor öffnen, lösen, dann:
-git add .
-git commit -m "chore: sync upstream template changes"
-
-# 6. Branch pushen und Pull Request auf GitHub erstellen
-git push origin chore/upstream-sync
-# → GitHub: Pull Request von chore/upstream-sync → main öffnen und mergen
-```
-
-### Was kann zu Konflikten führen?
-
-| Datei | Konfliktrisiko | Empfehlung |
-|-------|----------------|-----------|
-| `.devcontainer/devcontainer.json` | Mittel | Eigene `containerEnv`-Einträge behalten, neue Features aus Upstream übernehmen |
-| `CLAUDE.md` | Niedrig | Upstream-Regeln übernehmen, eigene Erweiterungen darunter behalten |
-| `.claude/skills/` | Niedrig | Neue Skills aus Upstream sind reine Ergänzungen |
-| `docker-compose.yml` | Hoch | Eigene Services (z.B. andere DB-Namen) sorgfältig prüfen |
-
-### Upstream-Updates regelmäßig einspielen
-
-Empfehlung: **bei jedem neuen Feature-Branch** kurz prüfen ob neue Upstream-Commits vorliegen –
-die beiden Befehle aus Schritt 1 und 2 des Ablaufs reichen dafür aus.
-
----
-
-## Claude Code
-
-Zwei Möglichkeiten zur Authentifizierung:
-
-**Option A – API Key (Umgebungsvariable auf dem Host):**
-
-```bash
-# macOS/Linux (~/.zshrc oder ~/.bashrc)
-export ANTHROPIC_API_KEY="sk-ant-..."
-```
-
-**Option B – Login nach Container-Start:**
-
-```bash
-claude login
-```
-
----
-
-## Umgebungsvariablen
-
-Alle Variablen sind optional. Nur setzen wenn benötigt.
+Alle Variablen werden auf dem **Host-System** gesetzt und beim Container-Start automatisch
+übernommen. Tokens nie direkt in Konfigurationsdateien eintragen.
 
 ```bash
 # macOS/Linux (~/.zshrc oder ~/.bashrc)
 export ANTHROPIC_API_KEY="sk-ant-..."        # oder: claude login im Container
-
 export HF_TOKEN="hf_..."                     # Hugging Face – für Infografik-Skill (kostenlos)
 
+# Optional – nur bei Bedarf
 export ARTIFACTORY_URL="https://company.jfrog.io/artifactory"
 export ARTIFACTORY_USER="your.name@example.com"
 export ARTIFACTORY_TOKEN="your-token"
-
 export GIT_TOKEN="..."                        # GitHub Packages, GitLab, Gitea, Bitbucket
 export NPM_TOKEN="npm_..."                    # Private NPM Registry
 ```
@@ -162,38 +98,31 @@ export NPM_TOKEN="npm_..."                    # Private NPM Registry
 ```powershell
 # Windows (PowerShell)
 $env:ANTHROPIC_API_KEY = "sk-ant-..."
-$env:HF_TOKEN = "hf_..."
-$env:GIT_TOKEN = "..."
+$env:HF_TOKEN          = "hf_..."
+$env:GIT_TOKEN         = "..."
 ```
 
-### Hugging Face Token (`HF_TOKEN`)
+> **Hinweis:** Nach dem Setzen einer neuen Variable muss der Container neu gebaut werden:
+> `Cmd+Shift+P` → `Dev Containers: Rebuild Container`
 
-Benötigt für den **Infografik-Skill** (KI-Bildgenerierung via FLUX.1).
+#### Claude Code authentifizieren
 
-**Einmalige Einrichtung (3 Schritte):**
+**Option A – API Key** (empfohlen, s. o.): Variable `ANTHROPIC_API_KEY` auf dem Host setzen.
 
-1. Token erstellen unter https://huggingface.co/settings/tokens
-   - **Token type:** `Read` (reicht aus – schreibt nichts)
-   - **Name:** z.B. `claude-infografik`
+**Option B – Login im Container:**
+```bash
+claude login
+```
 
-2. Token auf dem **Host-Rechner** setzen (nicht im Container):
-   ```bash
-   # macOS/Linux: in ~/.zshrc oder ~/.bashrc eintragen
-   export HF_TOKEN="hf_..."
-   source ~/.zshrc   # oder: neues Terminal öffnen
-   ```
+#### Hugging Face Token (`HF_TOKEN`)
 
-3. **DevContainer neu starten** – wichtig, damit der Token übernommen wird:
-   - VS Code: `Cmd+Shift+P` → `Dev Containers: Rebuild Container`
+Benötigt für den **Infografik-Skill**. Einmalige Einrichtung:
 
-> **Warum Rebuild?** Umgebungsvariablen vom Host werden beim Container-Start
-> einmalig eingelesen (`devcontainer.json` → `containerEnv`). Ein laufender
-> Container bekommt nachträglich gesetzte Variablen nicht mit.
+1. Token erstellen unter https://huggingface.co/settings/tokens (**Token type:** `Read`)
+2. Als `HF_TOKEN` auf dem Host setzen (s. o.)
+3. DevContainer neu bauen
 
-Ein Token pro Use-Case ist Best Practice (HF-Empfehlung), damit einzelne Tokens
-widerrufen werden können ohne andere Anwendungen zu beeinflussen.
-
-### Maven – Artifactory (`~/.m2/settings.xml` im Container)
+#### Maven – Artifactory (`~/.m2/settings.xml` im Container)
 
 ```xml
 <settings>
@@ -214,19 +143,15 @@ widerrufen werden können ohne andere Anwendungen zu beeinflussen.
 </settings>
 ```
 
----
+### 3 – Container starten
 
-## Stack
+```bash
+code .
+# → "Reopen in Container" wählen
+```
 
-|                   |                                          |
-| ----------------- | ---------------------------------------- |
-| Java              | 25 (Microsoft OpenJDK)                   |
-| Frameworks        | Spring Boot 3.x oder Quarkus 3.x         |
-| Datenbank         | PostgreSQL 17                            |
-| Messaging         | RabbitMQ 4 (SmallRye Reactive Messaging) |
-| Build             | Maven 3.9                                |
-| Architektur-Tests | Taikai (ArchUnit)                        |
-| KI                | Claude Code                              |
+Beim ersten Start ~3–5 Min. Alle Tools (Java 25, Maven, Docker-in-Docker, Claude Code)
+werden automatisch installiert.
 
 ---
 
@@ -236,14 +161,18 @@ widerrufen werden können ohne andere Anwendungen zu beeinflussen.
 docker compose up -d
 ```
 
-- PostgreSQL: `localhost:5432`
-- RabbitMQ Management: http://localhost:15672 (`app`/`app`)
-- Anwendung Health: http://localhost:8080/actuator/health _(Spring)_
-- Anwendung Health: http://localhost:8080/q/health _(Quarkus)_
+| Service              | Adresse                                  |
+| -------------------- | ---------------------------------------- |
+| PostgreSQL           | `localhost:5432`                         |
+| RabbitMQ Management  | http://localhost:15672 (`app` / `app`)   |
+| Anwendung (Spring)   | http://localhost:8080/actuator/health    |
+| Anwendung (Quarkus)  | http://localhost:8080/q/health           |
 
 ---
 
-## Spec Driven Development
+## Arbeiten mit dem Template
+
+### Spec Driven Development
 
 Vor der Implementierung steht die Spezifikation. Der `spec-feature-skill` führt ein
 strukturiertes Interview durch und erzeugt eine Spec-Datei in `specs/`.
@@ -252,7 +181,7 @@ strukturiertes Interview durch und erzeugt eine Spec-Datei in `specs/`.
 Ich möchte ein neues Feature spezifizieren
 ```
 
-Claude stellt gezielte Fragen zu Kontext, Verhalten, API, Datenmodell und Akzeptanzkriterien –
+Claude stellt gezielte Fragen zu Kontext, Verhalten, API, Datenmodell und Akzeptanzkriterien
 und erstellt danach `specs/<feature-name>.md`.
 
 Die fertige Spec dient als Input für den Scaffold-Skill:
@@ -261,19 +190,16 @@ Die fertige Spec dient als Input für den Scaffold-Skill:
 Implementiere das Feature gemäß specs/order-creation.md
 ```
 
----
-
-## Neues Projekt scaffolden
+### Neues Projekt scaffolden
 
 ```
 Erstelle ein neues Quarkus-Projekt
 ```
 
-Claude fragt nach `groupId`, `artifactId` und Framework – dann wird alles generiert.
+Claude fragt nach `groupId`, `artifactId` und Framework – dann wird alles generiert:
+Projektstruktur, Konfiguration, Dockerfile, docker-compose.yml und Architekturtests.
 
----
-
-## Architektur (BCE-Pattern)
+### Architektur (BCE-Pattern)
 
 ```
 src/main/java/com/example/orders/
@@ -290,9 +216,52 @@ Regeln werden durch Taikai zur Build-Zeit geprüft:
 ./mvnw test -Dtest=ArchitectureTest
 ```
 
-## Dockerfile-Konventionen
+### Dockerfile-Konventionen
 
 | Framework   | Speicherort                      |
 | ----------- | -------------------------------- |
 | Spring Boot | `./Dockerfile` (Projekt-Root)    |
 | Quarkus     | `src/main/docker/Dockerfile.jvm` |
+
+---
+
+## Template-Updates einspielen (Upstream-Sync)
+
+Wenn das Template verbessert wird (neue Skills, DevContainer-Updates, neue Regeln),
+können diese Änderungen in den Fork übernommen werden.
+
+> **Regel:** Upstream-Sync **niemals** direkt auf `main` – immer über einen
+> separaten Branch und Pull Request.
+
+```bash
+# 1. Neue Commits holen (kein Merge)
+git fetch upstream
+
+# 2. Prüfen ob etwas Neues vorliegt
+git log HEAD..upstream/main --oneline
+
+# 3. Sync-Branch anlegen
+git checkout -b chore/upstream-sync
+
+# 4. Upstream-main mergen
+git merge upstream/main
+
+# 5. Konflikte lösen (falls vorhanden), dann committen
+git add .
+git commit -m "chore: sync upstream template changes"
+
+# 6. Branch pushen und Pull Request öffnen
+git push origin chore/upstream-sync
+```
+
+### Konflikt-Übersicht
+
+| Datei | Konfliktrisiko | Empfehlung |
+|-------|----------------|-----------|
+| `.devcontainer/devcontainer.json` | Mittel | Eigene `containerEnv`-Einträge behalten, neue Features übernehmen |
+| `CLAUDE.md` | Niedrig | Upstream-Regeln übernehmen, eigene Erweiterungen darunter behalten |
+| `.claude/skills/` | Niedrig | Neue Skills sind reine Ergänzungen |
+| `docker-compose.yml` | Hoch | Eigene Services sorgfältig prüfen |
+
+**Empfehlung:** Bei jedem neuen Feature-Branch kurz `git fetch upstream` und
+`git log HEAD..upstream/main --oneline` ausführen, um frühzeitig Updates zu erkennen.

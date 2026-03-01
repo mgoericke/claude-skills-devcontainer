@@ -14,6 +14,7 @@ Claude übernimmt Scaffolding, Spezifikation, Architektur und Code-Generierung.
 - **Flyway** für Datenbankmigrationen – kein unsicheres `ddl-auto=create`
 - **Persistenter Maven-Cache** – kürzere Build-Zeiten nach dem ersten Start
 - **Infografik-Skill** – KI-Bildgenerierung via Hugging Face FLUX.1 (optional)
+- **OpenAPI → Java** – `openapi-skill` liest eine OpenAPI 3.x Spec und generiert REST-Endpunkte + DTOs im BCE-Pattern (optional)
 - **Projekt-Dokumentation** – `doc-skill` liest Quellcode und Konfiguration und erstellt oder aktualisiert `docs/<projekt>.md`
 - **Fork-Workflow** – Template-Updates lassen sich jederzeit per `git merge` einspielen
 
@@ -36,6 +37,9 @@ Dokumentiere das Projekt
 ```
 ```
 Aktualisiere die Projektdokumentation
+```
+```
+Generiere Code aus der OpenAPI Spec api/openapi.yaml
 ```
 
 ---

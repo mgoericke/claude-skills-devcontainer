@@ -1,0 +1,32 @@
+package {{GROUP_ID}}.boundary.rest;
+
+import {{GROUP_ID}}.control.{{TAG}}Service;
+import {{GROUP_ID}}.entity.dto.*;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * REST-Controller für {{TAG}}-Endpunkte.
+ *
+ * <p>Generiert aus OpenAPI-Spec: {{SPEC_FILE}}<br>
+ * Enthält nur HTTP-Mapping und Delegation – keine Business-Logik.
+ *
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via openapi-skill
+ */
+@RestController
+@RequestMapping("{{BASE_PATH}}")
+@Validated
+public class {{TAG}}Controller {
+
+    private final {{TAG}}Service {{tag}}Service;
+
+    public {{TAG}}Controller({{TAG}}Service {{tag}}Service) {
+        this.{{tag}}Service = {{tag}}Service;
+    }
+
+    // ── Endpunkte (aus OpenAPI Spec) ────────────────────────────────────────────
+
+    {{METHODS}}
+}

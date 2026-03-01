@@ -243,6 +243,26 @@ docker compose up -d
 
 ---
 
+## Spec Driven Development
+
+Vor der Implementierung steht die Spezifikation. Der `spec-feature-skill` führt ein
+strukturiertes Interview durch und erzeugt eine Spec-Datei in `specs/`.
+
+```
+Ich möchte ein neues Feature spezifizieren
+```
+
+Claude stellt gezielte Fragen zu Kontext, Verhalten, API, Datenmodell und Akzeptanzkriterien –
+und erstellt danach `specs/<feature-name>.md`.
+
+Die fertige Spec dient als Input für den Scaffold-Skill:
+
+```
+Implementiere das Feature gemäß specs/order-creation.md
+```
+
+---
+
 ## Neues Projekt scaffolden
 
 ```

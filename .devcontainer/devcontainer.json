@@ -79,6 +79,17 @@
     }
   },
 
+  // ── Port-Forwarding ─────────────────────────────────────────────────────────
+  // Port 8080: Anwendungsport (Spring Boot / Quarkus)
+  // onAutoForward: "notify" zeigt eine Benachrichtigung wenn der Port aktiv wird
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Application (HTTP)",
+      "onAutoForward": "notify"
+    }
+  },
+
   "mounts": [
     "source=claude-code-config-${devcontainerId},target=/root/.claude,type=volume",
     "source=claude-code-m2-${devcontainerId},target=/root/.m2,type=volume"

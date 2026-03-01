@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "labels": ["dependencies"],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "packageRules": [
+    {
+      "description": "Spring Boot – alle Updates gruppieren",
+      "matchPackagePrefixes": ["org.springframework.boot"],
+      "groupName": "Spring Boot"
+    },
+    {
+      "description": "Quarkus – alle Updates gruppieren",
+      "matchPackagePrefixes": ["io.quarkus"],
+      "groupName": "Quarkus"
+    },
+    {
+      "description": "Patch-Versionen automatisch zusammenfassen",
+      "matchUpdateTypes": ["patch"],
+      "groupName": "Patch-Updates (alle)"
+    },
+    {
+      "description": "Test-Dependencies separat gruppieren",
+      "matchDepTypes": ["test"],
+      "groupName": "Test-Dependencies"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "automerge": true
+  }
+}

@@ -7,11 +7,41 @@ description: Scaffolding für Java-Projekte mit Spring Boot oder Quarkus, Postgr
 
 Scaffolding für Java-Projekte mit Spring Boot oder Quarkus.
 
-> **Vor jeder Generierung**: `.claude/lessons-learned.md` prüfen!
+> **Vor jeder Generierung**:
+> 1. `.claude/lessons-learned.md` prüfen
+> 2. **Aktuelle Versionen im Internet abfragen** (Maven Central / GitHub Releases) – niemals veraltete Versionen aus dem Gedächtnis verwenden!
+
+## ⚠️ Pflicht: Versionsprüfung vor jeder Generierung
+
+**Bevor Code generiert wird**, müssen folgende Versionen aktuell abgefragt werden:
+
+| Artifact | Wo prüfen |
+|----------|-----------|
+| Spring Boot Parent POM | https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent |
+| Quarkus BOM | https://mvnrepository.com/artifact/io.quarkus.platform/quarkus-bom |
+| Taikai | https://central.sonatype.com/artifact/com.enofex/taikai |
+| versions-maven-plugin | https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin |
+
+**Bekannte Versionen (Stand 2026-03-01 – immer im Internet verifizieren!):**
+
+| Artifact | Version | Java 25 kompatibel |
+|----------|---------|-------------------|
+| Spring Boot | 4.0.3 | ✅ (volles Java 25 Support) |
+| Quarkus | 3.31.4 | ✅ (volles Java 25 Support ab 3.31) |
+| Taikai | 1.60.0 | ✅ |
+| versions-maven-plugin | 2.21.0 | ✅ |
+
+> ⚠️ **Quarkus 3.27 (LTS) läuft zwar mit Java 25, produziert aber Warnungen.**
+> Für Java 25 zwingend **Quarkus 3.31+** verwenden.
+
+---
 
 ## ⚠️ Pflichtabfrage
 
-Vor jeder neuen Anwendung oder jedem Modul – sofern nicht bereits bekannt:
+Vor jeder neuen Anwendung oder jedem Modul – sofern nicht bereits bekannt – **immer alle
+folgenden Fragen stellen, bevor Code generiert wird**:
+
+### Schritt 1 – Projekt-Koordinaten
 
 | # | Angabe | Beispiel |
 |---|--------|---------|
@@ -19,14 +49,27 @@ Vor jeder neuen Anwendung oder jedem Modul – sofern nicht bereits bekannt:
 | 2 | `artifactId` | `order-service` |
 | 3 | **Framework** | `Spring Boot` oder `Quarkus` |
 
+### Schritt 2 – Benötigte Dienste
+
+Explizit abfragen, welche Dienste tatsächlich benötigt werden:
+
+| Dienst | Abhängigkeit (Spring) | Abhängigkeit (Quarkus) | Standard |
+|--------|----------------------|------------------------|---------|
+| **Datenbank** (PostgreSQL) | `spring-boot-starter-data-jpa`, `postgresql`, Flyway | `quarkus-hibernate-orm-panache`, `quarkus-jdbc-postgresql`, Flyway | Ja |
+| **Messaging** (RabbitMQ) | `spring-boot-starter-amqp` | `quarkus-messaging-rabbitmq` | Nein |
+| **Auth / IAM** (Keycloak) | `spring-boot-starter-oauth2-resource-server` | `quarkus-oidc` | Nein |
+
+Nur bestätigte Dienste werden in `pom.xml`, `docker-compose.yml` und `application.properties`
+aufgenommen. Nicht benötigte Dienste vollständig weglassen – keine auskommentierten Blöcke.
+
 Nie raten oder Defaults verwenden – immer explizit fragen.
 
 ---
 
 ## Stack
 
-- **Java 25** · **Spring Boot 3.x** oder **Quarkus 3.x**
-- **PostgreSQL 17** · **RabbitMQ 4**
+- **Java 25** · **Spring Boot 4.x** oder **Quarkus 3.31+**
+- **PostgreSQL 17** · **RabbitMQ 4** · **Keycloak 26.x**
 - **Maven 3.9** · **Docker + Docker Compose**
 - **Taikai** (Architektur-Tests, nur `test` scope)
 
@@ -89,10 +132,12 @@ Taikai-Test **immer** anlegen. Template: `templates/arch/ArchitectureTest.java.t
 <dependency>
     <groupId>com.enofex</groupId>
     <artifactId>taikai</artifactId>
-    <version>1.49.0</version>
+    <version><!-- VOR GENERIERUNG AKTUELLE VERSION PRÜFEN: https://central.sonatype.com/artifact/com.enofex/taikai --></version>
     <scope>test</scope>
 </dependency>
 ```
+
+Stand 2026-03-01: `1.60.0` – **immer im Internet verifizieren!**
 
 ---
 
@@ -106,6 +151,60 @@ In nicht-Java-Dateien (Properties, YAML) als Kommentar:
 ```
 # Co-Author: Claude (claude-sonnet-4-6, Anthropic)
 ```
+
+---
+
+## versions-maven-plugin – PFLICHT in jeder POM
+
+Jede generierte `pom.xml` enthält das `versions-maven-plugin` im `<build><pluginManagement>` Block.
+Es erlaubt lokale Versionsabfragen ohne externe Tools:
+
+```xml
+<build>
+  <pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version><!-- AKTUELLE VERSION: https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin --></version>
+        <configuration>
+          <generateBackupPoms>false</generateBackupPoms>
+        </configuration>
+      </plugin>
+    </plugins>
+  </pluginManagement>
+</build>
+```
+
+Stand 2026-03-01: `2.21.0` – **immer im Internet verifizieren!**
+
+Nützliche Befehle für Entwickler:
+```bash
+# Veraltete Dependencies anzeigen
+./mvnw versions:display-dependency-updates
+
+# Veraltete Plugins anzeigen
+./mvnw versions:display-plugin-updates
+
+# Parent POM prüfen
+./mvnw versions:display-parent-updates
+```
+
+---
+
+## Renovate – automatisches Dependency-Update
+
+> **Renovate ist kein Maven-Plugin**, sondern ein externer Bot (GitHub App / selbst-gehostet),
+> der automatisch Pull Requests für Dependency-Updates erstellt.
+> Konfiguriert wird er via `renovate.json` im Projekt-Root.
+
+Jedes generierte Projekt erhält die Datei `renovate.json` aus dem Template
+`templates/renovate.json`. Sie wird unverändert in den Projekt-Root kopiert.
+
+Renovate aktivieren (einmalig pro Repository):
+1. GitHub App installieren: https://github.com/apps/renovate
+2. Repository freischalten
+3. Renovate erstellt automatisch einen initialen PR mit `renovate.json`
 
 ---
 

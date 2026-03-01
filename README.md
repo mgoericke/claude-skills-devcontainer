@@ -42,6 +42,7 @@ Erstelle eine Infografik zum Thema Microservice-Kommunikation
 | Messaging         | RabbitMQ 4 (SmallRye Reactive Messaging) |
 | Build             | Maven 3.9                                |
 | Architektur-Tests | Taikai (ArchUnit)                        |
+| Auth / IAM        | Keycloak 26.x                            |
 | KI                | Claude Code                              |
 
 ---
@@ -161,12 +162,13 @@ werden automatisch installiert.
 docker compose up -d
 ```
 
-| Service              | Adresse                                  |
-| -------------------- | ---------------------------------------- |
-| PostgreSQL           | `localhost:5432`                         |
-| RabbitMQ Management  | http://localhost:15672 (`app` / `app`)   |
-| Anwendung (Spring)   | http://localhost:8080/actuator/health    |
-| Anwendung (Quarkus)  | http://localhost:8080/q/health           |
+| Service              | Adresse                                          |
+| -------------------- | ------------------------------------------------ |
+| PostgreSQL           | `localhost:5432`                                 |
+| RabbitMQ Management  | http://localhost:15672 (`app` / `app`)           |
+| Keycloak Admin       | http://localhost:8180 (`admin` / `admin`)        |
+| Anwendung (Spring)   | http://localhost:8080/actuator/health            |
+| Anwendung (Quarkus)  | http://localhost:8080/q/health                   |
 
 ---
 

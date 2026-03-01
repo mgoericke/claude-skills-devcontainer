@@ -6,11 +6,12 @@ DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.
 
 | Schicht | Technologie |
 |---------|-------------|
-| Backend | Java 25 + **Spring Boot 3.x** oder **Quarkus 3.x** |
+| Backend | Java 25 + **Spring Boot 4.x** oder **Quarkus 3.31+** |
 | Datenbank | PostgreSQL 17 |
 | Messaging | RabbitMQ 4 (SmallRye Reactive Messaging) |
 | Build | Maven 3.9.x |
 | Architektur | Taikai (basiert auf ArchUnit) |
+| Auth / IAM | Keycloak 26.x |
 | Infrastruktur | Docker + Docker Compose |
 
 ## Skills & Wissensmanagement
@@ -18,6 +19,20 @@ DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.
 Skills: `.claude/skills/` – automatisch geladen.
 Erkenntnisse und Korrekturen: **immer** in `.claude/lessons-learned.md` festhalten.
 Vor jeder Generierung `lessons-learned.md` prüfen.
+
+## Versionsstrategie (PFLICHT)
+
+**Vor jeder Code-Generierung** müssen Dependency-Versionen im Internet abgefragt werden.
+Versionen aus dem Gedächtnis sind verboten – sie können veraltet sein.
+
+Pflicht-URLs:
+- Spring Boot: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent
+- Quarkus: https://mvnrepository.com/artifact/io.quarkus.platform/quarkus-bom
+- Taikai: https://central.sonatype.com/artifact/com.enofex/taikai
+
+Jede generierte `pom.xml` enthält:
+- `versions-maven-plugin` (lokale Versionsabfrage via `./mvnw versions:display-dependency-updates`)
+- `renovate.json` im Projekt-Root (automatische Update-PRs via Renovate Bot)
 
 ## Coding-Standards
 

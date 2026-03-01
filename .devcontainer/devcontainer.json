@@ -81,11 +81,16 @@
 
   // ── Port-Forwarding ─────────────────────────────────────────────────────────
   // Port 8080: Anwendungsport (Spring Boot / Quarkus)
+  // Port 8180: Keycloak Admin Console + OIDC Endpunkte
   // onAutoForward: "notify" zeigt eine Benachrichtigung wenn der Port aktiv wird
-  "forwardPorts": [8080],
+  "forwardPorts": [8080, 8180],
   "portsAttributes": {
     "8080": {
       "label": "Application (HTTP)",
+      "onAutoForward": "notify"
+    },
+    "8180": {
+      "label": "Keycloak Admin Console",
       "onAutoForward": "notify"
     }
   },

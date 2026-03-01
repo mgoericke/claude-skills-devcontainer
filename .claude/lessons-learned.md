@@ -133,10 +133,11 @@ Dependency (nur `test` scope!):
 <dependency>
     <groupId>com.enofex</groupId>
     <artifactId>taikai</artifactId>
-    <version>1.49.0</version>
+    <version>1.60.0</version><!-- Stand 2026-03-01 – vor Generierung im Internet prüfen! -->
     <scope>test</scope>
 </dependency>
 ```
+Aktuelle Version prüfen: https://central.sonatype.com/artifact/com.enofex/taikai
 Quelle: https://www.the-main-thread.com/p/architecture-testing-java-quarkus-taikai
 
 ---
@@ -158,3 +159,109 @@ In Properties/YAML als Kommentar:
 
 Templates verwenden neutrale Domänenbegriffe: `order`, `product`, `event`, `item`.
 Keine domänenspezifischen Namen wie `Antrag`, `Akte`, `Buergerservice` in Templates.
+
+---
+
+## Versionspflicht – vor jeder Generierung Internet prüfen
+
+**Niemals Versionen aus dem Gedächtnis verwenden.** Vor jedem Scaffold die aktuellen
+Versionen im Internet abfragen. Bekannte Versionen (Stand 2026-03-01):
+
+| Artifact | Version | Quelle |
+|----------|---------|--------|
+| Spring Boot | 4.0.3 | https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent |
+| Quarkus BOM | 3.31.4 | https://mvnrepository.com/artifact/io.quarkus.platform/quarkus-bom |
+| Taikai | 1.60.0 | https://central.sonatype.com/artifact/com.enofex/taikai |
+| versions-maven-plugin | 2.21.0 | https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin |
+
+---
+
+## Quarkus – Java 25 Kompatibilität
+
+**Quarkus 3.27 (LTS)** läuft technisch mit Java 25, produziert aber Warnungen.
+Für Java 25 **zwingend Quarkus 3.31+** verwenden (volle Java 25 Unterstützung seit 3.31.0).
+
+---
+
+## Spring Boot 4.x – Breaking Changes gegenüber 3.x
+
+Spring Boot 4.0 (November 2025) bringt:
+- Basiert auf **Spring Framework 7** und **Jakarta EE 11**
+- Servlet 6.1 als Baseline (Servlet 5.x nicht mehr unterstützt)
+- **Vollständige Java 25 Unterstützung**
+- Modularisiertes Codebase (kleinere, fokussierte JARs)
+
+Migration von 3.x: https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide
+
+---
+
+## Keycloak – Konfiguration für Spring Boot und Quarkus
+
+Keycloak läuft im Dev-Modus (`start-dev`) mit H2 file-basierter Datenbank (dev-file).
+Kein externer Datenbankserver nötig – Daten werden im Container gespeichert (nicht persistent).
+
+**Port:** 8180 (extern) → 8080 (intern im Container)
+**Admin-Zugang (nur dev):** http://localhost:8180 · `admin` / `admin`
+
+### Spring Boot – Resource Server (JWT)
+
+Dependency:
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+</dependency>
+```
+
+`application.properties`:
+```properties
+spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:8180/realms/<realm-name>
+```
+
+### Quarkus – OIDC
+
+Dependency:
+```xml
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-oidc</artifactId>
+</dependency>
+```
+
+`application.properties`:
+```properties
+quarkus.oidc.auth-server-url=http://keycloak:8080/realms/<realm-name>
+quarkus.oidc.client-id=<client-id>
+quarkus.oidc.application-type=service
+# Dev-Konfiguration (kein TLS-Check)
+quarkus.oidc.tls.verification=none
+```
+
+> **Hinweis:** Im docker-compose nutzt die Anwendung den Servicenamen `keycloak:8080` (intern).
+> Für lokale Entwicklung außerhalb Docker: `localhost:8180`.
+
+### Keycloak – Produktions-Konfiguration (PostgreSQL)
+
+Für Produktion KC_DB auf postgres umstellen:
+```yaml
+environment:
+  KC_DB: postgres
+  KC_DB_URL: jdbc:postgresql://postgres:5432/keycloakdb
+  KC_DB_USERNAME: keycloak
+  KC_DB_PASSWORD: keycloak
+  KEYCLOAK_ADMIN: admin
+  KEYCLOAK_ADMIN_PASSWORD: admin
+command: start --optimized
+```
+
+---
+
+## Renovate vs. versions-maven-plugin
+
+| Tool | Art | Zweck |
+|------|-----|-------|
+| **Renovate** | GitHub/GitLab Bot | Erstellt automatisch PRs für Dependency-Updates; konfiguriert via `renovate.json` im Projekt-Root |
+| **versions-maven-plugin** | Maven-Plugin in `pom.xml` | Lokale Versionsabfrage per `./mvnw versions:display-dependency-updates` |
+
+Beide ergänzen sich. Renovate ist **kein** Maven-Dependency – es ist ein externer Service.
+GitHub App: https://github.com/apps/renovate

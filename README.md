@@ -7,17 +7,90 @@ DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [VS Code](https://code.visualstudio.com/) + [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-## Schnellstart
+## Neues Projekt anlegen (Fork-Workflow)
+
+Neue Projekte werden als **Fork** dieses Repositories angelegt. Dadurch können
+Template-Updates (neue Skills, DevContainer-Verbesserungen, neue Coding-Standards)
+jederzeit per `git` eingespielt werden.
+
+### Schritt 1 – Fork erstellen
+
+GitHub: Schaltfläche **"Fork"** oben rechts auf der Repository-Seite.
+Dadurch entsteht `github.com/<deine-org>/<dein-repo>` als eigene Kopie.
+
+### Schritt 2 – Fork klonen und Upstream einrichten
 
 ```bash
-# 1. Template verwenden (GitHub → "Use this template")
-git clone git@github.com:your-org/your-repo.git && cd your-repo
+# Fork klonen
+git clone git@github.com:<deine-org>/<dein-repo>.git
+cd <dein-repo>
 
-# 2. VS Code öffnen → "Reopen in Container"
+# Dieses Template als "upstream" Remote hinzufügen
+git remote add upstream git@github.com:<template-org>/claude-skills-devcontainer.git
+
+# Remotes prüfen
+git remote -v
+# origin    git@github.com:<deine-org>/<dein-repo>.git  (fetch/push)
+# upstream  git@github.com:<template-org>/claude-skills-devcontainer.git  (fetch/push)
+```
+
+### Schritt 3 – VS Code öffnen
+
+```bash
 code .
+# → "Reopen in Container" wählen
 ```
 
 Beim ersten Start ~3–5 Min. Alle Tools werden automatisch installiert.
+
+---
+
+## Updates aus dem Template einspielen (Upstream-Sync)
+
+Wenn das Template verbessert wird (neue Skills, DevContainer-Updates, neue Regeln),
+können diese Änderungen in den Fork übernommen werden.
+
+### Ablauf
+
+```bash
+# 1. Aktuelle Änderungen vom Template holen
+git fetch upstream
+
+# 2. Neuen Branch für das Update anlegen (Pflicht – niemals direkt auf main!)
+git checkout -b chore/upstream-sync
+
+# 3. Upstream-main in den Branch mergen
+git merge upstream/main
+
+# 4. Konflikte lösen (falls vorhanden)
+#    Eigene Anpassungen (z.B. CLAUDE.md, devcontainer.json) prüfen –
+#    Upstream-Änderungen gezielt übernehmen oder ablehnen.
+git status
+# → Konflikte in Editor öffnen, lösen, dann:
+git add .
+git commit -m "chore: sync upstream template changes"
+
+# 5. Branch in den Fork pushen und Pull Request erstellen
+git push origin chore/upstream-sync
+```
+
+### Was kann zu Konflikten führen?
+
+| Datei | Konfliktrisiko | Empfehlung |
+|-------|----------------|-----------|
+| `.devcontainer/devcontainer.json` | Mittel | Eigene `containerEnv`-Einträge behalten, neue Features aus Upstream übernehmen |
+| `CLAUDE.md` | Niedrig | Upstream-Regeln übernehmen, eigene Erweiterungen darunter behalten |
+| `.claude/skills/` | Niedrig | Neue Skills aus Upstream sind reine Ergänzungen |
+| `docker-compose.yml` | Hoch | Eigene Services (z.B. andere DB-Namen) sorgfältig prüfen |
+
+### Upstream-Updates regelmäßig einspielen
+
+Empfehlung: **bei jedem neuen Feature-Branch** kurz prüfen ob neue Upstream-Commits vorliegen:
+
+```bash
+git fetch upstream
+git log HEAD..upstream/main --oneline   # Zeigt neue Commits im Template
+```
 
 ---
 

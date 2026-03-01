@@ -7,75 +7,143 @@ description: Erstellt professionelle, datengetriebene Infografiken als PNG- oder
 
 Erstelle professionelle, visuell ansprechende Infografiken als PNG- oder PDF-Datei mit Python.
 
-## Workflow
+## PFLICHT: Stil-Abfrage vor jeder Erstellung
 
-1. **Thema & Daten klären** – Verstehe was visualisiert werden soll. Hast du Daten vom Nutzer oder musst du sinnvolle Beispieldaten verwenden?
-2. **Layout planen** – Wähle einen Infografik-Typ (siehe unten)
-3. **Code schreiben & ausführen** – Python mit matplotlib/PIL
-4. **Ausgabe präsentieren** – Datei nach `/mnt/user-data/outputs/` kopieren und mit `present_files` teilen
+**Bevor Code geschrieben wird, MUSS der Nutzer mit `AskUserQuestion` nach Stil und Typ gefragt werden.**
 
-## Infografik-Typen
+Verwende folgende zwei Fragen:
 
-### Statistik-Infografik
-Kennzahlen groß hervorgehoben, mit Icons und Vergleichsbalken.
-```python
-# Große Zahlen = "Hero Numbers", daneben erklärende Mikro-Charts
+### Frage 1 – Grafikstil (Zielgruppe)
+
+```
+Welchen Grafikstil möchtest du?
 ```
 
-### Prozess-Infografik
-Schritt-für-Schritt-Ablauf mit Pfeilen und numerierten Schritten.
+Optionen:
+- **Technisch / Professional** – Für Entwickler, Architekten, Business Analysten. Präzise Kacheln, Metriken, Tabellen, Code-Badges, strukturierte Layouts. Beispiel: KPI-Dashboard, Architekturübersicht, API-Dokumentation.
+- **Kreativ / Visuell** – Für Nicht-Techniker, Management, Stakeholder, Marketing. Große Illustrationen, bunte Icons, Storytelling-Layouts, Fließtexte mit Bildelementen. Beispiel: Roadmap-Poster, Prozessflow mit Symbolen, Team-Überblick.
 
-### Vergleichs-Infografik
-Nebeneinander-Darstellung von Optionen (Pro/Contra, A vs B).
+### Frage 2 – Infografik-Typ
 
-### Timeline-Infografik
-Horizontale oder vertikale Zeitlinie mit Ereignissen.
+Je nach gewähltem Stil werden unterschiedliche Typen angeboten:
 
-### Datentabelle als Grafik
-Tabelle mit Farbcodierung, Icons und visueller Hierarchie.
+**Bei Technisch / Professional:**
+| Typ | Beschreibung |
+|-----|-------------|
+| Dashboard / KPI | Hero Numbers, Metriken, Fortschrittsbalken, Mini-Charts |
+| Architektur | Layer-Diagramme, Komponenten, BCE/MVC-Strukturen |
+| Prozess / Workflow | Schritte mit Pfeilen, nummeriert, horizontal oder vertikal |
+| Vergleich | A vs B, Pro/Contra, Tabellen mit Farbcodierung |
+| Timeline | Versionsverlauf, Sprint-Planung, Roadmap mit Meilensteinen |
 
-## Design-Prinzipien
+**Bei Kreativ / Visuell:**
+| Typ | Beschreibung |
+|-----|-------------|
+| Storytelling / Poster | Narrative Struktur, große Illustrationen, lebendige Farben |
+| Kreisdiagramm-Fokus | Zentrale Botschaft, radiale Anordnung, starke Akzente |
+| Schritt-für-Schritt | Groß nummerierte Schritte, Icons, viel Weißraum |
+| Statistik / Fakten | Große Zahlen mit Illustrationen, Piktogramme |
+| Roadmap | Zeitlinie mit Illustrationen, Meilenstein-Symbole, Phasenfarben |
 
-- **Farbpalette**: Maximal 3–4 Farben + Akzentfarbe
-- **Typografie**: Klare Hierarchie: Titel (28–36px) → Subtitel (18–22px) → Body (12–14px)
-- **Weißraum**: Großzügig – Elemente atmen lassen
-- **Konsistenz**: Einheitliche Abstände, Radien, Icon-Stil
+---
+
+## Workflow (nach Stil-Abfrage)
+
+1. **Stil & Typ abfragen** – `AskUserQuestion` mit den zwei Fragen oben (PFLICHT, vor allem anderen)
+2. **Thema & Daten klären** – Nutzer-Daten verwenden oder sinnvolle Beispieldaten einsetzen
+3. **Farbpalette wählen** – `references/farbpaletten.md` laden; für Kreativ-Stil mutige Paletten bevorzugen
+4. **Code schreiben & ausführen** – Python mit matplotlib/PIL, Stil-spezifische Designregeln beachten (siehe unten)
+5. **Ausgabe speichern** – Datei nach `/mnt/user-data/outputs/` speichern **und** ins Root-Verzeichnis des Projekts (`/workspaces/<projektname>/`) kopieren
+6. **Ausgabe präsentieren** – mit `present_files` teilen
+
+---
+
+## Designregeln nach Stil
+
+### Technisch / Professional
+- Heller Hintergrund (`#F8FAFC`, `#FFFFFF`)
+- Kachel-basiertes Grid-Layout mit `FancyBboxPatch`
+- Schmale Farbstreifen als Akzent (links oder oben an Kacheln)
+- Monospace-Font für Code, Endpunkte, Schlüssel
+- Maximal 4 Akzentfarben, viel Grau für Nebeninformationen
+- Abschnitte klar mit Trennlinien und Labels strukturieren
+- Palette: Corporate Blue, Tech Professional oder Enterprise Slate
+
+### Kreativ / Visuell
+- Farbige oder gradient-ähnliche Hintergründe
+- Große Formen: Kreise, Sechsecke, geschwungene Bänder
+- Text-Icons mit `matplotlib` (Zahlen in Kreisen, Pfeile, Symbole)
+- Große Schrift für Hauptbotschaften (min. 24pt für Kernaussagen)
+- Weniger Elemente, mehr visuelle Wirkung – „weniger ist mehr"
+- Storytelling-Fluss: Top → Bottom, oder radial
+- Palette: Agile & Modern, Analytics & Data – oder eigene bunte Kombination
+- Matplotlib-Tricks für kreative Elemente:
+
+```python
+# Kreis mit Text (Icon-Ersatz)
+circle = plt.Circle((cx, cy), radius, color=col, zorder=5)
+ax.add_patch(circle)
+ax.text(cx, cy, '1', ha='center', va='center', fontsize=20,
+        fontweight='bold', color='white', zorder=6)
+
+# Geschwungenes Band (Hintergrundform)
+from matplotlib.patches import Arc, Wedge
+wedge = Wedge((0.5, 0.5), 0.4, 0, 180, width=0.1,
+              facecolor='#0284C7', alpha=0.2,
+              transform=ax.transAxes)
+ax.add_patch(wedge)
+
+# Große dekorative Zahl
+ax.text(0.5, 0.5, '87%', ha='center', va='center',
+        fontsize=72, fontweight='bold', color=col,
+        alpha=0.15, transform=ax.transAxes)  # als Hintergrund-Wasserzeichen
+```
+
+---
 
 ## Technischer Setup
 
 ```python
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from matplotlib.patches import FancyBboxPatch
+from matplotlib.patches import FancyBboxPatch, Circle, Wedge
 import matplotlib.gridspec as gridspec
 import numpy as np
+import shutil, os
 
 # Basis-Setup
-fig = plt.figure(figsize=(10, 14), facecolor='#F8F9FA')
-fig.patch.set_facecolor('#F8F9FA')
-
-# DPI für qualitativ hochwertige Ausgabe
-plt.savefig('output.png', dpi=150, bbox_inches='tight',
-            facecolor=fig.get_facecolor())
+fig = plt.figure(figsize=(11, 15), facecolor='#F8FAFC')
+fig.patch.set_facecolor('#F8FAFC')
 ```
 
 ## Qualitätscheckliste
 
 Vor dem Speichern prüfen:
+- [ ] Stil-Abfrage wurde durchgeführt (AskUserQuestion)
 - [ ] Keine Textüberschneidungen
 - [ ] Alle Elemente innerhalb der Canvas-Grenzen
 - [ ] Konsistente Abstände (verwende ein Raster)
 - [ ] Lesbare Schriftgrößen (min. 10pt)
 - [ ] Ausreichend Kontrast (Dunkel auf Hell oder umgekehrt)
 - [ ] Titel erklärt das Thema auf einen Blick
+- [ ] Kreativ-Stil: Mindestens ein großes visuelles Ankerelement vorhanden
 
 ## Ausgabe
 
-Immer als PNG (bevorzugt, dpi=150) oder PDF speichern:
+Immer als PNG (bevorzugt, dpi=150) oder PDF speichern **und** ins Root-Verzeichnis kopieren:
 ```python
+import shutil, os
+
 output_path = '/mnt/user-data/outputs/infografik.png'
+os.makedirs('/mnt/user-data/outputs', exist_ok=True)
 plt.savefig(output_path, dpi=150, bbox_inches='tight',
             facecolor=fig.get_facecolor(), edgecolor='none')
+
+# Pflicht: Kopie ins Projekt-Root
+root_path = os.path.join(os.getcwd(), 'infografik.png')
+shutil.copy2(output_path, root_path)
+print(f"Infografik gespeichert: {output_path}")
+print(f"Kopie im Projekt-Root: {root_path}")
 ```
 
 Dann `present_files` mit dem Pfad aufrufen.
@@ -83,19 +151,18 @@ Dann `present_files` mit dem Pfad aufrufen.
 ## Referenz-Dateien
 
 Lade bei Bedarf:
-- `references/farbpaletten.md` – 5 vorgefertigte Themes (Dark Tech, Light Clean, Behörden, Nature, High Impact)
+- `references/farbpaletten.md` – 5 Themes: Corporate Blue, Tech Professional, Analytics & Data, Enterprise Slate, Agile & Modern
 - `references/beispieldaten.md` – Demo-Datensätze für Markt, Zeitreihen, Branchen, Demografie, KI/Behörden
 
 Wann laden:
-- Farbpaletten → wenn Nutzer kein Theme nennt oder nach bestimmtem Stil fragt
+- Farbpaletten → immer laden, da alle Paletten hell und zielgruppenspezifisch sind
 - Beispieldaten → wenn kein eigener Datensatz vorhanden ist
 
 ## Hinweis zu Fonts
 
-Für bessere Typografie kannst du prüfen ob `DejaVu Sans` (matplotlib Standard) reicht,
-oder lade mit `matplotlib.font_manager` alternative Fonts:
 ```python
 from matplotlib import font_manager
 # Prüfe verfügbare Fonts:
 # [f.name for f in font_manager.fontManager.ttflist]
+# Standard: DejaVu Sans – reicht für professionelle Ergebnisse
 ```

@@ -116,7 +116,7 @@ curl -s \
   -H "Content-Type: application/json" \
   -d '{"inputs": "DEIN_PROMPT_HIER"}' \
   "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell" \
-  --output infografik.png
+  --output "infografik_$(date +%Y%m%d_%H%M%S).png"
 ```
 
 Fallback-Modell falls FLUX nicht verfügbar: **`stabilityai/stable-diffusion-xl-base-1.0`**
@@ -127,7 +127,7 @@ curl -s \
   -H "Content-Type: application/json" \
   -d '{"inputs": "DEIN_PROMPT_HIER"}' \
   "https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0" \
-  --output infografik.png
+  --output "infografik_$(date +%Y%m%d_%H%M%S).png"
 ```
 
 ### Fehlerbehandlung
@@ -159,7 +159,18 @@ PNG-Datei im aktuellen Verzeichnis speichern:
 # Dann present_files mit dem Pfad aufrufen
 ```
 
-Dateiname: `infografik.png` im Projekt-Root.
+Dateiname: **niemals** eine bestehende Infografik überschreiben. Immer mit Zeitstempel oder beschreibendem Namen speichern:
+
+```bash
+# Dateiname mit Zeitstempel
+infografik_$(date +%Y%m%d_%H%M%S).png
+
+# Oder beschreibender Name
+infografik_spring-architektur.png
+infografik_kpi-dashboard.png
+```
+
+Vor dem Speichern prüfen ob eine Datei mit dem geplanten Namen bereits existiert.
 
 ---
 

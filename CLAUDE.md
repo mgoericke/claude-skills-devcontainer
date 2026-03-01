@@ -27,6 +27,7 @@ Vor jeder Generierung `lessons-learned.md` prüfen.
 - **Persistenz**: Flyway – kein `ddl-auto=create`
 - **Messaging (Quarkus)**: SmallRye `mp.messaging.*` Keys – Details in `lessons-learned.md`
 - **Quarkus `@Blocking`**: Bei DB-Zugriffen im `@Incoming`-Consumer immer `@Blocking @Transactional`
+- **Branches**: Neue Features IMMER in einem separaten Branch umsetzen – niemals direkt auf `main` (gilt auch für Forks dieses Projekts)
 - **Commits**: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
 - **Sprache**: Deutsch in Kommentaren/Doku, Englisch im Code
 - **Beispiele**: Fachlich neutral (`order`, `product`, `event`, `item`) – keine Domänennamen

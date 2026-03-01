@@ -26,12 +26,14 @@ Beim ersten Start ~3–5 Min. Alle Tools werden automatisch installiert.
 Zwei Möglichkeiten zur Authentifizierung:
 
 **Option A – API Key (Umgebungsvariable auf dem Host):**
+
 ```bash
 # macOS/Linux (~/.zshrc oder ~/.bashrc)
 export ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
 **Option B – Login nach Container-Start:**
+
 ```bash
 claude login
 ```
@@ -46,6 +48,8 @@ Alle Variablen sind optional. Nur setzen wenn benötigt.
 # macOS/Linux (~/.zshrc oder ~/.bashrc)
 export ANTHROPIC_API_KEY="sk-ant-..."        # oder: claude login im Container
 
+export HF_TOKEN="hf_..."                     # Hugging Face – für Infografik-Skill (kostenlos)
+
 export ARTIFACTORY_URL="https://company.jfrog.io/artifactory"
 export ARTIFACTORY_USER="your.name@example.com"
 export ARTIFACTORY_TOKEN="your-token"
@@ -57,8 +61,36 @@ export NPM_TOKEN="npm_..."                    # Private NPM Registry
 ```powershell
 # Windows (PowerShell)
 $env:ANTHROPIC_API_KEY = "sk-ant-..."
+$env:HF_TOKEN = "hf_..."
 $env:GIT_TOKEN = "..."
 ```
+
+### Hugging Face Token (`HF_TOKEN`)
+
+Benötigt für den **Infografik-Skill** (KI-Bildgenerierung via FLUX.1).
+
+**Einmalige Einrichtung (3 Schritte):**
+
+1. Token erstellen unter https://huggingface.co/settings/tokens
+   - **Token type:** `Read` (reicht aus – schreibt nichts)
+   - **Name:** z.B. `claude-infografik`
+
+2. Token auf dem **Host-Rechner** setzen (nicht im Container):
+   ```bash
+   # macOS/Linux: in ~/.zshrc oder ~/.bashrc eintragen
+   export HF_TOKEN="hf_..."
+   source ~/.zshrc   # oder: neues Terminal öffnen
+   ```
+
+3. **DevContainer neu starten** – wichtig, damit der Token übernommen wird:
+   - VS Code: `Cmd+Shift+P` → `Dev Containers: Rebuild Container`
+
+> **Warum Rebuild?** Umgebungsvariablen vom Host werden beim Container-Start
+> einmalig eingelesen (`devcontainer.json` → `containerEnv`). Ein laufender
+> Container bekommt nachträglich gesetzte Variablen nicht mit.
+
+Ein Token pro Use-Case ist Best Practice (HF-Empfehlung), damit einzelne Tokens
+widerrufen werden können ohne andere Anwendungen zu beeinflussen.
 
 ### Maven – Artifactory (`~/.m2/settings.xml` im Container)
 
@@ -85,15 +117,15 @@ $env:GIT_TOKEN = "..."
 
 ## Stack
 
-| | |
-|--|--|
-| Java | 25 (Microsoft OpenJDK) |
-| Frameworks | Spring Boot 3.x oder Quarkus 3.x |
-| Datenbank | PostgreSQL 17 |
-| Messaging | RabbitMQ 4 (SmallRye Reactive Messaging) |
-| Build | Maven 3.9 |
-| Architektur-Tests | Taikai (ArchUnit) |
-| KI | Claude Code |
+|                   |                                          |
+| ----------------- | ---------------------------------------- |
+| Java              | 25 (Microsoft OpenJDK)                   |
+| Frameworks        | Spring Boot 3.x oder Quarkus 3.x         |
+| Datenbank         | PostgreSQL 17                            |
+| Messaging         | RabbitMQ 4 (SmallRye Reactive Messaging) |
+| Build             | Maven 3.9                                |
+| Architektur-Tests | Taikai (ArchUnit)                        |
+| KI                | Claude Code                              |
 
 ---
 
@@ -132,13 +164,14 @@ src/main/java/com/example/orders/
 ```
 
 Regeln werden durch Taikai zur Build-Zeit geprüft:
+
 ```bash
 ./mvnw test -Dtest=ArchitectureTest
 ```
 
 ## Dockerfile-Konventionen
 
-| Framework | Speicherort |
-|-----------|-------------|
-| Spring Boot | `./Dockerfile` (Projekt-Root) |
-| Quarkus | `src/main/docker/Dockerfile.jvm` |
+| Framework   | Speicherort                      |
+| ----------- | -------------------------------- |
+| Spring Boot | `./Dockerfile` (Projekt-Root)    |
+| Quarkus     | `src/main/docker/Dockerfile.jvm` |

@@ -1,104 +1,111 @@
 # Beispiel-Datensätze für Demo-Infografiken
 
-Verwende diese Daten wenn der Nutzer kein eigenes Dataset mitbringt, 
+Verwende diese Daten wenn der Nutzer kein eigenes Dataset mitbringt,
 oder als Vorlage für ähnliche Themen.
+Die Daten werden als **Textbeschreibung im englischen Image-Prompt** eingebettet.
 
 ---
 
-## 📊 Marktanteile / Kreisdiagramm
-```python
-data_marktanteile = {
-    'labels':  ['Produkt A', 'Produkt B', 'Produkt C', 'Sonstige'],
-    'values':  [42, 28, 19, 11],
-    'einheit': '%',
-    'titel':   'Marktanteile 2025',
-}
-```
+## Marktanteile / Kreisdiagramm
 
-## 📈 Zeitreihe / Wachstum
-```python
-data_zeitreihe = {
-    'jahre':   [2020, 2021, 2022, 2023, 2024, 2025],
-    'werte':   [100, 118, 134, 152, 171, 195],
-    'einheit': 'Mio. €',
-    'titel':   'Umsatzentwicklung',
-    'cagr':    '14,3 %',
-}
-```
+Thema: Marktanteile 2025
+Werte: Produkt A 42%, Produkt B 28%, Produkt C 19%, Sonstige 11%
 
-## 🏢 Branchen-Vergleich / Balken
-```python
-data_branchen = {
-    'branchen': ['Technologie', 'Finanzen', 'Gesundheit', 
-                 'Industrie', 'Handel', 'Energie'],
-    'werte':    [87, 74, 61, 55, 48, 39],
-    'einheit':  '% Wachstum',
-    'titel':    'Branchenwachstum YoY',
-}
+Prompt-Snippet:
 ```
-
-## 👥 Bevölkerung / Demografie
-```python
-data_demografie = {
-    'altersgruppen': ['18–24', '25–34', '35–44', '45–54', '55–64', '65+'],
-    'anteil':        [11, 18, 22, 20, 16, 13],
-    'einheit':       '%',
-    'titel':         'Altersstruktur Nutzerbasis',
-}
-```
-
-## 🌍 Länder-Vergleich / Map-Daten
-```python
-data_laender = {
-    'laender': ['Deutschland', 'Österreich', 'Schweiz', 
-                'Frankreich', 'Niederlande'],
-    'werte':   [100, 38, 45, 67, 29],
-    'einheit': 'Mio. €',
-    'titel':   'DACH+ Umsatz nach Land',
-}
-```
-
-## 🤖 KI & Digitalisierung (Behörden-Kontext)
-```python
-data_digitalisierung = {
-    'bereiche': ['Dokumentenverarbeitung', 'Bürger-Chat', 
-                 'Antragsprüfung', 'Terminvergabe', 'Berichtswesen'],
-    'automatisiert': [78, 65, 52, 88, 71],  # % automatisiert
-    'einheit': '% digitalisiert',
-    'titel':   'Digitalisierungsgrad Behördenprozesse 2025',
-    'kpis': {
-        'Anträge/Tag': '12.400',
-        'Bearbeitungszeit': '↓ 67 %',
-        'Fehlerquote': '0,3 %',
-        'Nutzerzufriedenheit': '4,2 / 5',
-    }
-}
-```
-
-## 📋 Aufgaben / Status (Projekt-Dashboard)
-```python
-data_projekt = {
-    'phasen': ['Konzept', 'Design', 'Entwicklung', 'Test', 'Rollout'],
-    'status': ['✅ Fertig', '✅ Fertig', '🔄 In Arbeit', '⏳ Ausstehend', '⏳ Ausstehend'],
-    'fortschritt': [100, 100, 60, 0, 0],
-    'titel': 'Projektstatus Q1 2025',
-}
+Pie chart showing market shares 2025: Product A 42%, Product B 28%, Product C 19%, Others 11%.
 ```
 
 ---
 
-## Daten einlesen vom Nutzer
+## Zeitreihe / Wachstum
 
-Wenn der Nutzer eine CSV oder Tabelle mitschickt:
-```python
-import csv, io
+Thema: Umsatzentwicklung (Mio. €)
+Werte: 2020: 100, 2021: 118, 2022: 134, 2023: 152, 2024: 171, 2025: 195
+CAGR: 14,3%
 
-# Aus Text parsen:
-raw = """Name,Wert
-Alpha,34
-Beta,28
-Gamma,19"""
+Prompt-Snippet:
+```
+Line chart showing revenue growth from 100M EUR (2020) to 195M EUR (2025), CAGR 14.3%.
+Key milestones labeled at each data point.
+```
 
-reader = csv.DictReader(io.StringIO(raw))
-data = [{'name': r['Name'], 'wert': float(r['Wert'])} for r in reader]
+---
+
+## Branchen-Vergleich / Balken
+
+Thema: Branchenwachstum Year-over-Year
+Werte: Technologie 87%, Finanzen 74%, Gesundheit 61%, Industrie 55%, Handel 48%, Energie 39%
+
+Prompt-Snippet:
+```
+Horizontal bar chart comparing industry growth YoY:
+Technology 87%, Finance 74%, Healthcare 61%, Industry 55%, Retail 48%, Energy 39%.
+```
+
+---
+
+## Bevölkerung / Demografie
+
+Thema: Altersstruktur Nutzerbasis
+Werte: 18–24: 11%, 25–34: 18%, 35–44: 22%, 45–54: 20%, 55–64: 16%, 65+: 13%
+
+Prompt-Snippet:
+```
+Demographic bar chart showing user age distribution:
+18-24 (11%), 25-34 (18%), 35-44 (22%), 45-54 (20%), 55-64 (16%), 65+ (13%).
+```
+
+---
+
+## Länder-Vergleich / DACH+
+
+Thema: DACH+ Umsatz nach Land (Mio. €)
+Werte: Deutschland 100, Schweiz 45, Frankreich 67, Österreich 38, Niederlande 29
+
+Prompt-Snippet:
+```
+Regional comparison chart for DACH+ revenue in million EUR:
+Germany 100M, Switzerland 45M, France 67M, Austria 38M, Netherlands 29M.
+```
+
+---
+
+## KI & Digitalisierung (Behörden-Kontext)
+
+Thema: Digitalisierungsgrad Behördenprozesse 2025
+Bereiche: Dokumentenverarbeitung 78%, Bürger-Chat 65%, Antragsprüfung 52%, Terminvergabe 88%, Berichtswesen 71%
+KPIs: 12.400 Anträge/Tag, Bearbeitungszeit ↓67%, Fehlerquote 0,3%, Nutzerzufriedenheit 4,2/5
+
+Prompt-Snippet:
+```
+Government digitalization dashboard 2025.
+Progress bars: Document Processing 78%, Citizen Chat 65%, Application Review 52%,
+Appointment Booking 88%, Reporting 71%.
+KPI tiles: 12,400 applications/day, processing time reduced 67%, error rate 0.3%, satisfaction 4.2/5.
+```
+
+---
+
+## Projekt-Status / Dashboard
+
+Thema: Projektstatus Q1 2025
+Phasen: Konzept ✅ 100%, Design ✅ 100%, Entwicklung 🔄 60%, Test ⏳ 0%, Rollout ⏳ 0%
+
+Prompt-Snippet:
+```
+Project status dashboard Q1 2025.
+Phase timeline: Concept (done 100%), Design (done 100%), Development (in progress 60%),
+Testing (pending 0%), Rollout (pending 0%).
+Progress bars with status icons.
+```
+
+---
+
+## Daten vom Nutzer übernehmen
+
+Wenn der Nutzer eine CSV oder Tabelle mitschickt, die Werte direkt als Textliste in den Prompt einbauen:
+
+```
+Content: [Label 1]: [Wert 1], [Label 2]: [Wert 2], [Label 3]: [Wert 3] ...
 ```

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python *)",
+      "Bash(mkdir -p /mnt/user-data/outputs)",
+      "Bash(mkdir -p /mnt/user-data/outputs && python *)",
+      "Bash(python infografik_spring_boot.py)"
+    ]
+  }
+}

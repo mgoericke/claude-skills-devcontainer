@@ -49,6 +49,9 @@
     // Optional – NPM Registry (z.B. private Scope)
     "NPM_TOKEN":            "${localEnv:NPM_TOKEN}",
 
+    // Optional – Hugging Face (Infografik-Skill: KI-Bildgenerierung)
+    "HF_TOKEN":             "${localEnv:HF_TOKEN}",
+
     // Optional – weitere Custom-Variablen hier ergänzen
     "CUSTOM_REGISTRY_URL":  "${localEnv:CUSTOM_REGISTRY_URL}"
   },
@@ -81,7 +84,7 @@
     "source=claude-code-m2-${devcontainerId},target=/root/.m2,type=volume"
   ],
 
-  "postCreateCommand": "pip install matplotlib pillow --break-system-packages && echo '✅ Setup complete'",
+  "postCreateCommand": "echo '✅ Setup complete'",
 
   "remoteUser": "root"
 }

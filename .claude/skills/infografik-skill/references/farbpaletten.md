@@ -1,121 +1,74 @@
 # Farbpaletten für Infografiken
 
-Lade diese Datei wenn der Nutzer ein bestimmtes Theme wählt oder du Farben für eine Infografik brauchst.
+Lade diese Datei um die passende Palette für den Image-Prompt zu wählen.
+Die Farben werden als **Textbeschreibung im englischen Prompt** verwendet.
 
-**Grundregel:** Kein dunkles Design. Alle Paletten sind hell, kontrastreich und für professionelle Zielgruppen (Developer, Architekten, Business Analysten, Projektmanager) optimiert.
+**Grundregel:** Kein dunkles Design. Alle Paletten sind hell, kontrastreich und für professionelle Zielgruppen optimiert.
 
 ---
 
-## 💼 Corporate Blue (Standard)
+## Corporate Blue (Standard)
 Klassisch, vertrauenswürdig – optimal für Business Analysten und Projektmanager.
-Inspiriert von führenden Enterprise-Dashboards und Consulting-Reports.
-```python
-PALETTE = {
-    'bg':      '#FFFFFF',  # Reines Weiß
-    'card':    '#F0F4FF',  # Hellblau-Weiß
-    'accent1': '#1A56DB',  # Cobalt-Blau (Primär)
-    'accent2': '#0E9F6E',  # Smaragdgrün (Erfolg/KPI)
-    'accent3': '#E3A008',  # Amber (Warnung/Highlight)
-    'accent4': '#6C2BD9',  # Violett (Sekundär)
-    'text':    '#111928',  # Fast Schwarz
-    'muted':   '#6B7280',  # Mittelgrau
-    'border':  '#D1D5DB',  # Hellgrau für Rahmen
-}
+
+**Prompt-Beschreibung:**
+```
+Color scheme: pure white background, cobalt blue (#1A56DB) for headers and primary elements,
+emerald green (#0E9F6E) for positive KPIs and success indicators,
+amber yellow (#E3A008) for warnings and highlights,
+violet (#6C2BD9) for secondary accents,
+dark text (#111928), light gray borders (#D1D5DB).
 ```
 
 ---
 
-## 🖥️ Tech Professional
+## Tech Professional
 Modern, präzise – ideal für Entwickler und Software-Architekten.
-Klare Struktur, technischer Look mit Neon-Akzenten auf hellem Grund.
-```python
-PALETTE = {
-    'bg':      '#F8FAFC',  # Kühles Off-White
-    'card':    '#FFFFFF',  # Weiß
-    'accent1': '#0284C7',  # Sky-Blau (Primär)
-    'accent2': '#059669',  # Emerald (Tech-Grün)
-    'accent3': '#7C3AED',  # Indigo (Code/Architektur)
-    'accent4': '#DC2626',  # Rot (Alerts/Errors)
-    'text':    '#0F172A',  # Slate-Schwarz
-    'muted':   '#64748B',  # Slate-Grau
-    'border':  '#E2E8F0',  # Sehr helles Grau
-}
+
+**Prompt-Beschreibung:**
+```
+Color scheme: cool off-white background (#F8FAFC), sky blue (#0284C7) as primary color,
+emerald green (#059669) for tech elements, indigo (#7C3AED) for code and architecture,
+red (#DC2626) for alerts and errors, slate-black text (#0F172A), very light gray borders (#E2E8F0).
 ```
 
 ---
 
-## 📊 Analytics & Data
+## Analytics & Data
 Datengetrieben, strukturiert – für Data Analysten und BI-Experten.
-Teal-Akzente signalisieren Präzision und Verlässlichkeit.
-```python
-PALETTE = {
-    'bg':      '#F9FAFB',  # Warm Off-White
-    'card':    '#FFFFFF',  # Weiß
-    'accent1': '#0694A2',  # Teal (Primär)
-    'accent2': '#3F83F8',  # Hellblau (Sekundär)
-    'accent3': '#FF5A1F',  # Orange (Hervorhebung)
-    'accent4': '#1C64F2',  # Dunkelblau (Trend)
-    'text':    '#1F2937',  # Dunkelgrau
-    'muted':   '#9CA3AF',  # Mittelgrau
-    'border':  '#E5E7EB',  # Rahmenlinie
-}
+
+**Prompt-Beschreibung:**
+```
+Color scheme: warm off-white background (#F9FAFB), teal (#0694A2) as primary color,
+light blue (#3F83F8) as secondary, orange (#FF5A1F) for highlights,
+dark blue (#1C64F2) for trends, dark gray text (#1F2937), light gray borders (#E5E7EB).
 ```
 
 ---
 
-## 🏢 Enterprise Slate
-Neutral, seriös, universell – für Mixed Audiences und Executive Präsentationen.
-Funktioniert sowohl gedruckt als auch digital.
-```python
-PALETTE = {
-    'bg':      '#FFFFFF',  # Weiß
-    'card':    '#F1F5F9',  # Slate-100
-    'accent1': '#334155',  # Slate-700 (Primär)
-    'accent2': '#0EA5E9',  # Light-Blue (Akzent)
-    'accent3': '#10B981',  # Grün (Positiv)
-    'accent4': '#F59E0B',  # Gelb-Orange (KPI)
-    'text':    '#0F172A',  # Slate-900
-    'muted':   '#94A3B8',  # Slate-400
-    'border':  '#CBD5E1',  # Slate-300
-}
+## Enterprise Slate
+Neutral, seriös – für Mixed Audiences und Executive-Präsentationen.
+
+**Prompt-Beschreibung:**
+```
+Color scheme: white background, slate (#334155) as primary, light blue (#0EA5E9) as accent,
+green (#10B981) for positive values, yellow-orange (#F59E0B) for KPIs,
+near-black text (#0F172A), slate-300 borders (#CBD5E1).
 ```
 
 ---
 
-## 🚀 Agile & Modern
+## Agile & Modern
 Frisch, dynamisch – für agile Teams, Scrum Master und moderne PM-Kontexte.
-Mint und Indigo vermitteln Innovation und Energie.
-```python
-PALETTE = {
-    'bg':      '#FAFFFE',  # Mint-Weiß
-    'card':    '#F0FDF9',  # Grün-Weiß
-    'accent1': '#0D9488',  # Teal-600 (Primär)
-    'accent2': '#4F46E5',  # Indigo (Sprint/Feature)
-    'accent3': '#F97316',  # Orange (Blocker/Action)
-    'accent4': '#0EA5E9',  # Sky-Blau (Info)
-    'text':    '#134E4A',  # Teal-Dunkel
-    'muted':   '#6B7280',  # Grau
-    'border':  '#CCFBF1',  # Mintgrün-Hell
-}
+
+**Prompt-Beschreibung:**
+```
+Color scheme: mint-white background (#FAFFFE), teal (#0D9488) as primary,
+indigo (#4F46E5) for sprints and features, orange (#F97316) for blockers and actions,
+sky blue (#0EA5E9) for informational elements, dark teal text (#134E4A),
+light mint borders (#CCFBF1).
 ```
 
 ---
-
-## Verwendung im Code
-```python
-# Palette laden und verwenden:
-fig = plt.figure(figsize=(11, 15), facecolor=PALETTE['bg'])
-ax.set_facecolor(PALETTE['card'])
-ax.text(0.5, 0.9, 'Titel', color=PALETTE['text'], ...)
-ax.barh(y, width, color=PALETTE['accent1'], ...)
-
-# Rahmen/Borders:
-rect = FancyBboxPatch(..., edgecolor=PALETTE['border'], facecolor=PALETTE['card'])
-
-# Dunklen Text immer auf hellem Hintergrund:
-# PALETTE['text'] auf PALETTE['bg'] oder PALETTE['card']
-# Nie: heller Text auf hellem Grund
-```
 
 ## Zielgruppen-Empfehlung
 

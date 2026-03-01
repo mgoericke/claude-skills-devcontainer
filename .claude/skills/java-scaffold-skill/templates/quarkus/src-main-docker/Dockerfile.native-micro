@@ -1,0 +1,18 @@
+# Dockerfile.native-micro – {{ARTIFACT_ID}} (GraalVM Native Image)
+# Speicherort: src/main/docker/Dockerfile.native-micro
+#
+# Co-Author: Claude (claude-sonnet-4-6, Anthropic)
+#
+# Build via Maven (GraalVM erforderlich):
+#   ./mvnw package -Pnative
+#   docker build -f src/main/docker/Dockerfile.native-micro -t {{ARTIFACT_ID}}:native .
+
+FROM quay.io/quarkus/quarkus-micro-image:2.0
+WORKDIR /app
+COPY --chown=1001:root target/*-runner .
+RUN chmod 775 .
+EXPOSE 8080
+HEALTHCHECK --interval=15s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- http://localhost:8080/q/health/live | grep '"status":"UP"' || exit 1
+USER 1001
+ENTRYPOINT ["./{{ARTIFACT_ID}}-runner", "-Dquarkus.http.host=0.0.0.0"]

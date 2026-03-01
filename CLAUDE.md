@@ -12,27 +12,44 @@ DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.
 | Build | Maven 3.9.x |
 | Architektur | Taikai (basiert auf ArchUnit) |
 | Infrastruktur | Docker + Docker Compose |
-| Scripting | Python 3.12 |
 
-## Skills
+## Skills & Wissensmanagement
 
-Skills liegen unter `.claude/skills/` und werden automatisch geladen.  
-Erkenntnisse und Korrekturen immer in `.claude/lessons-learned.md` festhalten.
+Skills: `.claude/skills/` – automatisch geladen.
+Erkenntnisse und Korrekturen: **immer** in `.claude/lessons-learned.md` festhalten.
+Vor jeder Generierung `lessons-learned.md` prüfen.
 
 ## Coding-Standards
 
 - **Architektur**: BCE-Pattern (Boundary / Control / Entity)
-- **Architekturtests**: Taikai – bei jedem neuen Projekt anlegen
+- **Architekturtests**: Taikai – bei jedem neuen Projekt anlegen (PFLICHT)
+- **Health Checks**: Jede Anwendung muss `/actuator/health` (Spring) oder `/q/health` (Quarkus) bereitstellen (PFLICHT)
 - **Persistenz**: Flyway – kein `ddl-auto=create`
 - **Messaging (Quarkus)**: SmallRye `mp.messaging.*` Keys – Details in `lessons-learned.md`
+- **Quarkus `@Blocking`**: Bei DB-Zugriffen im `@Incoming`-Consumer immer `@Blocking @Transactional`
 - **Commits**: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
 - **Sprache**: Deutsch in Kommentaren/Doku, Englisch im Code
-- **Beispiele**: Fachlich neutrale Namen (`order`, `product`, `event`, `item`)
+- **Beispiele**: Fachlich neutral (`order`, `product`, `event`, `item`) – keine Domänennamen
+
+## Javadoc Co-Author
+
+Jede generierte Java-Datei enthält:
+```
+@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+```
+Properties/YAML-Dateien als Kommentar: `# Co-Author: Claude (claude-sonnet-4-6, Anthropic)`
+
+## Dockerfile-Konventionen
+
+| Framework | Speicherort |
+|-----------|-------------|
+| Spring Boot | `./Dockerfile` (Projekt-Root) |
+| Quarkus | `src/main/docker/Dockerfile.jvm` (Quarkus-Konvention) |
 
 ## Hinweise
 
-- Bei neuer Anwendung: `groupId`, `artifactId` und Framework **immer** abfragen
-- Vor Generierung `.claude/lessons-learned.md` prüfen
-- Quarkus: Dev Services sind deaktiviert – echte Services via `docker compose up`
-- Umgebungsvariablen (Tokens) werden vom Host durchgereicht – nie im Code hardcoden
-- Maven `.m2` Cache ist persistent (Docker Volume) – kein Re-Download nach Neustart
+- `groupId`, `artifactId` und Framework **immer** abfragen bevor Scaffolding startet
+- ANTHROPIC_API_KEY ist optional – alternativ `claude login` nach Container-Start
+- GIT_TOKEN (nicht GITHUB_TOKEN) für Git-Registries aller Anbieter
+- Dev Services für Quarkus sind deaktiviert – echte Services via `docker compose up`
+- Maven `.m2` Cache ist persistent (Docker Volume)

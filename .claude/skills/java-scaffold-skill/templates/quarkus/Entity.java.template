@@ -1,3 +1,11 @@
+/**
+ * Panache-Entity für {{ENTITY_NAME}}.
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Entity-Schicht)
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
 package {{GROUP_ID}}.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -27,12 +35,8 @@ public class {{ENTITY_NAME}} extends PanacheEntityBase {
     public LocalDateTime updatedAt;
 
     @PrePersist
-    protected void onCreate() {
-        createdAt = updatedAt = LocalDateTime.now();
-    }
+    protected void onCreate() { createdAt = updatedAt = LocalDateTime.now(); }
 
     @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    protected void onUpdate() { updatedAt = LocalDateTime.now(); }
 }

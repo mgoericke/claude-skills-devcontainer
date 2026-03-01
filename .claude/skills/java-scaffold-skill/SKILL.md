@@ -34,12 +34,10 @@ Nie raten oder Defaults verwenden – immer explizit fragen.
 
 ## Templates
 
-Nach Framework-Wahl nur den relevanten Ordner lesen:
-
 | Framework | Pfad |
 |-----------|------|
 | Spring Boot | `templates/spring/` |
-| Quarkus | `templates/quarkus/` |
+| Quarkus | `templates/quarkus/` + `templates/quarkus/src-main-docker/` |
 | Architektur-Tests | `templates/arch/` |
 
 **Platzhalter:**
@@ -56,23 +54,36 @@ Nach Framework-Wahl nur den relevanten Ordner lesen:
 
 ---
 
-## Projektstruktur (BCE)
+## Dockerfile-Konventionen
 
-```
-src/main/java/{{PACKAGE_PATH}}/
-├── boundary/
-│   ├── rest/          # REST-Endpunkte
-│   └── messaging/     # Consumer/Listener
-├── control/           # Business-Logik (@Service / @ApplicationScoped)
-└── entity/            # Entities, Repositories, DTOs
-```
+| Framework | Speicherort | Build |
+|-----------|-------------|-------|
+| **Spring Boot** | `./Dockerfile` (Projekt-Root) | `docker build -t {{ARTIFACT_ID}} .` |
+| **Quarkus JVM** | `src/main/docker/Dockerfile.jvm` | `./mvnw package -DskipTests` → `docker build -f src/main/docker/Dockerfile.jvm` |
+| **Quarkus Native** | `src/main/docker/Dockerfile.native-micro` | `./mvnw package -Pnative` |
+
+Quarkus-Projekte verwenden **immer** die Dockerfiles in `src/main/docker/` – das ist die offizielle Quarkus-Konvention.
 
 ---
 
-## Architekturtests
+## Health Checks – PFLICHT
 
-Taikai-Test **immer** anlegen – verhindert BCE-Verletzungen zur Build-Zeit.
-Template: `templates/arch/ArchitectureTest.java.template`
+Jede Anwendung **muss** Health-Endpunkte bereitstellen:
+
+| Framework | Endpunkt | Dependency |
+|-----------|----------|-----------|
+| Spring Boot | `/actuator/health` | `spring-boot-starter-actuator` |
+| Quarkus | `/q/health/live`, `/q/health/ready` | `quarkus-smallrye-health` |
+
+Health Checks werden verwendet in:
+- `HEALTHCHECK` im Dockerfile
+- `healthcheck` im `docker-compose.yml`
+
+---
+
+## Architekturtests – PFLICHT
+
+Taikai-Test **immer** anlegen. Template: `templates/arch/ArchitectureTest.java.template`
 
 ```xml
 <dependency>
@@ -85,6 +96,19 @@ Template: `templates/arch/ArchitectureTest.java.template`
 
 ---
 
+## Javadoc Co-Author
+
+**Jede generierte Datei** erhält einen Javadoc/Kommentar-Header mit:
+```java
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+```
+In nicht-Java-Dateien (Properties, YAML) als Kommentar:
+```
+# Co-Author: Claude (claude-sonnet-4-6, Anthropic)
+```
+
+---
+
 ## Coding-Konventionen
 
 - BCE-Pattern strikt (Boundary / Control / Entity)
@@ -92,5 +116,6 @@ Template: `templates/arch/ArchitectureTest.java.template`
 - Flyway für alle Migrationen – kein `ddl-auto=create`
 - RabbitMQ-Consumer **immer** in `boundary/messaging/`
 - Quarkus: `@Blocking` + `@Transactional` bei DB-Zugriffen im Consumer
+- Fachlich neutrale Beispiele: `order`, `product`, `event`, `item`
 - Conventional Commits: `feat:` `fix:` `docs:` `chore:`
 - Sprache: Deutsch in Doku, Englisch im Code

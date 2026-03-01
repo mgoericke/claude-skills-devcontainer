@@ -1,12 +1,21 @@
+/**
+ * Architektur-Tests für {{GROUP_ID}}.
+ *
+ * <p>Erzwingt BCE-Schichtentrennung, Naming Conventions und saubere Imports
+ * zur Build-Zeit. Schlägt ein Test fehl, wurde eine Architektur-Regel verletzt.
+ *
+ * <p>Framework: Taikai (basiert auf ArchUnit)
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @see <a href="https://github.com/enofex/taikai">Taikai</a>
+ * @see <a href="https://www.archunit.org">ArchUnit</a>
+ */
 package {{GROUP_ID}};
 
 import com.enofex.taikai.Taikai;
 import org.junit.jupiter.api.Test;
 
-/**
- * Architektur-Tests mit Taikai (basiert auf ArchUnit).
- * Schlägt der Build fehl, wurde eine Architektur-Regel verletzt.
- */
 class ArchitectureTest {
 
     private static final String BASE_PACKAGE = "{{GROUP_ID}}";
@@ -38,7 +47,7 @@ class ArchitectureTest {
                 .namespace(BASE_PACKAGE)
                 .java(java -> java
                         .imports(imports -> imports
-                                // entity darf nicht von boundary abhängen
+                                // entity-Schicht darf NICHT von boundary abhängen
                                 .shouldNotImport(BASE_PACKAGE + ".boundary..")
                         )
                 )
@@ -52,12 +61,14 @@ class ArchitectureTest {
                 .namespace(BASE_PACKAGE)
                 .java(java -> java
                         .naming(naming -> naming
-                                // REST-Klassen enden auf Resource oder Controller
                                 .classesShouldMatch(
                                         BASE_PACKAGE + ".boundary.rest",
                                         ".*Resource|.*Controller"
                                 )
-                                // Services enden auf Service
+                                .classesShouldMatch(
+                                        BASE_PACKAGE + ".boundary.messaging",
+                                        ".*Consumer|.*Listener"
+                                )
                                 .classesShouldMatch(
                                         BASE_PACKAGE + ".control",
                                         ".*Service"

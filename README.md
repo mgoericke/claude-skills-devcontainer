@@ -1,13 +1,11 @@
 # Java DevContainer Template
 
-DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.  
-Enthält Claude Code, Java 25, PostgreSQL, RabbitMQ und Architektur-Tests out of the box.
+DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.
 
 ## Voraussetzungen
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [VS Code](https://code.visualstudio.com/) + [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-- `ANTHROPIC_API_KEY` als Umgebungsvariable auf dem Host
 
 ## Schnellstart
 
@@ -19,33 +17,50 @@ git clone git@github.com:your-org/your-repo.git && cd your-repo
 code .
 ```
 
-Der Container installiert alle Tools automatisch. Beim ersten Start ~3–5 Min.
+Beim ersten Start ~3–5 Min. Alle Tools werden automatisch installiert.
+
+---
+
+## Claude Code
+
+Zwei Möglichkeiten zur Authentifizierung:
+
+**Option A – API Key (Umgebungsvariable auf dem Host):**
+```bash
+# macOS/Linux (~/.zshrc oder ~/.bashrc)
+export ANTHROPIC_API_KEY="sk-ant-..."
+```
+
+**Option B – Login nach Container-Start:**
+```bash
+claude login
+```
 
 ---
 
 ## Umgebungsvariablen
 
-Der Container liest Variablen vom Host. Setzen in `~/.zshrc` / `~/.bashrc`  
-(Windows: `$env:VARIABLE = "..."` in PowerShell oder System-Umgebungsvariablen):
+Alle Variablen sind optional. Nur setzen wenn benötigt.
 
 ```bash
-# Pflicht
-export ANTHROPIC_API_KEY="sk-ant-..."
+# macOS/Linux (~/.zshrc oder ~/.bashrc)
+export ANTHROPIC_API_KEY="sk-ant-..."        # oder: claude login im Container
 
-# Optional – nur setzen wenn benötigt
-export ARTIFACTORY_URL="https://your-company.jfrog.io/artifactory"
+export ARTIFACTORY_URL="https://company.jfrog.io/artifactory"
 export ARTIFACTORY_USER="your.name@example.com"
 export ARTIFACTORY_TOKEN="your-token"
 
-export GITHUB_TOKEN="ghp_..."    # GitHub Packages
-export NPM_TOKEN="npm_..."       # Private NPM Registry
+export GIT_TOKEN="..."                        # GitHub Packages, GitLab, Gitea, Bitbucket
+export NPM_TOKEN="npm_..."                    # Private NPM Registry
 ```
 
-Nicht gesetzte Variablen werden ignoriert – kein Fehler.
+```powershell
+# Windows (PowerShell)
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
+$env:GIT_TOKEN = "..."
+```
 
-### Maven – Artifactory konfigurieren
-
-Wenn `ARTIFACTORY_URL` gesetzt ist, `~/.m2/settings.xml` im Container anlegen:
+### Maven – Artifactory (`~/.m2/settings.xml` im Container)
 
 ```xml
 <settings>
@@ -77,46 +92,53 @@ Wenn `ARTIFACTORY_URL` gesetzt ist, `~/.m2/settings.xml` im Container anlegen:
 | Datenbank | PostgreSQL 17 |
 | Messaging | RabbitMQ 4 (SmallRye Reactive Messaging) |
 | Build | Maven 3.9 |
-| Architektur-Tests | Taikai (basiert auf ArchUnit) |
+| Architektur-Tests | Taikai (ArchUnit) |
 | KI | Claude Code |
 
 ---
 
-## Lokale Infrastruktur starten
+## Lokale Infrastruktur
 
 ```bash
 docker compose up -d
 ```
 
-PostgreSQL: `localhost:5432` · RabbitMQ Management: http://localhost:15672 (app/app)
+- PostgreSQL: `localhost:5432`
+- RabbitMQ Management: http://localhost:15672 (`app`/`app`)
+- Anwendung Health: http://localhost:8080/actuator/health _(Spring)_
+- Anwendung Health: http://localhost:8080/q/health _(Quarkus)_
 
 ---
 
 ## Neues Projekt scaffolden
 
-Claude Code starten und einfach sagen:
-
 ```
 Erstelle ein neues Quarkus-Projekt
 ```
 
-Claude fragt nach `groupId`, `artifactId` und Framework, dann wird alles generiert.
+Claude fragt nach `groupId`, `artifactId` und Framework – dann wird alles generiert.
 
 ---
 
-## Projektstruktur (BCE-Pattern)
+## Architektur (BCE-Pattern)
 
 ```
 src/main/java/com/example/orders/
 ├── boundary/
-│   ├── rest/          # REST-Endpunkte (OrderResource.java)
-│   └── messaging/     # Consumer (OrderConsumer.java)
-├── control/           # Business-Logik (OrderService.java)
+│   ├── rest/          # REST-Endpunkte (*Resource.java, *Controller.java)
+│   └── messaging/     # Consumer (*Consumer.java, *Listener.java)
+├── control/           # Business-Logik (*Service.java)
 └── entity/            # JPA Entities, Repositories, DTOs
 ```
 
-Architektur-Regeln werden durch Taikai-Tests zur Build-Zeit geprüft:
-
+Regeln werden durch Taikai zur Build-Zeit geprüft:
 ```bash
 ./mvnw test -Dtest=ArchitectureTest
 ```
+
+## Dockerfile-Konventionen
+
+| Framework | Speicherort |
+|-----------|-------------|
+| Spring Boot | `./Dockerfile` (Projekt-Root) |
+| Quarkus | `src/main/docker/Dockerfile.jvm` |

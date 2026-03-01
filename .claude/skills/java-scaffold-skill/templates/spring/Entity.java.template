@@ -1,3 +1,11 @@
+/**
+ * JPA-Entity für {{ENTITY_NAME}}.
+ *
+ * <p>Erstellt mit Spring Boot 3.x · BCE-Architektur (Entity-Schicht)
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
 package {{GROUP_ID}}.entity;
 
 import jakarta.persistence.*;

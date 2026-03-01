@@ -28,6 +28,9 @@ cd <dein-repo>
 # Dieses Template als "upstream" Remote hinzufügen
 git remote add upstream git@github.com:<template-org>/claude-skills-devcontainer.git
 
+# Upstream initial fetchen (einmalig – lädt alle Branches und Tags)
+git fetch upstream
+
 # Remotes prüfen
 git remote -v
 # origin    git@github.com:<deine-org>/<dein-repo>.git  (fetch/push)

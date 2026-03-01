@@ -20,6 +20,13 @@ Skills: `.claude/skills/` – automatisch geladen.
 Erkenntnisse und Korrekturen: **immer** in `.claude/lessons-learned.md` festhalten.
 Vor jeder Generierung `lessons-learned.md` prüfen.
 
+| Skill | Trigger |
+|-------|---------|
+| `java-scaffold-skill` | Neues Projekt, neue Entity, Dockerfile, docker-compose |
+| `spec-feature-skill` | Feature spezifizieren, bevor Code entsteht |
+| `doc-skill` | Projektdokumentation erstellen oder aktualisieren |
+| `infografik-skill` | Infografik, Visualisierung, Diagramm |
+
 ## Versionsstrategie (PFLICHT)
 
 **Vor jeder Code-Generierung** müssen Dependency-Versionen im Internet abgefragt werden.

@@ -6,13 +6,15 @@ Claude übernimmt Scaffolding, Spezifikation, Architektur und Code-Generierung.
 
 ## Was dieses Template bietet
 
-- **Spring Boot 3.x oder Quarkus 3.x** – vollständig vorkonfiguriert, inklusive Health Checks
-- **PostgreSQL + RabbitMQ** – lokale Infrastruktur per `docker compose up -d` startklar
+- **Spring Boot 4.x oder Quarkus 3.31+** – vollständig vorkonfiguriert, inklusive Health Checks
+- **PostgreSQL + RabbitMQ + Keycloak** – lokale Infrastruktur per `docker compose up -d` startklar
+- **Keycloak 26.x** – Identity & Access Management für OAuth2/OIDC; läuft im Dev-Modus auf Port 8180 (optional)
 - **BCE-Architektur** (Boundary / Control / Entity) mit automatischen Architekturtests via Taikai
 - **Spec Driven Development** – strukturiertes Feature-Interview erzeugt eine Spec-Datei, bevor Code entsteht
 - **Flyway** für Datenbankmigrationen – kein unsicheres `ddl-auto=create`
 - **Persistenter Maven-Cache** – kürzere Build-Zeiten nach dem ersten Start
 - **Infografik-Skill** – KI-Bildgenerierung via Hugging Face FLUX.1 (optional)
+- **Projekt-Dokumentation** – `doc-skill` liest Quellcode und Konfiguration und erstellt oder aktualisiert `docs/<projekt>.md`
 - **Fork-Workflow** – Template-Updates lassen sich jederzeit per `git merge` einspielen
 
 ## Beispiel-Prompts
@@ -28,6 +30,12 @@ Implementiere das Feature gemäß specs/order-creation.md
 ```
 ```
 Erstelle eine Infografik zum Thema Microservice-Kommunikation
+```
+```
+Dokumentiere das Projekt
+```
+```
+Aktualisiere die Projektdokumentation
 ```
 
 ---
@@ -198,8 +206,20 @@ Implementiere das Feature gemäß specs/order-creation.md
 Erstelle ein neues Quarkus-Projekt
 ```
 
-Claude fragt nach `groupId`, `artifactId` und Framework – dann wird alles generiert:
+Claude fragt nach `groupId`, `artifactId`, Framework und welche Dienste (Datenbank,
+Messaging, Keycloak) benötigt werden – dann wird alles generiert:
 Projektstruktur, Konfiguration, Dockerfile, docker-compose.yml und Architekturtests.
+
+### Projektdokumentation erstellen oder aktualisieren
+
+```
+Dokumentiere das Projekt
+```
+
+Der `doc-skill` liest automatisch `pom.xml`, `application.properties`, `docker-compose.yml`
+und den Quellcode aus, stellt gezielte Rückfragen zu Lücken und erzeugt
+`docs/<artifactId>.md`. Bei einer vorhandenen Datei werden nur veraltete Abschnitte
+aktualisiert – manuelle Ergänzungen bleiben erhalten.
 
 ### Architektur (BCE-Pattern)
 

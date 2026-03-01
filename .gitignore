@@ -1,8 +1,23 @@
-# Claude Code - lokale Einstellungen NICHT committen (enthält ggf. API-Keys)
-.claude/settings.local.json
+# Secrets – niemals committen
+.env
+.env.local
+*.token
+*_token
 
-# Python
-__pycache__/
-*.pyc
-*.png
-*.pdf
+# Maven
+target/
+.m2/
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code Runtime
+.claude/cache/

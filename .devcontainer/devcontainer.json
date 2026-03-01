@@ -1,77 +1,86 @@
 {
-  "name": "Claude Code + Skills (Java / Python / Node)",
+  "name": "Java Dev (Spring Boot / Quarkus)",
 
-  // Ubuntu 24.04 LTS – stabile Basis, läuft auf Windows (WSL2) und macOS
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
 
   "features": {
-    // ── Claude Code ──────────────────────────────────────────────────────────
     "ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
-
-    // ── Java + Maven ─────────────────────────────────────────────────────────
-    // JDK 21 LTS (Quarkus-kompatibel) + Maven als eigenständiges Feature
     "ghcr.io/devcontainers/features/java:1": {
-      "version": "21",
-      "jdkDistro": "ms",          // Microsoft Build of OpenJDK – klein, schnell
+      "version": "25",
+      "jdkDistro": "ms",
       "installMaven": "true",
       "mavenVersion": "3.9.9",
       "installGradle": "false"
     },
-
-    // ── Python ───────────────────────────────────────────────────────────────
-    // 3.12 für den infografik-skill (matplotlib, pillow) und allgemeine Skripte
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.12",
-      "installTools": "true"      // pip, venv, pipx
+      "installTools": "true"
     },
-
-    // ── Node.js ──────────────────────────────────────────────────────────────
-    // LTS (22) – Claude Code läuft darauf, außerdem nützlich für Frontend-Tooling
-    // nvm ist enthalten → einfaches Wechseln der Node-Version im Container
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22",
       "nodeGypDependencies": "true"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "dockerDashComposeVersion": "v2"
     }
   },
 
-  // NET_RAW: wird für den optionalen Claude-Firewall-Modus benötigt
   "runArgs": ["--cap-add=NET_RAW"],
+
+  // ── Umgebungsvariablen ──────────────────────────────────────────────────────
+  // Pflicht: ANTHROPIC_API_KEY auf dem Host setzen (macOS/Linux: ~/.zshrc, Windows: $env:)
+  // Optional: Weitere Tokens für Artifactory, GitHub Packages, NPM Registry usw.
+  //
+  // Alle Variablen werden vom Host durchgereicht – nie Tokens direkt hier eintragen!
+  // Nicht gesetzte Variablen werden als leerer String übergeben (kein Fehler).
+  "containerEnv": {
+    // Pflicht
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
+
+    // Optional – Artifactory / interne Maven Registry
+    "ARTIFACTORY_URL":      "${localEnv:ARTIFACTORY_URL}",
+    "ARTIFACTORY_USER":     "${localEnv:ARTIFACTORY_USER}",
+    "ARTIFACTORY_TOKEN":    "${localEnv:ARTIFACTORY_TOKEN}",
+
+    // Optional – GitHub Packages
+    "GITHUB_TOKEN":         "${localEnv:GITHUB_TOKEN}",
+
+    // Optional – NPM Registry (z.B. private Scope)
+    "NPM_TOKEN":            "${localEnv:NPM_TOKEN}",
+
+    // Optional – weitere Custom-Variablen hier ergänzen
+    "CUSTOM_REGISTRY_URL":  "${localEnv:CUSTOM_REGISTRY_URL}"
+  },
 
   "customizations": {
     "vscode": {
       "extensions": [
-        // Claude Code
         "anthropic.claude-code",
-        // Java-Entwicklung
         "redhat.java",
         "vscjava.vscode-maven",
         "vscjava.vscode-java-debug",
         "vscjava.vscode-java-test",
-        // Quarkus
+        "vmware.vscode-spring-boot",
         "redhat.vscode-quarkus",
-        // Python
         "ms-python.python",
         "ms-python.black-formatter",
-        // Allgemein
+        "ms-azuretools.vscode-docker",
         "eamodio.gitlens",
         "esbenp.prettier-vscode"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
-        "java.jdt.ls.java.home": "/usr/local/sdkman/candidates/java/current",
         "editor.formatOnSave": true
       }
     }
   },
 
-  // ~/.claude  → API-Key + Claude-Konfiguration bleibt nach Neustarts erhalten
-  // ~/.m2      → Maven Local Repository (spart Download-Zeit)
   "mounts": [
     "source=claude-code-config-${devcontainerId},target=/root/.claude,type=volume",
     "source=claude-code-m2-${devcontainerId},target=/root/.m2,type=volume"
   ],
 
-  // Python-Pakete für den infografik-skill installieren
   "postCreateCommand": "pip install matplotlib pillow --break-system-packages && echo '✅ Setup complete'",
 
   "remoteUser": "root"

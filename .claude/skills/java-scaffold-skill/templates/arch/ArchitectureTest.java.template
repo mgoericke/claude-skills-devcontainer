@@ -1,0 +1,70 @@
+package {{GROUP_ID}};
+
+import com.enofex.taikai.Taikai;
+import org.junit.jupiter.api.Test;
+
+/**
+ * Architektur-Tests mit Taikai (basiert auf ArchUnit).
+ * Schlägt der Build fehl, wurde eine Architektur-Regel verletzt.
+ */
+class ArchitectureTest {
+
+    private static final String BASE_PACKAGE = "{{GROUP_ID}}";
+
+    @Test
+    void shouldFollowJavaConventions() {
+        Taikai.builder()
+                .namespace(BASE_PACKAGE)
+                .java(java -> java
+                        .noUsageOfDeprecatedAPIs()
+                        .methodsShouldNotDeclareGenericExceptions()
+                        .imports(imports -> imports
+                                .shouldHaveNoCycles()
+                                .shouldNotImport("..internal..")
+                        )
+                        .naming(naming -> naming
+                                .classesShouldNotMatch(".*Impl")
+                                .interfacesShouldNotHavePrefixI()
+                                .constantsShouldFollowConventions()
+                        )
+                )
+                .build()
+                .check();
+    }
+
+    @Test
+    void shouldFollowBCELayerRules() {
+        Taikai.builder()
+                .namespace(BASE_PACKAGE)
+                .java(java -> java
+                        .imports(imports -> imports
+                                // entity darf nicht von boundary abhängen
+                                .shouldNotImport(BASE_PACKAGE + ".boundary..")
+                        )
+                )
+                .build()
+                .check();
+    }
+
+    @Test
+    void shouldFollowNamingConventions() {
+        Taikai.builder()
+                .namespace(BASE_PACKAGE)
+                .java(java -> java
+                        .naming(naming -> naming
+                                // REST-Klassen enden auf Resource oder Controller
+                                .classesShouldMatch(
+                                        BASE_PACKAGE + ".boundary.rest",
+                                        ".*Resource|.*Controller"
+                                )
+                                // Services enden auf Service
+                                .classesShouldMatch(
+                                        BASE_PACKAGE + ".control",
+                                        ".*Service"
+                                )
+                        )
+                )
+                .build()
+                .check();
+    }
+}

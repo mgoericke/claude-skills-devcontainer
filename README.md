@@ -1,81 +1,122 @@
-# Claude Code + Skills – DevContainer
+# Java DevContainer Template
 
-DevContainer für Claude Code mit Skills, Java 21, Maven, Python 3.12 und Node.js 22.  
-Läuft auf **Windows** (Docker Desktop + WSL2) und **macOS** (Docker Desktop / OrbStack).
-
-## Enthaltene Tools
-
-| Tool | Version | Zweck |
-|------|---------|-------|
-| Claude Code | latest | KI-Coding-Assistent |
-| Java (MS OpenJDK) | 21 LTS | Quarkus / Enterprise Java |
-| Maven | 3.9.9 | Build-Tool, `~/.m2` wird persistiert |
-| Python | 3.12 | Skripte, infografik-skill (matplotlib) |
-| Node.js + nvm | 22 LTS | Frontend-Tooling, Claude Code Runtime |
+DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.  
+Enthält Claude Code, Java 25, PostgreSQL, RabbitMQ und Architektur-Tests out of the box.
 
 ## Voraussetzungen
 
-| Tool | Windows | macOS |
-|------|---------|-------|
-| Docker Desktop | [docker.com/desktop](https://docker.com/desktop) | [docker.com/desktop](https://docker.com/desktop) |
-| VS Code | [code.visualstudio.com](https://code.visualstudio.com) | gleich |
-| Dev Containers Extension | `ms-vscode-remote.remote-containers` | gleich |
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [VS Code](https://code.visualstudio.com/) + [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- `ANTHROPIC_API_KEY` als Umgebungsvariable auf dem Host
 
-## Start
+## Schnellstart
 
 ```bash
-# 1. Projektordner in VS Code öffnen
+# 1. Template verwenden (GitHub → "Use this template")
+git clone git@github.com:your-org/your-repo.git && cd your-repo
+
+# 2. VS Code öffnen → "Reopen in Container"
 code .
-
-# 2. VS Code fragt automatisch → "Reopen in Container" klicken
-#    oder: Cmd/Ctrl+Shift+P → "Dev Containers: Reopen in Container"
-
-# 3. Beim ersten Start: API-Key eingeben
-claude
 ```
 
-## Projektstruktur
+Der Container installiert alle Tools automatisch. Beim ersten Start ~3–5 Min.
 
-```
-.
-├── .devcontainer/
-│   └── devcontainer.json       # Container-Konfiguration (einzige Datei nötig)
-└── .claude/
-    └── skills/
-        └── infografik-skill/   # Automatisch von Claude Code erkannt
-            ├── SKILL.md
-            └── references/
-```
+---
 
-## Persistierte Volumes
+## Umgebungsvariablen
 
-| Volume | Inhalt | Warum |
-|--------|--------|-------|
-| `claude-code-config-*` | `~/.claude` | API-Key + Claude-Settings |
-| `claude-code-m2-*` | `~/.m2` | Maven Local Repository (spart Downloads) |
+Der Container liest Variablen vom Host. Setzen in `~/.zshrc` / `~/.bashrc`  
+(Windows: `$env:VARIABLE = "..."` in PowerShell oder System-Umgebungsvariablen):
 
-## API-Key als Umgebungsvariable (empfohlen für Teams)
-
-```jsonc
-// .devcontainer/devcontainer.json ergänzen:
-"containerEnv": {
-  "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
-}
-```
-
-Auf dem Host setzen:
 ```bash
-# macOS/Linux (.zshrc / .bashrc):
+# Pflicht
 export ANTHROPIC_API_KEY="sk-ant-..."
 
-# Windows PowerShell:
-$env:ANTHROPIC_API_KEY = "sk-ant-..."
+# Optional – nur setzen wenn benötigt
+export ARTIFACTORY_URL="https://your-company.jfrog.io/artifactory"
+export ARTIFACTORY_USER="your.name@example.com"
+export ARTIFACTORY_TOKEN="your-token"
+
+export GITHUB_TOKEN="ghp_..."    # GitHub Packages
+export NPM_TOKEN="npm_..."       # Private NPM Registry
 ```
 
-## Node.js Version wechseln
+Nicht gesetzte Variablen werden ignoriert – kein Fehler.
 
-nvm ist im Container enthalten:
+### Maven – Artifactory konfigurieren
+
+Wenn `ARTIFACTORY_URL` gesetzt ist, `~/.m2/settings.xml` im Container anlegen:
+
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>artifactory</id>
+      <username>${env.ARTIFACTORY_USER}</username>
+      <password>${env.ARTIFACTORY_TOKEN}</password>
+    </server>
+  </servers>
+  <mirrors>
+    <mirror>
+      <id>artifactory</id>
+      <url>${env.ARTIFACTORY_URL}/maven-public</url>
+      <mirrorOf>*</mirrorOf>
+    </mirror>
+  </mirrors>
+</settings>
+```
+
+---
+
+## Stack
+
+| | |
+|--|--|
+| Java | 25 (Microsoft OpenJDK) |
+| Frameworks | Spring Boot 3.x oder Quarkus 3.x |
+| Datenbank | PostgreSQL 17 |
+| Messaging | RabbitMQ 4 (SmallRye Reactive Messaging) |
+| Build | Maven 3.9 |
+| Architektur-Tests | Taikai (basiert auf ArchUnit) |
+| KI | Claude Code |
+
+---
+
+## Lokale Infrastruktur starten
+
 ```bash
-nvm install 20    # z.B. für ältere Projekte
-nvm use 20
+docker compose up -d
+```
+
+PostgreSQL: `localhost:5432` · RabbitMQ Management: http://localhost:15672 (app/app)
+
+---
+
+## Neues Projekt scaffolden
+
+Claude Code starten und einfach sagen:
+
+```
+Erstelle ein neues Quarkus-Projekt
+```
+
+Claude fragt nach `groupId`, `artifactId` und Framework, dann wird alles generiert.
+
+---
+
+## Projektstruktur (BCE-Pattern)
+
+```
+src/main/java/com/example/orders/
+├── boundary/
+│   ├── rest/          # REST-Endpunkte (OrderResource.java)
+│   └── messaging/     # Consumer (OrderConsumer.java)
+├── control/           # Business-Logik (OrderService.java)
+└── entity/            # JPA Entities, Repositories, DTOs
+```
+
+Architektur-Regeln werden durch Taikai-Tests zur Build-Zeit geprüft:
+
+```bash
+./mvnw test -Dtest=ArchitectureTest
 ```

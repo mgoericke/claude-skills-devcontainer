@@ -1,0 +1,8 @@
+# Claude Code - lokale Einstellungen NICHT committen (enthält ggf. API-Keys)
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.pyc
+*.png
+*.pdf

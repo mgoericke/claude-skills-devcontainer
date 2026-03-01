@@ -1,0 +1,78 @@
+{
+  "name": "Claude Code + Skills (Java / Python / Node)",
+
+  // Ubuntu 24.04 LTS – stabile Basis, läuft auf Windows (WSL2) und macOS
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+  "features": {
+    // ── Claude Code ──────────────────────────────────────────────────────────
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
+
+    // ── Java + Maven ─────────────────────────────────────────────────────────
+    // JDK 21 LTS (Quarkus-kompatibel) + Maven als eigenständiges Feature
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+      "jdkDistro": "ms",          // Microsoft Build of OpenJDK – klein, schnell
+      "installMaven": "true",
+      "mavenVersion": "3.9.9",
+      "installGradle": "false"
+    },
+
+    // ── Python ───────────────────────────────────────────────────────────────
+    // 3.12 für den infografik-skill (matplotlib, pillow) und allgemeine Skripte
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+      "installTools": "true"      // pip, venv, pipx
+    },
+
+    // ── Node.js ──────────────────────────────────────────────────────────────
+    // LTS (22) – Claude Code läuft darauf, außerdem nützlich für Frontend-Tooling
+    // nvm ist enthalten → einfaches Wechseln der Node-Version im Container
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "nodeGypDependencies": "true"
+    }
+  },
+
+  // NET_RAW: wird für den optionalen Claude-Firewall-Modus benötigt
+  "runArgs": ["--cap-add=NET_RAW"],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Claude Code
+        "anthropic.claude-code",
+        // Java-Entwicklung
+        "redhat.java",
+        "vscjava.vscode-maven",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-test",
+        // Quarkus
+        "redhat.vscode-quarkus",
+        // Python
+        "ms-python.python",
+        "ms-python.black-formatter",
+        // Allgemein
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "java.jdt.ls.java.home": "/usr/local/sdkman/candidates/java/current",
+        "editor.formatOnSave": true
+      }
+    }
+  },
+
+  // ~/.claude  → API-Key + Claude-Konfiguration bleibt nach Neustarts erhalten
+  // ~/.m2      → Maven Local Repository (spart Download-Zeit)
+  "mounts": [
+    "source=claude-code-config-${devcontainerId},target=/root/.claude,type=volume",
+    "source=claude-code-m2-${devcontainerId},target=/root/.m2,type=volume"
+  ],
+
+  // Python-Pakete für den infografik-skill installieren
+  "postCreateCommand": "pip install matplotlib pillow --break-system-packages && echo '✅ Setup complete'",
+
+  "remoteUser": "root"
+}

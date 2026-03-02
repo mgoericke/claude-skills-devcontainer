@@ -92,6 +92,21 @@ Nie raten oder Defaults verwenden – immer explizit fragen.
 | Quarkus | `templates/quarkus/` + `templates/quarkus/src-main-docker/` |
 | Architektur-Tests | `templates/arch/` |
 
+**Spring Boot Templates (templates/spring/):**
+
+| Template | Schicht | Beschreibung |
+|----------|---------|-------------|
+| `Entity.java.template` | entity | JPA-Entity mit UUID, Timestamps, Lombok |
+| `Repository.java.template` | entity | `JpaRepository<Entity, UUID>` mit Custom-Query-Hints |
+| `Service.java.template` | control | `@Service @Transactional` mit CRUD + `readOnly` auf Lesemethoden |
+| `Controller.java.template` | boundary/rest | `@RestController` mit vollständigem CRUD, `@Valid`, `ResponseEntity` |
+| `Consumer.java.template` | boundary/messaging | `@RabbitListener` mit SLF4J Logger und Service-Delegation |
+| `RabbitMqConfig.java.template` | boundary/messaging | Queue, DirectExchange, Binding, Jackson2JsonMessageConverter |
+| `SecurityConfig.java.template` | boundary/rest | `SecurityFilterChain` (modern, kein WebSecurityConfigurerAdapter) |
+| `Dockerfile` | – | Multi-Stage Build (JDK → JRE Alpine) |
+| `application.properties` | – | PostgreSQL, Flyway, RabbitMQ, Actuator, CORS, Caching |
+| `docker-compose.yml` | – | PostgreSQL, RabbitMQ, Keycloak, App mit Health Checks |
+
 **Platzhalter:**
 
 | Platzhalter | Beispiel |

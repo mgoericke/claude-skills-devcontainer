@@ -1,0 +1,57 @@
+/**
+ * Service für {{ENTITY_NAME}}-Geschäftslogik.
+ *
+ * <p>BCE-Architektur: Control-Schicht<br>
+ * Transaktionsgrenzen werden hier definiert. Lese-Operationen sind
+ * als {@code readOnly} markiert für bessere Performance.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
+package {{GROUP_ID}}.control;
+
+import {{GROUP_ID}}.entity.{{ENTITY_NAME}};
+import {{GROUP_ID}}.entity.{{ENTITY_NAME}}Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+@Transactional
+public class {{ENTITY_NAME}}Service {
+
+    private final {{ENTITY_NAME}}Repository {{ENTITY_NAME_LOWER}}Repository;
+
+    public {{ENTITY_NAME}}Service({{ENTITY_NAME}}Repository {{ENTITY_NAME_LOWER}}Repository) {
+        this.{{ENTITY_NAME_LOWER}}Repository = {{ENTITY_NAME_LOWER}}Repository;
+    }
+
+    @Transactional(readOnly = true)
+    public List<{{ENTITY_NAME}}> findAll() {
+        return {{ENTITY_NAME_LOWER}}Repository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<{{ENTITY_NAME}}> findById(UUID id) {
+        return {{ENTITY_NAME_LOWER}}Repository.findById(id);
+    }
+
+    public {{ENTITY_NAME}} save({{ENTITY_NAME}} entity) {
+        return {{ENTITY_NAME_LOWER}}Repository.save(entity);
+    }
+
+    public Optional<{{ENTITY_NAME}}> update(UUID id, {{ENTITY_NAME}} updated) {
+        return {{ENTITY_NAME_LOWER}}Repository.findById(id)
+                .map(existing -> {
+                    // TODO: Felder von 'updated' auf 'existing' übertragen
+                    return {{ENTITY_NAME_LOWER}}Repository.save(existing);
+                });
+    }
+
+    public void deleteById(UUID id) {
+        {{ENTITY_NAME_LOWER}}Repository.deleteById(id);
+    }
+}

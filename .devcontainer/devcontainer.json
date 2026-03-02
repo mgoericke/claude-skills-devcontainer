@@ -52,6 +52,20 @@
     // Optional – Hugging Face (Infografik-Skill: KI-Bildgenerierung)
     "HF_TOKEN":             "${localEnv:HF_TOKEN}",
 
+    // Optional – Lokale KI-Modelle für Datensouveränität (Ollama / LM Studio)
+    // Beide Variablen gesetzt → Claude Code nutzt das lokale Modell statt der Cloud API.
+    // Nicht gesetzt → Standard: Anthropic Cloud API (ANTHROPIC_API_KEY wird genutzt).
+    //
+    // WICHTIG für DevContainer: Statt "localhost" immer "host.docker.internal" verwenden,
+    // da "localhost" im Container auf den Container selbst zeigt, nicht auf den Host!
+    //
+    // Ollama:    ANTHROPIC_BASE_URL=http://host.docker.internal:11434
+    //            ANTHROPIC_AUTH_TOKEN=ollama
+    // LM Studio: ANTHROPIC_BASE_URL=http://host.docker.internal:1234
+    //            ANTHROPIC_AUTH_TOKEN=lmstudio
+    "ANTHROPIC_BASE_URL":   "${localEnv:ANTHROPIC_BASE_URL}",
+    "ANTHROPIC_AUTH_TOKEN": "${localEnv:ANTHROPIC_AUTH_TOKEN}",
+
     // Optional – weitere Custom-Variablen hier ergänzen
     "CUSTOM_REGISTRY_URL":  "${localEnv:CUSTOM_REGISTRY_URL}"
   },

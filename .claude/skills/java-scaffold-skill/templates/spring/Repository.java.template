@@ -1,0 +1,25 @@
+/**
+ * JPA-Repository für {{ENTITY_NAME}}.
+ *
+ * <p>BCE-Architektur: Entity-Schicht<br>
+ * Spring Data JPA generiert die Standard-Implementierung automatisch.
+ * Custom Queries als {@code @Query}-Methoden oder Methodennamen-Konvention ergänzen.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
+package {{GROUP_ID}}.entity;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface {{ENTITY_NAME}}Repository extends JpaRepository<{{ENTITY_NAME}}, UUID> {
+
+    // TODO: Custom Queries ergänzen, z. B.:
+    // List<{{ENTITY_NAME}}> findByStatus(String status);
+    // @Query("SELECT e FROM {{ENTITY_NAME}} e WHERE e.createdAt >= :since")
+    // List<{{ENTITY_NAME}}> findCreatedSince(@Param("since") LocalDateTime since);
+}

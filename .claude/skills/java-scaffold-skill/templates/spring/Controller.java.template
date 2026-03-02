@@ -1,0 +1,65 @@
+/**
+ * REST-Controller für {{ENTITY_NAME}}-Ressourcen.
+ *
+ * <p>BCE-Architektur: Boundary-Schicht (boundary/rest)<br>
+ * Enthält nur HTTP-Routing und Delegation – keine Business-Logik.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
+package {{GROUP_ID}}.boundary.rest;
+
+import {{GROUP_ID}}.control.{{ENTITY_NAME}}Service;
+import {{GROUP_ID}}.entity.{{ENTITY_NAME}};
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/{{ENTITY_NAME_LOWER}}s")
+@CrossOrigin
+public class {{ENTITY_NAME}}Controller {
+
+    private final {{ENTITY_NAME}}Service {{ENTITY_NAME_LOWER}}Service;
+
+    public {{ENTITY_NAME}}Controller({{ENTITY_NAME}}Service {{ENTITY_NAME_LOWER}}Service) {
+        this.{{ENTITY_NAME_LOWER}}Service = {{ENTITY_NAME_LOWER}}Service;
+    }
+
+    @GetMapping
+    public List<{{ENTITY_NAME}}> findAll() {
+        return {{ENTITY_NAME_LOWER}}Service.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<{{ENTITY_NAME}}> findById(@PathVariable UUID id) {
+        return {{ENTITY_NAME_LOWER}}Service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public {{ENTITY_NAME}} create(@Valid @RequestBody {{ENTITY_NAME}} entity) {
+        return {{ENTITY_NAME_LOWER}}Service.save(entity);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<{{ENTITY_NAME}}> update(
+            @PathVariable UUID id,
+            @Valid @RequestBody {{ENTITY_NAME}} entity) {
+        return {{ENTITY_NAME_LOWER}}Service.update(id, entity)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable UUID id) {
+        {{ENTITY_NAME_LOWER}}Service.deleteById(id);
+    }
+}

@@ -300,6 +300,9 @@ claude --model openai/qwen3-coder  # LM Studio
 > korrekte Adresse für Dienste, die auf dem Host laufen (funktioniert automatisch
 > unter Docker Desktop auf macOS und Windows; unter Linux ggf. `172.17.0.1`).
 
+> **Modell-Server im LAN?** `host.docker.internal` lässt sich durch eine beliebige
+> erreichbare Adresse ersetzen – auch eine LAN-IP wie `http://192.168.1.100:11434`.
+
 ---
 
 ### Option A – Ollama

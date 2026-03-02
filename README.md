@@ -1,4 +1,4 @@
-# Java DevContainer – KI-gestütztes Projekt-Scaffolding
+# KI-gestütztes Projekt-Scaffolding
 
 Dieses Template ermöglicht das schnelle Aufsetzen neuer Java-Projekte mit vollständiger
 KI-Unterstützung durch Claude Code. Du beschreibst dein Vorhaben in natürlicher Sprache –

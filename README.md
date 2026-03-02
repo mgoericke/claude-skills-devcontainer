@@ -17,40 +17,6 @@ Claude übernimmt Scaffolding, Spezifikation, Architektur und Code-Generierung.
 - **Infografik-Skill** – KI-Bildgenerierung via Hugging Face FLUX.1 (optional)
 - **Fork-Workflow** – Template-Updates lassen sich jederzeit per `git merge` einspielen
 
-## Wie es funktioniert
-
-```mermaid
-flowchart LR
-    DEV(["👤 Entwickler"])
-
-    subgraph CC["Claude Code"]
-        direction TB
-        AI["🤖 KI-Assistent"]
-        subgraph SK["⚙️ Skills  —  beim Start geladen"]
-            direction LR
-            S1["java-scaffold-skill"]
-            S2["spec-feature-skill"]
-            S3["openapi-skill"]
-            S4["doc-skill"]
-            S5["infografik-skill"]
-        end
-    end
-
-    MCP["🔌 MCP Server\npostgres"]
-
-    subgraph DOCKER["🐳 Docker"]
-        direction TB
-        DB[("PostgreSQL")]
-        RMQ[("RabbitMQ")]
-    end
-
-    DEV -- "Prompt" --> CC
-    CC -- "Code · Docs · Specs · PNG" --> DEV
-    CC -- "SQL-Abfrage" --> MCP
-    MCP --> DB
-    CC -. "Management API" .-> RMQ
-```
-
 ## Schnellstart
 
 **1 – Fork erstellen**

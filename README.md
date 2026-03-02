@@ -20,39 +20,35 @@ Claude übernimmt Scaffolding, Spezifikation, Architektur und Code-Generierung.
 ## Wie es funktioniert
 
 ```mermaid
-flowchart TD
+flowchart LR
     DEV(["👤 Entwickler"])
 
     subgraph CC["Claude Code"]
-        AI(["🤖 KI-Assistent"])
+        direction TB
+        AI["🤖 KI-Assistent"]
+        subgraph SK["⚙️ Skills  —  beim Start geladen"]
+            direction LR
+            S1["java-scaffold-skill"]
+            S2["spec-feature-skill"]
+            S3["openapi-skill"]
+            S4["doc-skill"]
+            S5["infografik-skill"]
+        end
     end
 
-    subgraph SK["⚙️ Skills  —  .claude/skills/"]
-        direction LR
-        S1["java-scaffold-skill\npom.xml · Dockerfile · Tests"]
-        S2["spec-feature-skill\nSpecs · Interview"]
-        S3["openapi-skill\nREST · DTOs"]
-        S4["doc-skill\ndocs/&#42;.md"]
-        S5["infografik-skill\nPNG · HuggingFace"]
+    MCP["🔌 MCP Server\npostgres"]
+
+    subgraph DOCKER["🐳 Docker"]
+        direction TB
+        DB[("PostgreSQL")]
+        RMQ[("RabbitMQ")]
     end
 
-    subgraph MCP["🔌 MCP Server"]
-        PG["postgres\n@modelcontextprotocol/server-postgres"]
-    end
-
-    subgraph INFRA["🐳 Docker  —  lokale Infrastruktur"]
-        direction LR
-        DB[("PostgreSQL\n:5432")]
-        RMQ[("RabbitMQ\n:15672")]
-    end
-
-    DEV -- "natürlicher Prompt" --> AI
-    AI -- "Scaffolding · Spec\nDoku · Infografik" --> SK
-    AI -- "Zeige alle Produkte\nSQL-Abfrage" --> MCP
-    PG --> DB
-    AI -. "Management API" .-> RMQ
-    SK -- "Code · Docs · PNG" --> DEV
-    AI -- "Ergebnis" --> DEV
+    DEV -- "Prompt" --> CC
+    CC -- "Code · Docs · Specs · PNG" --> DEV
+    CC -- "SQL-Abfrage" --> MCP
+    MCP --> DB
+    CC -. "Management API" .-> RMQ
 ```
 
 ## Schnellstart

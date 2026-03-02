@@ -16,6 +16,7 @@ Claude übernimmt Scaffolding, Spezifikation, Architektur und Code-Generierung.
 - **Infografik-Skill** – KI-Bildgenerierung via Hugging Face FLUX.1 (optional)
 - **OpenAPI → Java** – `openapi-skill` liest eine OpenAPI 3.x Spec und generiert REST-Endpunkte + DTOs im BCE-Pattern (optional)
 - **Projekt-Dokumentation** – `doc-skill` liest Quellcode und Konfiguration und erstellt oder aktualisiert `docs/<projekt>.md`
+- **MCP-Datenzugriff** – natürlichsprachliche Abfragen auf PostgreSQL direkt im Chat (`Zeige alle Produkte`)
 - **Fork-Workflow** – Template-Updates lassen sich jederzeit per `git merge` einspielen
 
 ## Beispiel-Prompts
@@ -40,6 +41,12 @@ Aktualisiere die Projektdokumentation
 ```
 ```
 Generiere Code aus der OpenAPI Spec api/openapi.yaml
+```
+```
+Zeige alle Produkte
+```
+```
+Wie viele Bestellungen wurden heute angelegt?
 ```
 
 ---
@@ -181,6 +188,42 @@ docker compose up -d
 | Keycloak Admin       | http://localhost:8180 (`admin` / `admin`)        |
 | Anwendung (Spring)   | http://localhost:8080/actuator/health            |
 | Anwendung (Quarkus)  | http://localhost:8080/q/health                   |
+
+---
+
+## Datenzugriff im Chat (MCP)
+
+Claude Code kann über MCP-Server (Model Context Protocol) direkt auf die laufende
+Infrastruktur zugreifen – natürlichsprachliche Abfragen direkt im Chat.
+
+### PostgreSQL
+
+Der MCP-Server ist in `.claude/settings.json` vorkonfiguriert. Nach dem Scaffolding
+den Datenbanknamen auf `<artifactId>db` anpassen (Standard: `appdb`):
+
+```json
+"postgresql://app:app@localhost:5432/<artifactId>db"
+```
+
+Danach im Chat:
+
+```
+Zeige alle Produkte
+Suche Produkte mit einem Preis zwischen 10 und 50
+Wie viele Bestellungen wurden heute angelegt?
+Zeige die letzten 5 Events sortiert nach Erstellungsdatum
+```
+
+Claude erkennt das Schema automatisch und übersetzt natürliche Sprache in SQL.
+
+### RabbitMQ
+
+Die Management API (Port 15672) ist ohne zusätzliche Konfiguration erreichbar:
+
+```
+Zeige alle Queues und ihre Nachrichtenanzahl
+Wie viele Nachrichten warten in der Queue "orders"?
+```
 
 ---
 

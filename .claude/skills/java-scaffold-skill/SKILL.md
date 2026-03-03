@@ -91,6 +91,7 @@ Nie raten oder Defaults verwenden – immer explizit fragen.
 | Spring Boot | `templates/spring/` |
 | Quarkus | `templates/quarkus/` + `templates/quarkus/src-main-docker/` |
 | Architektur-Tests | `templates/arch/` |
+| Flyway-Migrationen (beide Frameworks) | `templates/db/` |
 
 **Spring Boot Templates (templates/spring/):**
 
@@ -106,6 +107,7 @@ Nie raten oder Defaults verwenden – immer explizit fragen.
 | `Dockerfile` | – | Multi-Stage Build (JDK → JRE Alpine) |
 | `application.properties` | – | PostgreSQL, Flyway, RabbitMQ, Actuator, CORS, Caching |
 | `docker-compose.yml` | – | PostgreSQL, RabbitMQ, Keycloak, App mit Health Checks |
+| `V1__create_<entity>_table.sql` | – | Initiale Flyway-Migration passend zur generierten Entity |
 
 **Platzhalter:**
 
@@ -130,6 +132,23 @@ Nie raten oder Defaults verwenden – immer explizit fragen.
 | **Quarkus Native** | `src/main/docker/Dockerfile.native-micro` | `./mvnw package -Pnative` |
 
 Quarkus-Projekte verwenden **immer** die Dockerfiles in `src/main/docker/` – das ist die offizielle Quarkus-Konvention.
+
+---
+
+## Flyway-Migration – PFLICHT bei jeder Entity
+
+Bei jeder generierten Entity **muss** eine passende initiale Flyway-Migration erstellt werden.
+Template: `templates/db/V1__create_{{ENTITY_NAME_LOWER}}_table.sql.template`
+
+**Speicherort im Zielprojekt:** `src/main/resources/db/migration/`
+
+- Die Migration enthält `id UUID`, `created_at`, `updated_at` passend zur Entity
+- Fachliche Spalten als TODO-Kommentar vorbelegt
+- `spring.jpa.hibernate.ddl-auto=validate` bleibt gesetzt – Flyway erstellt das Schema
+
+> **Hintergrund:** Ohne initiale Migration scheitert `ddl-auto=validate` auf einer
+> leeren Datenbank, da kein Schema vorhanden ist. Die generierte Migration löst das
+> ohne `ddl-auto=update` oder `create`.
 
 ---
 

@@ -256,6 +256,34 @@ command: start --optimized
 
 ---
 
+## Spring Boot – ddl-auto=validate schlägt auf leerer Datenbank fehl
+
+**Problem:** `spring.jpa.hibernate.ddl-auto=validate` wirft beim ersten Start einen Fehler,
+wenn noch keine Flyway-Migration existiert und die Datenbank leer ist – Hibernate findet
+keine Tabellen zum Validieren.
+
+**Falsch (nicht verwenden):**
+```properties
+spring.jpa.hibernate.ddl-auto=update  # Hibernate verwaltet das Schema → keine klare Migrationshistorie
+spring.jpa.hibernate.ddl-auto=create  # Löscht Daten bei jedem Start
+```
+
+**Richtig (Option B – immer Initial-Migration generieren):**
+```properties
+spring.jpa.hibernate.ddl-auto=validate  # Hibernate prüft nur; Flyway verwaltet das Schema
+```
+
+Zu jeder Entity **immer** eine initiale Flyway-Migration anlegen:
+```
+src/main/resources/db/migration/V1__create_<entity>_table.sql
+```
+
+Template verfügbar unter: `templates/db/V1__create_{{ENTITY_NAME_LOWER}}_table.sql.template`
+
+Flyway führt die Migration vor Hibernate aus → Schema existiert → Validate funktioniert.
+
+---
+
 ## Renovate vs. versions-maven-plugin
 
 | Tool | Art | Zweck |

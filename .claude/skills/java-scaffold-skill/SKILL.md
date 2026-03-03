@@ -65,6 +65,7 @@ Explizit abfragen, welche Dienste tatsächlich benötigt werden:
 | Dienst | Abhängigkeit (Spring) | Abhängigkeit (Quarkus) | Standard |
 |--------|----------------------|------------------------|---------|
 | **Datenbank** (PostgreSQL) | `spring-boot-starter-data-jpa`, `postgresql`, Flyway | `quarkus-hibernate-orm-panache`, `quarkus-jdbc-postgresql`, Flyway | Ja |
+| **REST / Swagger UI** | `springdoc-openapi-starter-webmvc-ui` | `quarkus-smallrye-openapi` | **Ja** (immer bei REST) |
 | **Messaging** (RabbitMQ) | `spring-boot-starter-amqp` | `quarkus-messaging-rabbitmq` | Nein |
 | **Auth / IAM** (Keycloak) | `spring-boot-starter-oauth2-resource-server` | `quarkus-oidc` | Nein |
 
@@ -149,6 +150,31 @@ Template: `templates/db/V1__create_{{ENTITY_NAME_LOWER}}_table.sql.template`
 > **Hintergrund:** Ohne initiale Migration scheitert `ddl-auto=validate` auf einer
 > leeren Datenbank, da kein Schema vorhanden ist. Die generierte Migration löst das
 > ohne `ddl-auto=update` oder `create`.
+
+---
+
+## Swagger UI – PFLICHT bei REST
+
+Jede Anwendung mit REST-Endpunkten erhält eine **Swagger UI**. Die Dependency wird immer
+in die `pom.xml` aufgenommen – unabhängig davon, ob Security konfiguriert ist oder nicht.
+
+| Framework | Dependency (groupId:artifactId) | Swagger-UI-URL | OpenAPI-JSON-URL |
+|-----------|---------------------------------|---------------|-----------------|
+| **Spring Boot** | `org.springdoc:springdoc-openapi-starter-webmvc-ui` | `/swagger-ui.html` | `/v3/api-docs` |
+| **Quarkus** | `io.quarkus:quarkus-smallrye-openapi` | `/q/swagger-ui` | `/q/openapi` |
+
+**Versionen vor Generierung im Internet prüfen:**
+- Spring Boot: https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+- Quarkus: Teil des Quarkus BOM – keine eigene Version nötig
+
+**Wichtig bei Security (Spring Boot):** Die `SecurityConfig` muss Swagger-UI-Pfade explizit
+freigeben (bereits im Template enthalten):
+```java
+.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+```
+
+**Wichtig bei Quarkus:** `quarkus.swagger-ui.always-include=true` aktivieren, damit die
+Swagger UI auch im Produktions-Modus (nicht nur `quarkus:dev`) verfügbar bleibt.
 
 ---
 

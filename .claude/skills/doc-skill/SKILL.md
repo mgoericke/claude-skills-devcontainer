@@ -17,7 +17,36 @@ und eines strukturierten Interviews.
 
 ---
 
-## Ablauf
+## When to Use This Skill
+
+- Eine Projektdokumentation soll erstellt oder aktualisiert werden
+- Ein neues Projekt wurde angelegt und braucht eine technische Dokumentation
+- Bestehende Dokumentation soll mit neuen Features ergänzt werden
+- Formulierungen wie "dokumentiere das Projekt", "schreib eine Doku", "aktualisiere die docs", "erstelle eine README für das Projekt"
+
+## What This Skill Does
+
+1. **Analysiert das Projekt** – pom.xml, Properties, docker-compose, Quellcode automatisch auswerten
+2. **Schließt Lücken per Interview** – Nur fragen, was aus dem Code nicht hervorgeht
+3. **Erstellt oder aktualisiert** – `docs/<artifactId>.md` aus Template oder gezielt ergänzen
+
+## How to Use
+
+```
+Dokumentiere das Projekt
+```
+
+```
+Erstelle eine Doku für mein Spring Boot Projekt
+```
+
+```
+Aktualisiere die docs mit dem neuen Messaging-Feature
+```
+
+---
+
+## Instructions
 
 ### Schritt 1 – Projekt analysieren (automatisch)
 
@@ -36,8 +65,6 @@ Vor dem Interview vorhandene Projektartefakte lesen und auswerten:
 
 Bereits ermittelte Informationen **nicht erneut abfragen**.
 
----
-
 ### Schritt 2 – Interview (nur Lücken schließen)
 
 Nur fragen, was aus dem Quellcode nicht eindeutig hervorgeht:
@@ -50,8 +77,6 @@ Nur fragen, was aus dem Quellcode nicht eindeutig hervorgeht:
 | 4 | **Bekannte Einschränkungen / offene TODOs** | Immer fragen |
 | 5 | **Sollen alle Abschnitte des Templates befüllt werden?** | Immer fragen – ggf. Abschnitte weglassen |
 
----
-
 ### Schritt 3 – Erstellen oder Aktualisieren
 
 **Erstellen:** `docs/<artifactId>.md` existiert nicht
@@ -60,23 +85,11 @@ Nur fragen, was aus dem Quellcode nicht eindeutig hervorgeht:
 **Aktualisieren:** `docs/<artifactId>.md` existiert bereits
 → Datei lesen, geänderte/neue Inhalte gezielt ersetzen oder ergänzen.
 → Bestehende manuelle Ergänzungen des Nutzers **nicht überschreiben** – nur leere oder
-   veraltete Abschnitte aktualisieren.
+  veraltete Abschnitte aktualisieren.
 → Am Ende der Datei einen Änderungshinweis ergänzen:
-   `_Zuletzt aktualisiert: {{DATE}} (doc-skill)_`
+  `_Zuletzt aktualisiert: {{DATE}} (doc-skill)_`
 
----
-
-## Ausgabepfad
-
-```
-docs/<artifactId>.md
-```
-
-Das Verzeichnis `docs/` wird angelegt, falls es nicht existiert.
-
----
-
-## Abschnitte des Templates
+### Abschnitte des Templates
 
 | Abschnitt | Pflicht | Quelle |
 |-----------|---------|--------|
@@ -93,11 +106,40 @@ Das Verzeichnis `docs/` wird angelegt, falls es nicht existiert.
 
 ---
 
-## Konventionen
+## References
 
-- Sprache: **Deutsch** (Prosa, Überschriften) · **Englisch** (Code-Blöcke, Pfade)
-- Dateiname: `<artifactId>.md` in kebab-case
+| Datei | Beschreibung |
+|-------|-------------|
+| `templates/project-doc.md.template` | Template für die Projektdokumentation |
+
+### Ausgabepfad
+
+```
+docs/<artifactId>.md
+```
+
+Das Verzeichnis `docs/` wird angelegt, falls es nicht existiert.
+
+---
+
+## Conventions
+
+- **Sprache:** Deutsch (Prosa, Überschriften) · Englisch (Code-Blöcke, Pfade)
+- **Dateiname:** `<artifactId>.md` in kebab-case
 - Versionsnummern aus `pom.xml` übernehmen – keine Schätzungen
 - Passwörter / Secrets nur als Platzhalter (`<your-secret>`) – nie echte Werte
-- Co-Author-Hinweis am Ende der Datei:
-  `<!-- Generiert via doc-skill · Co-Author: Claude (claude-sonnet-4-6, Anthropic) -->`
+- **Co-Author:** `<!-- Generiert via doc-skill · Co-Author: Claude (claude-sonnet-4-6, Anthropic) -->`
+
+### Position im Workflow
+
+```
+[spec-feature-skill]      optional – fachliche Anforderungen
+        ↓
+[openapi-skill]           wenn OpenAPI Spec vorhanden
+        ↓
+[java-scaffold-skill]     Rahmen: DB, Messaging, Infra
+        ↓
+[review-skill]            Code-Review
+        ↓
+[doc-skill]               ◀ Projektdokumentation
+```

@@ -19,25 +19,43 @@ Ergebnis sind Java-Klassen im **BCE-Pattern** (boundary/rest + entity/dto).
 
 ---
 
-## Position im Workflow
+## When to Use This Skill
+
+- Eine OpenAPI-Spezifikation (YAML oder JSON) liegt vor und daraus soll Java-Code generiert werden
+- REST-Endpunkte und DTOs sollen typsicher aus einer API-Beschreibung abgeleitet werden
+- Formulierungen wie "generiere Code aus der OpenAPI Spec", "erstelle Endpunkte aus der API-Beschreibung", "implementiere die REST-API laut Spec"
+- **Nicht verwenden**, wenn keine OpenAPI-Spec vorhanden ist – dann direkt `java-scaffold-skill` nutzen
+
+## What This Skill Does
+
+1. **Liest die OpenAPI Spec** – Pfade, Methoden, Schemas, Parameter, Security-Definitionen
+2. **Erstellt eine Zusammenfassung** – Gefundene Endpunkte und Schemas zur Bestätigung
+3. **Generiert DTOs** – Java Records in `entity/dto/` mit Validierungs-Annotationen aus der Spec
+4. **Generiert REST-Endpunkte** – Controller (Spring) oder Resource (Quarkus) in `boundary/rest/`
+5. **Generiert Service-Stubs** – Leere Service-Klassen in `control/` mit Methodensignaturen
+
+## How to Use
 
 ```
-[spec-feature-skill]      optional – fachliche Anforderungen
-        ↓
-[openapi-skill]           wenn OpenAPI Spec vorhanden
-        ↓
-[java-scaffold-skill]     Rahmen: DB, Messaging, Infra – REST/DTOs NICHT nochmal generieren
-        ↓
-[doc-skill]               Projektdokumentation
+Generiere Code aus der OpenAPI Spec in api/openapi.yaml
 ```
 
-**Wichtig für java-scaffold-skill:** Wenn openapi-skill bereits ausgeführt wurde, die
-`boundary/rest/` und `entity/dto/` Klassen **nicht** erneut generieren – nur den Rest
-des Projektrahmens (pom.xml, docker-compose, application.properties, Flyway, Architekturtest).
+```
+Erstelle REST-Endpunkte aus der API-Beschreibung specs/api.json
+```
+
+```
+Implementiere die REST-API laut Spec für Quarkus
+```
 
 ---
 
-## ⚠️ Pflichtabfrage
+## Instructions
+
+> **Vor jeder Ausführung**:
+> 1. `.claude/lessons-learned.md` prüfen
+
+### Schritt 1 – Pflichtabfrage
 
 Vor der Generierung – sofern nicht bereits bekannt:
 
@@ -49,11 +67,7 @@ Vor der Generierung – sofern nicht bereits bekannt:
 | 4 | **DTO-Stil** | `Java Record` (Standard) oder `Klasse mit Lombok` |
 | 5 | **Security-Annotationen einbauen?** | Ja → `@RolesAllowed` / `@PreAuthorize` aus Spec-Security-Section |
 
----
-
-## Ablauf
-
-### Schritt 1 – Spec lesen und analysieren
+### Schritt 2 – Spec lesen und analysieren
 
 Die OpenAPI Spec einlesen und folgendes extrahieren:
 
@@ -67,7 +81,7 @@ Die OpenAPI Spec einlesen und folgendes extrahieren:
 | Security-Definitionen | `components/securitySchemes` + `security` je Operation |
 | Tags | `tags` – werden zur Gruppenbildung genutzt |
 
-### Schritt 2 – Zusammenfassung ausgeben
+### Schritt 3 – Zusammenfassung ausgeben
 
 Vor der Code-Generierung eine kurze Übersicht ausgeben und bestätigen lassen:
 
@@ -88,15 +102,11 @@ Geplante Dateien:
 Fortfahren?
 ```
 
-### Schritt 3 – Code generieren
+### Schritt 4 – Code generieren
 
-Reihenfolge: DTOs zuerst, dann Endpunkte.
+Reihenfolge: DTOs zuerst, dann Endpunkte, dann Service-Stubs.
 
----
-
-## Generierungsregeln
-
-### DTOs (entity/dto/)
+#### DTOs (entity/dto/)
 
 - **Standard: Java Record** – immutabel, kein Boilerplate
 - Lombok-Variante nur auf explizite Anfrage
@@ -118,63 +128,50 @@ Reihenfolge: DTOs zuerst, dann Endpunkte.
 | `CreateOrderRequest` | `CreateOrderRequest.java` (Record) |
 | Anonymes Inline-Schema | Eigener, sprechender Name ableiten |
 
-### REST-Endpunkte (boundary/rest/)
+#### REST-Endpunkte (boundary/rest/)
 
 Gruppierung nach **OpenAPI-Tag**: Ein Tag → eine Klasse.
 Kein Tag → Klasse nach erstem Pfadsegment benennen (`/orders/*` → `OrderResource`).
 
-#### Spring Boot Controller
-
+**Spring Boot Controller:**
 ```java
-// Template: templates/spring/Controller.java.template
 @RestController
 @RequestMapping("/pfad")
 @Validated
 public class {{TAG}}Controller {
-
     private final {{TAG}}Service {{tag}}Service;
-
     // Konstruktor-Injection
-
     @GetMapping("/{id}")
     public ResponseEntity<{{ResponseDTO}}> findById(@PathVariable Long id) {
-        // TODO: Service-Aufruf
         throw new UnsupportedOperationException("Not implemented yet");
     }
 }
 ```
 
-#### Quarkus Resource
-
+**Quarkus Resource:**
 ```java
-// Template: templates/quarkus/Resource.java.template
 @Path("/pfad")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class {{TAG}}Resource {
-
     @Inject
     {{TAG}}Service {{tag}}Service;
-
     @GET
     @Path("/{id}")
     public {{ResponseDTO}} findById(@PathParam("id") Long id) {
-        // TODO: Service-Aufruf
         throw new UnsupportedOperationException("Not implemented yet");
     }
 }
 ```
 
-### Service-Stub
+#### Service-Stub (control/)
 
-Für jeden Controller/Resource wird ein passender **leerer Service-Stub** in `control/`
-angelegt – mit den Methodensignaturen aus der Spec, aber ohne Implementierung:
+Für jeden Controller/Resource wird ein passender **leerer Service-Stub** angelegt:
 
 ```java
 @ApplicationScoped  // Quarkus
 // @Service          // Spring Boot
 public class {{TAG}}Service {
-    // TODO: Implementierung
     public {{ResponseDTO}} findById(Long id) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
@@ -183,21 +180,17 @@ public class {{TAG}}Service {
 
 ---
 
-## Konventionen
+## References
 
-- **Sprache:** Englisch im Code, Deutsch in Javadoc-Kommentaren
-- **Package:** `{{GROUP_ID}}.boundary.rest` (Endpunkte), `{{GROUP_ID}}.entity.dto` (DTOs), `{{GROUP_ID}}.control` (Service-Stubs)
-- Kein Hibernate / JPA in DTOs – das sind reine Transfer-Objekte
-- Keine Business-Logik im Controller/Resource – nur Delegation an Service
-- `UnsupportedOperationException` als Placeholder – signalisiert "noch nicht implementiert"
-- Co-Author-Hinweis in jeder generierten Datei:
-  ```java
-   * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via openapi-skill
-  ```
+| Datei | Beschreibung |
+|-------|-------------|
+| `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen |
+| `templates/spring/Controller.java.template` | Spring Boot Controller-Template |
+| `templates/quarkus/Resource.java.template` | Quarkus Resource-Template |
+| `templates/Dto.java.template` | DTO-Template (Java Record) |
+| `templates/Service.java.template` | Service-Stub-Template |
 
----
-
-## Unterstützte OpenAPI Features
+### Unterstützte OpenAPI Features
 
 | Feature | Unterstützt | Hinweis |
 |---------|-------------|---------|
@@ -213,3 +206,32 @@ public class {{TAG}}Service {
 | Security (`bearer`, `oauth2`) | ✅ | → `@RolesAllowed` / `@PreAuthorize` wenn aktiviert |
 | Multipart / File Upload | ⚠️ | `MultipartFormDataInput` (Quarkus) / `MultipartFile` (Spring) |
 | Webhooks | ❌ | Nicht unterstützt |
+
+---
+
+## Conventions
+
+- **Sprache:** Englisch im Code, Deutsch in Javadoc-Kommentaren
+- **Packages:** `{{GROUP_ID}}.boundary.rest` (Endpunkte), `{{GROUP_ID}}.entity.dto` (DTOs), `{{GROUP_ID}}.control` (Service-Stubs)
+- Kein Hibernate / JPA in DTOs – das sind reine Transfer-Objekte
+- Keine Business-Logik im Controller/Resource – nur Delegation an Service
+- `UnsupportedOperationException` als Placeholder – signalisiert "noch nicht implementiert"
+- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via openapi-skill`
+
+### Position im Workflow
+
+```
+[spec-feature-skill]      optional – fachliche Anforderungen
+        ↓
+[openapi-skill]           ◀ wenn OpenAPI Spec vorhanden
+        ↓
+[java-scaffold-skill]     Rahmen: DB, Messaging, Infra – REST/DTOs NICHT nochmal generieren
+        ↓
+[review-skill]            Code-Review
+        ↓
+[doc-skill]               Projektdokumentation
+```
+
+**Wichtig für java-scaffold-skill:** Wenn openapi-skill bereits ausgeführt wurde, die
+`boundary/rest/` und `entity/dto/` Klassen **nicht** erneut generieren – nur den Rest
+des Projektrahmens (pom.xml, docker-compose, application.properties, Flyway, Architekturtest).

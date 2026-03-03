@@ -18,9 +18,38 @@ Tests und Dokumentation dient.
 
 ---
 
-## Ablauf
+## When to Use This Skill
 
-### Phase 1 – Interview (Pflicht)
+- Ein neues fachliches Feature soll beschrieben werden, bevor Code geschrieben wird
+- Anforderungen sollen strukturiert erfasst und dokumentiert werden
+- Eine Grundlage für Implementierung, Tests und Dokumentation wird benötigt
+- Formulierungen wie "spezifiziere ein Feature", "beschreibe das Feature", "erstelle eine Spec", "was soll das System tun?"
+
+## What This Skill Does
+
+1. **Führt strukturiertes Interview** – 4 Fragegruppen (Kontext, Verhalten, Technik, Qualität) sequenziell abfragen
+2. **Fasst Antworten zusammen** – Kompakte Zusammenfassung zur Bestätigung
+3. **Erstellt Spec-Datei** – `specs/<feature-name-kebab-case>.md` aus Template
+
+## How to Use
+
+```
+Ich möchte ein neues Feature spezifizieren
+```
+
+```
+Erstelle eine Spec für die Auftragserfassung
+```
+
+```
+Beschreibe das Feature Benutzerregistrierung bevor wir implementieren
+```
+
+---
+
+## Instructions
+
+### Schritt 1 – Interview (Pflicht)
 
 Fragen **sequenziell** stellen – eine Gruppe nach der anderen, nicht alle auf einmal.
 Antworten sammeln und am Ende der Phase zusammenfassen.
@@ -50,34 +79,34 @@ Antworten sammeln und am Ende der Phase zusammenfassen.
 12. **Gibt es nicht-funktionale Anforderungen?** _(Performance, Sicherheit, Verfügbarkeit)_
 13. **Welche offenen Fragen / Annahmen gibt es noch?**
 
----
-
-### Phase 2 – Zusammenfassung
+### Schritt 2 – Zusammenfassung
 
 Nach dem Interview: alle Antworten kompakt zusammenfassen und bestätigen lassen.
 Erst nach Bestätigung die Spec-Datei schreiben.
 
----
-
-### Phase 3 – Spec-Datei erzeugen
+### Schritt 3 – Spec-Datei erzeugen
 
 Dateiname: `specs/<feature-name-kebab-case>.md`
 Template: siehe `templates/feature-spec.md.template`
 
 ---
 
-## Namenskonventionen
+## References
 
-| Was | Regel | Beispiel |
-|-----|-------|---------|
-| Dateiname | kebab-case, Englisch | `order-creation.md` |
-| Feature-Name (Heading) | Titel-Case, Deutsch | `Auftragserfassung` |
-| Gherkin-Szenarien | Deutsch | `Gegeben`, `Wenn`, `Dann` |
-| Code-Artefakte im Vorschlag | Englisch | `OrderService`, `createOrder` |
+| Datei | Beschreibung |
+|-------|-------------|
+| `templates/feature-spec.md.template` | Template für die Spec-Datei |
 
 ---
 
-## Integration mit java-scaffold-skill
+## Conventions
+
+- **Dateiname:** kebab-case, Englisch (`order-creation.md`)
+- **Feature-Name (Heading):** Titel-Case, Deutsch (`Auftragserfassung`)
+- **Gherkin-Szenarien:** Deutsch (`Gegeben`, `Wenn`, `Dann`)
+- **Code-Artefakte im Vorschlag:** Englisch (`OrderService`, `createOrder`)
+
+### Integration mit java-scaffold-skill
 
 Nach der Spec-Erstellung kann der `java-scaffold-skill` die Spec als Input verwenden:
 
@@ -89,3 +118,17 @@ Der Scaffold-Skill liest die Spec und leitet daraus ab:
 - Boundary: REST-Endpunkte und/oder Messaging-Consumer
 - Control: Service-Klassen für die Geschäftslogik
 - Entity: JPA-Entities, Flyway-Migration, Repositories
+
+### Position im Workflow
+
+```
+[spec-feature-skill]      ◀ fachliche Anforderungen erfassen
+        ↓
+[openapi-skill]           wenn OpenAPI Spec vorhanden
+        ↓
+[java-scaffold-skill]     Rahmen: DB, Messaging, Infra
+        ↓
+[review-skill]            Code-Review
+        ↓
+[doc-skill]               Projektdokumentation
+```

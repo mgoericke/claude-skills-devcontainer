@@ -1,13 +1,53 @@
 ---
 name: infografik-skill
-description: Erstellt professionelle, datengetriebene Infografiken als PNG-Dateien über die Hugging Face Inference API (kostenlos). Verwende diesen Skill immer wenn der Nutzer eine Infografik, visuelle Zusammenfassung, Datendarstellung, Chart-Übersicht oder illustrierte Statistik erstellen möchte – auch wenn er nur "visualisiere das" oder "mach das übersichtlich" sagt. Der Skill generiert das Bild per KI-Prompt über die Hugging Face API.
+description: >
+  Erstellt professionelle, datengetriebene Infografiken als PNG-Dateien über die Hugging Face
+  Inference API (kostenlos). Verwende diesen Skill immer wenn der Nutzer eine Infografik,
+  visuelle Zusammenfassung, Datendarstellung, Chart-Übersicht oder illustrierte Statistik
+  erstellen möchte – auch wenn er nur "visualisiere das" oder "mach das übersichtlich" sagt.
+  Der Skill generiert das Bild per KI-Prompt über die Hugging Face API.
 ---
 
 # Infografik-Skill
 
-Erstelle professionelle Infografiken als PNG-Datei über die **Hugging Face Inference API** (kostenlos, kein Billing erforderlich).
+Erstellt professionelle Infografiken als PNG-Datei über die **Hugging Face Inference API** (kostenlos, kein Billing erforderlich).
 
-## Voraussetzungen
+> **Philosophie:** Daten werden erst dann verständlich, wenn sie visuell erzählt werden.
+> Eine gute Infografik reduziert Komplexität – sie fügt keine hinzu.
+
+---
+
+## When to Use This Skill
+
+- Der Nutzer möchte Daten visuell aufbereiten (KPI-Dashboard, Architekturübersicht, Prozessflow)
+- Eine Infografik, Visualisierung oder illustrierte Statistik soll erstellt werden
+- Formulierungen wie "visualisiere das", "mach das übersichtlich", "erstelle eine Infografik", "zeig das als Bild"
+- Vergleiche, Timelines, Roadmaps oder Fakten-Poster sollen als Bild generiert werden
+
+## What This Skill Does
+
+1. **Fragt Stil und Typ ab** – Technisch/Professional oder Kreativ/Visuell per `AskUserQuestion`
+2. **Klärt Thema und Daten** – Nutzer-Daten oder Beispieldaten aus `references/beispieldaten.md`
+3. **Wählt Farbpalette** – Aus `references/farbpaletten.md` passend zum Stil
+4. **Formuliert Image-Prompt** – Detaillierten englischen Prompt aus Daten, Stil und Palette
+5. **Ruft Hugging Face API auf** – Generiert PNG via FLUX.1-schnell oder Fallback-Modell
+6. **Speichert und präsentiert** – PNG mit Zeitstempel im Projekt-Root
+
+## How to Use
+
+```
+Erstelle eine Infografik mit den aktuellen KPIs
+```
+
+```
+Visualisiere die Architektur meines Projekts als Poster
+```
+
+```
+Mach eine Übersicht der Sprint-Ergebnisse als Bild
+```
+
+### Voraussetzungen
 
 Der Nutzer benötigt ein **kostenloses Hugging Face-Konto** und ein Access Token:
 - Token erstellen: https://huggingface.co/settings/tokens (Read-Zugriff reicht)
@@ -15,11 +55,13 @@ Der Nutzer benötigt ein **kostenloses Hugging Face-Konto** und ein Access Token
 
 ---
 
-## PFLICHT: Stil-Abfrage vor jeder Erstellung
+## Instructions
+
+### Schritt 1 – Stil-Abfrage (PFLICHT)
 
 **Bevor der Prompt generiert wird, MUSS der Nutzer mit `AskUserQuestion` nach Stil und Typ gefragt werden.**
 
-### Frage 1 – Grafikstil (Zielgruppe)
+#### Frage 1 – Grafikstil (Zielgruppe)
 
 ```
 Welchen Grafikstil möchtest du?
@@ -29,9 +71,10 @@ Optionen:
 - **Technisch / Professional** – Für Entwickler, Architekten, Business Analysten. Präzise Kacheln, Metriken, Tabellen, strukturierte Layouts. Beispiel: KPI-Dashboard, Architekturübersicht, API-Dokumentation.
 - **Kreativ / Visuell** – Für Nicht-Techniker, Management, Stakeholder, Marketing. Große Illustrationen, bunte Grafiken, Storytelling-Layouts. Beispiel: Roadmap-Poster, Prozessflow mit Symbolen, Team-Überblick.
 
-### Frage 2 – Infografik-Typ
+#### Frage 2 – Infografik-Typ
 
 **Bei Technisch / Professional:**
+
 | Typ | Beschreibung |
 |-----|-------------|
 | Dashboard / KPI | Hero Numbers, Metriken, Fortschrittsbalken |
@@ -41,6 +84,7 @@ Optionen:
 | Timeline | Versionsverlauf, Sprint-Planung, Roadmap mit Meilensteinen |
 
 **Bei Kreativ / Visuell:**
+
 | Typ | Beschreibung |
 |-----|-------------|
 | Storytelling / Poster | Narrative Struktur, große Illustrationen, lebendige Farben |
@@ -49,21 +93,15 @@ Optionen:
 | Statistik / Fakten | Große Zahlen mit Illustrationen, Piktogramme |
 | Roadmap | Zeitlinie mit Illustrationen, Meilenstein-Symbole, Phasenfarben |
 
----
+### Schritt 2 – Thema und Daten klären
 
-## Workflow (nach Stil-Abfrage)
+Nutzer-Daten verwenden oder Beispieldaten aus `references/beispieldaten.md`.
 
-1. **Stil & Typ abfragen** – `AskUserQuestion` (PFLICHT, vor allem anderen)
-2. **Thema & Daten klären** – Nutzer-Daten verwenden oder Beispieldaten aus `references/beispieldaten.md`
-3. **Farbpalette wählen** – `references/farbpaletten.md` laden; Farbbeschreibung für den Prompt nutzen
-4. **Image-Prompt formulieren** – Detaillierten englischen Prompt aus Daten, Stil und Palette erstellen (siehe unten)
-5. **API aufrufen** – Hugging Face Inference API via `curl` (siehe unten)
-6. **Ausgabe speichern** – PNG ins Projekt-Root speichern
-7. **Ausgabe präsentieren** – mit `present_files` teilen
+### Schritt 3 – Farbpalette wählen
 
----
+`references/farbpaletten.md` laden; Farbbeschreibung für den Prompt nutzen.
 
-## Prompt-Formulierung
+### Schritt 4 – Image-Prompt formulieren
 
 Der Prompt muss **auf Englisch** und sehr detailliert sein. Struktur:
 
@@ -77,7 +115,7 @@ Style: flat design, high contrast, white background, no gradients, crisp edges.
 Format: portrait orientation, 1024x1536 pixels.
 ```
 
-### Beispiel-Prompt (Technisch / KPI-Dashboard):
+**Beispiel-Prompt (Technisch / KPI-Dashboard):**
 
 ```
 A professional corporate KPI dashboard infographic. Clean grid layout with 6 metric tiles.
@@ -90,7 +128,7 @@ Style: flat design, no shadows, card-based layout, horizontal dividers.
 Format: portrait, 1024x1536.
 ```
 
-### Beispiel-Prompt (Kreativ / Storytelling-Poster):
+**Beispiel-Prompt (Kreativ / Storytelling-Poster):**
 
 ```
 A vibrant storytelling infographic poster about digital transformation.
@@ -104,9 +142,7 @@ Style: modern flat illustration, rounded icons, generous whitespace.
 Format: portrait poster, 1024x1536.
 ```
 
----
-
-## API-Aufruf (Hugging Face)
+### Schritt 5 – API aufrufen
 
 Empfohlenes Modell: **`black-forest-labs/FLUX.1-schnell`** (kostenlos, schnell, hohe Qualität)
 
@@ -130,36 +166,18 @@ curl -s \
   --output "infografik_$(date +%Y%m%d_%H%M%S).png"
 ```
 
-### Fehlerbehandlung
+#### Fehlerbehandlung
 
 - **503 / Model loading**: Modell startet noch – 20 Sekunden warten, dann erneut versuchen
 - **401 Unauthorized**: `HF_TOKEN` fehlt oder ungültig
 - **Leere/korrupte PNG**: Antwort war JSON-Fehler – `cat infografik.png` zur Diagnose
 - **Text im Bild unleserlich**: Bekannte FLUX-Limitation – Beschriftungen im Prompt kürzer halten, nur Schlüsselwörter verwenden
 
----
+### Schritt 6 – Ausgabe speichern und präsentieren
 
-## Qualitätscheckliste
+PNG ins Projekt-Root speichern, dann mit `present_files` teilen.
 
-Vor dem Präsentieren prüfen:
-- [ ] Stil-Abfrage wurde durchgeführt (AskUserQuestion)
-- [ ] Prompt ist auf Englisch und enthält alle relevanten Daten
-- [ ] Farbpalette ist im Prompt beschrieben
-- [ ] PNG-Datei wurde erfolgreich gespeichert (Dateigröße > 10 KB)
-- [ ] Datei liegt im Projekt-Root
-
----
-
-## Ausgabe
-
-PNG-Datei im aktuellen Verzeichnis speichern:
-
-```bash
-# API-Aufruf speichert direkt als infografik.png
-# Dann present_files mit dem Pfad aufrufen
-```
-
-Dateiname: **niemals** eine bestehende Infografik überschreiben. Immer mit Zeitstempel oder beschreibendem Namen speichern:
+Dateiname: **Niemals** eine bestehende Infografik überschreiben. Immer mit Zeitstempel oder beschreibendem Namen speichern:
 
 ```bash
 # Dateiname mit Zeitstempel
@@ -172,14 +190,30 @@ infografik_kpi-dashboard.png
 
 Vor dem Speichern prüfen ob eine Datei mit dem geplanten Namen bereits existiert.
 
+### Qualitätscheckliste
+
+Vor dem Präsentieren prüfen:
+- [ ] Stil-Abfrage wurde durchgeführt (AskUserQuestion)
+- [ ] Prompt ist auf Englisch und enthält alle relevanten Daten
+- [ ] Farbpalette ist im Prompt beschrieben
+- [ ] PNG-Datei wurde erfolgreich gespeichert (Dateigröße > 10 KB)
+- [ ] Datei liegt im Projekt-Root
+
 ---
 
-## Referenz-Dateien
+## References
 
-Lade bei Bedarf:
-- `references/farbpaletten.md` – 5 Themes mit Farbbeschreibungen für den Prompt
-- `references/beispieldaten.md` – Demo-Datensätze als Textbeschreibung für den Prompt
+| Datei | Beschreibung |
+|-------|-------------|
+| `references/farbpaletten.md` | 5 Themes mit Farbbeschreibungen für den Prompt – immer laden |
+| `references/beispieldaten.md` | Demo-Datensätze als Textbeschreibung – laden wenn kein eigener Datensatz vorhanden |
 
-Wann laden:
-- Farbpaletten → immer laden, Farben präzise im Prompt beschreiben
-- Beispieldaten → wenn kein eigener Datensatz vorhanden ist
+---
+
+## Conventions
+
+- **Prompt-Sprache:** Englisch (Hugging Face Modelle verstehen Englisch am besten)
+- **Dateiformat:** PNG, Portrait 1024x1536
+- **Dateiname:** `infografik_<beschreibung-oder-zeitstempel>.png` – nie überschreiben
+- **Stil:** Flat Design, High Contrast, keine Schatten/Gradienten
+- **Qualität:** Beschriftungen kurz halten – FLUX-Limitation bei langen Texten

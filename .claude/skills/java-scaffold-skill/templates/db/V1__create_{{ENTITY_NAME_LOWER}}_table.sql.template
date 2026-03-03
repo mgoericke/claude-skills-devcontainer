@@ -1,0 +1,21 @@
+-- V1__create_{{ENTITY_NAME_LOWER}}_table.sql
+-- Flyway-Migration: Erstellt die Initialtabelle für {{ENTITY_NAME}}
+--
+-- Speicherort: src/main/resources/db/migration/
+-- Flyway führt diese Migration beim ersten Start automatisch aus.
+--
+-- Co-Author: Claude (claude-sonnet-4-6, Anthropic)
+
+CREATE TABLE {{ENTITY_NAME_LOWER}} (
+    id          UUID        NOT NULL DEFAULT gen_random_uuid(),
+
+    -- TODO: Fachliche Spalten hier ergänzen, z. B.:
+    -- name        VARCHAR(255) NOT NULL,
+    -- status      VARCHAR(50)  NOT NULL DEFAULT 'ACTIVE',
+    -- amount      NUMERIC(19, 2),
+
+    created_at  TIMESTAMP   NOT NULL,
+    updated_at  TIMESTAMP   NOT NULL,
+
+    CONSTRAINT pk_{{ENTITY_NAME_LOWER}} PRIMARY KEY (id)
+);

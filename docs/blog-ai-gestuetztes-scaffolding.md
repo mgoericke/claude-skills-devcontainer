@@ -62,7 +62,7 @@ Skills in `.claude/skills/` bringen Claude Code bei, wie das Team arbeitet. Kein
 |-------|-----------|
 | `java-scaffold-skill` | Generiert Projekte, Entities, Dockerfiles nach Team-Konventionen |
 | `spec-feature-skill` | Erfragt fachliche Requirements per Interview, erstellt Specs |
-| `openapi-skill` | Generiert REST-Endpunkte und DTOs aus OpenAPI-Specs |
+| `openapi-skill` | Erstellt, erweitert oder implementiert OpenAPI Specs per Interview |
 | `review-skill` | Prüft Code gegen Architektur-Regeln und Best Practices |
 | `doc-skill` | Erstellt und aktualisiert Projektdokumentation |
 | `infografik-skill` | Generiert Infografiken per Hugging Face API |
@@ -154,8 +154,19 @@ Feature spezifizieren: Bestellungen per Event an RabbitMQ senden
 
 Der `spec-feature-skill` führt ein strukturiertes Interview und erstellt eine Spezifikation in `specs/`. Erst danach wird Code geschrieben – auf Basis der Spec, nicht auf Basis von Annahmen.
 
+### API designen
+
+```
+Erstelle eine neue API Spec für den Order-Service
+```
+
+Der `openapi-skill` führt durch ein Interview: Datenmodelle, Endpunkte, Auth-Schema. Am Ende steht eine valide OpenAPI 3.x Spec in `api/`. Bestehende Entities im Projekt werden erkannt und zur Übernahme angeboten. Aus der fertigen Spec kann direkt Java-Code generiert werden – DTOs, Controller, Service-Stubs.
+
 ### Weitere Prompts zum Ausprobieren
 
+```
+Erweitere die API in api/orders.yaml um einen Product-Endpunkt
+```
 ```
 Generiere Code aus der OpenAPI Spec api/openapi.yaml
 ```

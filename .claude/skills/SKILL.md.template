@@ -1,7 +1,8 @@
 ---
 name: {{SKILL_NAME}}
-description: >
-  {{SKILL_DESCRIPTION}}
+description: {{SKILL_DESCRIPTION – ein Satz, was der Skill tut und wann er verwendet wird.}}
+argument-hint: "[{{ARGUMENT_HINT}}]"
+disable-model-invocation: false
 ---
 
 # {{SKILL_TITLE}}
@@ -31,7 +32,7 @@ description: >
 ```
 
 ```
-{{Beispiel-Aufruf 2}}
+/{{SKILL_NAME}} {{BEISPIEL_ARGUMENT}}
 ```
 
 ---
@@ -56,13 +57,10 @@ description: >
 
 ---
 
-## References
+## Additional resources
 
-| Datei | Beschreibung |
-|-------|-------------|
-| `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen |
-| `templates/{{TEMPLATE_NAME}}` | {{Beschreibung}} |
-| `references/{{REFERENCE_NAME}}` | {{Beschreibung}} |
+- For {{BESCHREIBUNG}}, see [{{TEMPLATE_NAME}}]({{TEMPLATE_NAME}})
+- For {{BESCHREIBUNG}}, see [{{REFERENCE_NAME}}](references/{{REFERENCE_NAME}})
 
 ---
 

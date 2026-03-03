@@ -1,10 +1,7 @@
 ---
 name: spec-feature-skill
-description: >
-  Spec Driven Development – erfragt fachliche Features per strukturierter Interview-Sequenz
-  und erstellt daraus eine Spezifikationsdatei im Verzeichnis specs/. Verwende diesen Skill
-  immer wenn ein Benutzer ein neues fachliches Feature beschreiben oder spezifizieren möchte,
-  bevor mit der Implementierung begonnen wird.
+description: Spec Driven Development – erfragt fachliche Features per strukturierter Interview-Sequenz und erstellt daraus eine Spezifikationsdatei in specs/. Verwende bei "Feature spezifizieren", "erstelle eine Spec" oder "beschreibe das Feature".
+argument-hint: "[feature-name]"
 ---
 
 # Spec Feature Skill
@@ -95,7 +92,7 @@ Template: siehe `templates/feature-spec.md.template`
 
 | Datei | Beschreibung |
 |-------|-------------|
-| `templates/feature-spec.md.template` | Template für die Spec-Datei |
+| [templates/feature-spec.md.template](templates/feature-spec.md.template) | Template für die Spec-Datei |
 
 ---
 

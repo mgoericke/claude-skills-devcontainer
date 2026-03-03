@@ -1,10 +1,7 @@
 ---
 name: review-skill
-description: >
-  Prüft geänderten oder bestehenden Code gegen Projekt-Konventionen, Architektur-Regeln und
-  Best Practices. Verwende diesen Skill immer wenn ein Benutzer ein Code-Review durchführen
-  möchte – auch bei Formulierungen wie "review code", "prüfe den Code", "code review",
-  "review changes", "schau dir den Code an" oder "Qualitätsprüfung".
+description: Prüft geänderten oder bestehenden Code gegen Projekt-Konventionen, Architektur-Regeln und Best Practices. Verwende bei "review code", "prüfe den Code", "code review" oder "Qualitätsprüfung".
+argument-hint: "[dateien-oder-verzeichnis]"
 ---
 
 # Review Skill
@@ -50,18 +47,29 @@ Mach ein Code Review für src/main/java/com/example/
 
 > **Vor jedem Review**:
 > 1. `.claude/lessons-learned.md` lesen
-> 2. `references/review-checklist.md` als Prüfkatalog verwenden
+> 2. [references/review-checklist.md](references/review-checklist.md) als Prüfkatalog verwenden
 
-### Schritt 1 – Änderungen erfassen (automatisch)
+## Dynamischer Kontext (automatisch vorgeladen)
 
-**Scope ermitteln** – in dieser Reihenfolge prüfen:
+Folgende Git-Informationen werden beim Aufruf automatisch injiziert:
 
-| Priorität | Quelle | Befehl |
-|-----------|--------|--------|
-| 1 | Staged Changes | `git diff --cached --name-only` |
-| 2 | Unstaged Changes | `git diff --name-only` |
-| 3 | Untracked Files | `git ls-files --others --exclude-standard` |
-| 4 | Branch-Diff gegen main | `git diff main...HEAD --name-only` |
+- Staged changes: !`git diff --cached --name-only 2>/dev/null`
+- Unstaged changes: !`git diff --name-only 2>/dev/null`
+- Untracked files: !`git ls-files --others --exclude-standard 2>/dev/null`
+- Current branch: !`git branch --show-current 2>/dev/null`
+
+### Schritt 1 – Änderungen erfassen
+
+Wenn `$ARGUMENTS` übergeben wurde (z.B. `/review-skill src/main/java/`), diese Dateien/Verzeichnisse reviewen.
+
+Andernfalls den **dynamischen Kontext** oben auswerten – in dieser Reihenfolge:
+
+| Priorität | Quelle |
+|-----------|--------|
+| 1 | `$ARGUMENTS` (explizit übergebene Dateien/Verzeichnisse) |
+| 2 | Staged Changes (aus dynamischem Kontext) |
+| 3 | Unstaged Changes (aus dynamischem Kontext) |
+| 4 | Branch-Diff gegen main: `git diff main...HEAD --name-only` |
 
 **Regeln:**
 - Wenn staged oder unstaged Changes vorhanden → diese reviewen
@@ -180,7 +188,7 @@ Nur fixen nach expliziter Bestätigung – nie automatisch.
 | Datei | Beschreibung |
 |-------|-------------|
 | `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen – vor jedem Review lesen |
-| `references/review-checklist.md` | Detaillierter Prüfkatalog mit Regeln pro Kategorie |
+| [references/review-checklist.md](references/review-checklist.md) | Detaillierter Prüfkatalog mit Regeln pro Kategorie |
 
 ---
 

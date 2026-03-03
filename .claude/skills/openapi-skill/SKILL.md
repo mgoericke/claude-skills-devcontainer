@@ -1,12 +1,7 @@
 ---
 name: openapi-skill
-description: >
-  Liest eine OpenAPI-Spezifikation (YAML oder JSON) ein und generiert daraus typsichere
-  REST-Endpunkte (Controller / Resource) und DTOs (Java Records) im BCE-Pattern.
-  Verwende diesen Skill wenn eine OpenAPI-Spec vorhanden ist und daraus Java-Code generiert
-  werden soll – auch bei Formulierungen wie "generiere Code aus der OpenAPI Spec",
-  "erstelle Endpunkte aus der API-Beschreibung" oder "implementiere die REST-API laut Spec".
-  Dieser Skill ist OPTIONAL – nur wenn eine OpenAPI-Spec existiert oder übergeben wird.
+description: Generiert typsichere REST-Endpunkte und DTOs aus einer OpenAPI 3.x Spezifikation im BCE-Pattern. Verwende diesen Skill wenn eine OpenAPI-Spec vorhanden ist und daraus Java-Code generiert werden soll.
+argument-hint: "[spec-pfad]"
 ---
 
 # OpenAPI Skill
@@ -59,9 +54,11 @@ Implementiere die REST-API laut Spec für Quarkus
 
 Vor der Generierung – sofern nicht bereits bekannt:
 
+Wenn der Skill mit Argumenten aufgerufen wird (`/openapi-skill api/openapi.yaml`), wird `$ARGUMENTS` als Spec-Pfad verwendet.
+
 | # | Frage | Hinweis |
 |---|-------|---------|
-| 1 | **Pfad zur OpenAPI Spec** | `.yaml`, `.yml` oder `.json`; relativ zum Projekt-Root |
+| 1 | **Pfad zur OpenAPI Spec** | `.yaml`, `.yml` oder `.json`; relativ zum Projekt-Root. Entfällt wenn als `$ARGUMENTS` übergeben. |
 | 2 | **Framework** | `Spring Boot` oder `Quarkus` |
 | 3 | **groupId / Paket** | z.B. `com.example.orders` |
 | 4 | **DTO-Stil** | `Java Record` (Standard) oder `Klasse mit Lombok` |
@@ -185,10 +182,10 @@ public class {{TAG}}Service {
 | Datei | Beschreibung |
 |-------|-------------|
 | `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen |
-| `templates/spring/Controller.java.template` | Spring Boot Controller-Template |
-| `templates/quarkus/Resource.java.template` | Quarkus Resource-Template |
-| `templates/Dto.java.template` | DTO-Template (Java Record) |
-| `templates/Service.java.template` | Service-Stub-Template |
+| [templates/spring/Controller.java.template](templates/spring/Controller.java.template) | Spring Boot Controller-Template |
+| [templates/quarkus/Resource.java.template](templates/quarkus/Resource.java.template) | Quarkus Resource-Template |
+| [templates/Dto.java.template](templates/Dto.java.template) | DTO-Template (Java Record) |
+| [templates/Service.java.template](templates/Service.java.template) | Service-Stub-Template |
 
 ### Unterstützte OpenAPI Features
 

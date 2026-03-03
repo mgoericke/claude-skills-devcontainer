@@ -1,10 +1,8 @@
 ---
 name: java-scaffold-skill
-description: >
-  Scaffolding für Java-Projekte mit Spring Boot oder Quarkus, PostgreSQL, RabbitMQ und Docker.
-  Verwende diesen Skill immer wenn eine neue Java-Anwendung, ein Modul, eine Entity, ein
-  Dockerfile, eine Docker Compose Datei, Architekturtests oder Konfigurationsdateien erstellt
-  werden sollen. Fragt immer nach groupId, artifactId und Framework bevor Code generiert wird.
+description: Scaffolding für Java-Projekte mit Spring Boot oder Quarkus, PostgreSQL, RabbitMQ und Docker. Verwende diesen Skill wenn eine neue Java-Anwendung, Entity, Dockerfile oder docker-compose erstellt werden soll.
+argument-hint: "[framework] [beschreibung]"
+disable-model-invocation: true
 ---
 
 # Java Scaffold Skill
@@ -227,11 +225,11 @@ Jedes generierte Projekt erhält `renovate.json` aus `templates/renovate.json`.
 | Datei | Beschreibung |
 |-------|-------------|
 | `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen – vor jeder Generierung prüfen |
-| `templates/spring/` | Spring Boot Templates (Entity, Controller, Service, Consumer, Security, Dockerfile, Properties, docker-compose) |
-| `templates/quarkus/` | Quarkus Templates (Entity, Resource, Service) + `src-main-docker/` für Dockerfiles |
-| `templates/arch/ArchitectureTest.java.template` | Taikai-basierter Architekturtest |
-| `templates/db/V1__create_{{ENTITY_NAME_LOWER}}_table.sql.template` | Initiale Flyway-Migration |
-| `templates/renovate.json` | Renovate-Konfiguration für automatische Dependency-Updates |
+| [templates/spring/](templates/spring/) | Spring Boot Templates (Entity, Controller, Service, Consumer, Security, Dockerfile, Properties, docker-compose) |
+| [templates/quarkus/](templates/quarkus/) | Quarkus Templates (Entity, Resource, Service) + `src-main-docker/` für Dockerfiles |
+| [templates/arch/ArchitectureTest.java.template](templates/arch/ArchitectureTest.java.template) | Taikai-basierter Architekturtest |
+| [templates/db/V1__create_table.sql.template](templates/db/V1__create_{{ENTITY_NAME_LOWER}}_table.sql.template) | Initiale Flyway-Migration |
+| [templates/renovate.json](templates/renovate.json) | Renovate-Konfiguration für automatische Dependency-Updates |
 
 ### Platzhalter
 

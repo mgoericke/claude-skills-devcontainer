@@ -17,14 +17,20 @@ nicht als externe Tools.
         │
         ▼
 ┌───────────────────┐
+│  coworker-skill   │  "Starte den Coworker fuer ein neues Projekt"
+│                   │  → Orchestriert alle Phasen mit Review dazwischen
+└────────┬──────────┘
+         │ oder einzelne Skills direkt nutzen:
+         ▼
+┌───────────────────┐
 │ spec-feature-skill│  "Ich möchte ein neues Feature spezifizieren"
 │                   │  → Interview → specs/<feature>.md
 └────────┬──────────┘
          │
-         ▼ (optional – wenn OpenAPI Spec vorhanden)
+         ▼
 ┌───────────────────┐
-│  openapi-skill    │  "Generiere Code aus api/openapi.yaml"
-│                   │  → boundary/rest/ + entity/dto/ + control/ (Stubs)
+│  openapi-skill    │  "Erstelle eine API Spec" / "Generiere Code aus Spec"
+│                   │  → api/<name>.yaml ODER boundary/rest/ + entity/dto/
 └────────┬──────────┘
          │
          ▼
@@ -57,6 +63,31 @@ nicht als externe Tools.
 
 ---
 
+## coworker-skill
+
+**Zweck:** Phasen-basierter Coworker fuer das End-to-End Setup neuer Projekte.
+Orchestriert die bestehenden Skills in der richtigen Reihenfolge – mit Review
+und Feedback-Moeglichkeit nach jeder Phase.
+
+**Trigger:** `Starte den Coworker` · `Neues Projekt aufsetzen end-to-end` · `Coworker`
+
+**Phasen:**
+
+| Phase | Was passiert | Ergebnis |
+|-------|-------------|----------|
+| 1 – Projekt-Kontext | Framework, Dienste, Projektname | Grundlegende Entscheidungen |
+| 2 – Feature spezifizieren | Delegiert an `spec-feature-skill` | `specs/<feature>.md` |
+| 3 – API designen | Delegiert an `openapi-skill` (Modus A) | `api/<service>.yaml` |
+| 4 – Code generieren | `java-scaffold-skill` + `openapi-skill` (Modus C) | Lauffaehiges Projekt |
+| 5 – Zusammenfassung | Ueberblick + naechste Schritte | Empfehlungen |
+
+**Flexibilitaet:**
+- Jede Phase einzeln bestaetigbar – Review vor dem Weitermachen
+- Phasen ueberspringbar, wenn Artefakte bereits existieren
+- Jederzeit stoppbar – beim naechsten Aufruf erkennt der Coworker den Stand
+
+---
+
 ## spec-feature-skill
 
 **Zweck:** Strukturiertes Feature-Interview vor der Implementierung – erzeugt eine
@@ -73,24 +104,34 @@ Spec-Datei als gemeinsame Sprache zwischen Fachlichkeit und Code.
 
 ---
 
-## openapi-skill _(optional)_
+## openapi-skill
 
-**Zweck:** Liest eine OpenAPI 3.x Spezifikation (YAML oder JSON) und generiert daraus
-typsichere REST-Endpunkte und DTOs im BCE-Pattern – ohne Abweichung vom API-Vertrag.
+**Zweck:** Erstellt, erweitert und implementiert OpenAPI 3.x Spezifikationen.
+Unterstuetzt drei Modi: Spec erstellen, Spec erweitern und Code generieren.
 
-**Trigger:** `Generiere Code aus der OpenAPI Spec api/openapi.yaml`
+**Trigger:** `Erstelle eine API Spec` · `Erweitere die API` · `Generiere Code aus der OpenAPI Spec`
 
-**Generiert:**
+**Modi:**
+
+| Modus | Beschreibung | Ergebnis |
+|-------|-------------|----------|
+| A – Neue Spec erstellen | Interview: Datenmodelle, Endpunkte, Auth | `api/<name>.yaml` |
+| B – Spec erweitern | Bestehende Spec einlesen, neue Paths/Schemas hinzufuegen | Erweiterte YAML |
+| C – Code generieren | DTOs, Controller, Service-Stubs aus Spec | Java-Klassen im BCE-Pattern |
+
+**Modus A/B – Spec erstellen/erweitern:**
+- Bestehende Entities im Projekt werden erkannt und zur Uebernahme angeboten
+- CRUD-Sets oder individuelle Endpunkte pro Ressource waehlbar
+- Auth-Schema: Bearer JWT, API Key, OAuth2 oder keine
+
+**Modus C – Code generieren:**
 | Artefakt | Pfad | Beschreibung |
 |----------|------|-------------|
 | Controller / Resource | `boundary/rest/` | Ein File pro OpenAPI-Tag |
 | DTOs | `entity/dto/` | Java Records mit Validation-Annotationen aus der Spec |
 | Service-Stubs | `control/` | Leere Serviceklassen mit korrekten Methodensignaturen |
 
-**Unterstützte Features:** Path/Query/Header-Parameter, Request Body, Response Body,
-`$ref`-Auflösung, Enum-Typen, Security-Annotationen, OpenAPI 3.0.x + 3.1.x
-
-**Hinweis:** Wenn dieser Skill ausgeführt wurde, generiert `java-scaffold-skill`
+**Hinweis:** Wenn dieser Skill Code generiert hat, generiert `java-scaffold-skill`
 `boundary/rest/` und `entity/dto/` **nicht** nochmal.
 
 ---

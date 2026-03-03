@@ -22,6 +22,7 @@ Vor jeder Generierung `lessons-learned.md` prüfen.
 
 | Skill | Trigger |
 |-------|---------|
+| `coworker-skill` | End-to-End Projekt-Setup, phasen-basiert mit Review |
 | `java-scaffold-skill` | Neues Projekt, neue Entity, Dockerfile, docker-compose |
 | `spec-feature-skill` | Feature spezifizieren, bevor Code entsteht |
 | `openapi-skill` | OpenAPI Spec erstellen, erweitern oder Code daraus generieren |

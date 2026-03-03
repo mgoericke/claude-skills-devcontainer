@@ -21,3 +21,4 @@ Thumbs.db
 
 # Claude Code Runtime
 .claude/cache/
+.claude/settings.local.json

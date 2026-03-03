@@ -33,6 +33,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 // Actuator Health-Endpunkte immer öffentlich zugänglich
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                // Swagger UI und OpenAPI-Doku öffentlich zugänglich
+                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                 // API-Endpunkte erfordern Authentifizierung
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().authenticated()

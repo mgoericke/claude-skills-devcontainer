@@ -1,0 +1,18 @@
+# Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via openapi-skill
+openapi: "3.1.0"
+info:
+  title: "{{API_TITLE}}"
+  description: "{{API_DESCRIPTION}}"
+  version: "{{API_VERSION}}"
+servers:
+  - url: "{{SERVER_URL}}"
+    description: "{{SERVER_DESCRIPTION}}"
+paths:
+  {{PATHS}}
+components:
+  schemas:
+    {{SCHEMAS}}
+  securitySchemes:
+    {{SECURITY_SCHEMES}}
+security:
+  {{SECURITY}}

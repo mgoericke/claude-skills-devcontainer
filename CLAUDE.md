@@ -24,7 +24,7 @@ Vor jeder Generierung `lessons-learned.md` prüfen.
 |-------|---------|
 | `java-scaffold-skill` | Neues Projekt, neue Entity, Dockerfile, docker-compose |
 | `spec-feature-skill` | Feature spezifizieren, bevor Code entsteht |
-| `openapi-skill` | OpenAPI Spec → REST-Endpunkte + DTOs (optional, wenn Spec vorhanden) |
+| `openapi-skill` | OpenAPI Spec erstellen, erweitern oder Code daraus generieren |
 | `review-skill` | Code-Review, Qualitätsprüfung, geänderten Code prüfen |
 | `doc-skill` | Projektdokumentation erstellen oder aktualisieren |
 | `infografik-skill` | Infografik, Visualisierung, Diagramm |

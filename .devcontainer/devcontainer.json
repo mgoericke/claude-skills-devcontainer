@@ -26,6 +26,7 @@
     }
   },
 
+  // NET_RAW: Pflicht für iptables im Sandbox-Firewall-Script
   "runArgs": ["--cap-add=NET_RAW"],
 
   // ── Umgebungsvariablen ──────────────────────────────────────────────────────
@@ -114,7 +115,12 @@
     "source=claude-code-m2-${devcontainerId},target=/root/.m2,type=volume"
   ],
 
-  "postCreateCommand": "echo '✅ Setup complete'",
+  // ── Lifecycle Hooks ─────────────────────────────────────────────────────────
+  // postCreateCommand: einmalig beim ersten Container-Build
+  // postStartCommand:  bei jedem Start – Firewall muss nach jedem Restart neu gesetzt werden,
+  //                    da iptables-Regeln nicht persistent sind!
+  "postCreateCommand": "chmod +x .devcontainer/init-firewall.sh && echo '✅ Setup complete'",
+  "postStartCommand": "bash .devcontainer/init-firewall.sh",
 
   "remoteUser": "root"
 }

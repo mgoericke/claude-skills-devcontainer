@@ -8,51 +8,30 @@ nicht als externe Tools.
 
 ## Workflow-Übersicht
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        Projekt-Workflow                             │
-└─────────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    A[Idee / Anforderung] --> B[coworker-skill]
+    B -->|oder einzelne Skills direkt nutzen| C[spec-feature-skill]
+    C --> D[openapi-skill]
+    D --> E[java-scaffold-skill]
+    E --> F[doc-skill]
 
-  Idee / Anforderung
-        │
-        ▼
-┌───────────────────┐
-│ spec-feature-skill│  "Ich möchte ein neues Feature spezifizieren"
-│                   │  → Interview → specs/<feature>.md
-└────────┬──────────┘
-         │
-         ▼ (optional – wenn OpenAPI Spec vorhanden)
-┌───────────────────┐
-│  openapi-skill    │  "Generiere Code aus api/openapi.yaml"
-│                   │  → boundary/rest/ + entity/dto/ + control/ (Stubs)
-└────────┬──────────┘
-         │
-         ▼
-┌───────────────────┐
-│java-scaffold-skill│  "Erstelle ein neues Quarkus-Projekt"
-│                   │  → pom.xml, docker-compose, Flyway, Dockerfile,
-└────────┬──────────┘    ArchitekturTest, renovate.json
-         │               (REST/DTOs nur wenn openapi-skill NICHT gelaufen)
-         ▼
-┌───────────────────┐
-│    doc-skill      │  "Dokumentiere das Projekt"
-│                   │  → docs/<artifactId>.md (erstellen oder aktualisieren)
-└───────────────────┘
+    B -.-|"Orchestriert alle Phasen<br>mit Review dazwischen"| B
 
-  Jederzeit parallel nutzbar:
-┌───────────────────┐
-│  review-skill     │  "Prüfe den Code" / "/review-skill src/"
-│                   │  → Strukturierter Report mit Findings
-├───────────────────┤
-│ blog-post-skill   │  "/blog-post-skill Quarkus und LangChain4j"
-│                   │  → docs/blog-<thema>.md
-├───────────────────┤
-│   html-skill      │  "Erstelle eine Landing Page"
-│                   │  → HTML mit Tailwind CSS (CDN)
-├───────────────────┤
-│ infografik-skill  │  "Erstelle eine Infografik zu ..."
-│                   │  → PNG via Hugging Face FLUX.1
-└───────────────────┘
+    C -.-|"Interview → specs/feature.md"| C
+    D -.-|"api/name.yaml ODER<br>boundary/rest/ + entity/dto/"| D
+    E -.-|"pom.xml, docker-compose,<br>Flyway, Dockerfile,<br>ArchitekturTest, renovate.json"| E
+    F -.-|"docs/artifactId.md"| F
+
+    G[Jederzeit parallel nutzbar]
+    G --- H[review-skill]
+    G --- I[blog-post-skill]
+    G --- J[html-skill]
+    G --- K[infografik-skill]
+
+    style A fill:#f9f,stroke:#333
+    style B fill:#bbf,stroke:#333
+    style G fill:#ffd,stroke:#333
 ```
 
 ---
@@ -65,6 +44,7 @@ Spec-Datei als gemeinsame Sprache zwischen Fachlichkeit und Code.
 **Trigger:** `Ich möchte ein neues Feature spezifizieren`
 
 **Ablauf:**
+
 1. Interview in 4 Gruppen: Kontext → Verhalten → Technische Hinweise → Qualität
 2. Zusammenfassung und Bestätigung
 3. Ausgabe: `specs/<feature-name>.md`
@@ -178,6 +158,7 @@ strukturierten Interview mit Zielgruppen-Anpassung (Developer / BA / PM).
 **Trigger:** `/blog-post-skill Quarkus und LangChain4j` · `Schreib einen Blog Post`
 
 **Ablauf:**
+
 1. Sprache wählen (Deutsch / Englisch)
 2. Zielgruppe wählen (Developer / Business Analysts / Projekt Manager)
 3. Themen-Interview (9 Fragen in 3 Gruppen)
@@ -200,6 +181,7 @@ Kein npm, kein Build-Tool – nur eine HTML-Datei.
 **Trigger:** `Erstelle eine Landing Page` · `/html-skill Kontaktformular`
 
 **Features:**
+
 - Tailwind CSS via CDN (`<script src="https://cdn.tailwindcss.com">`)
 - Mobile-first, responsive mit Breakpoints
 - Semantisches HTML (`<header>`, `<main>`, `<footer>`)
@@ -235,11 +217,9 @@ name: mein-skill
 description: Was der Skill tut und wann er verwendet wird. Claude nutzt diese Beschreibung um zu entscheiden, ob der Skill relevant ist.
 argument-hint: "[parameter]"
 ---
-
 # Mein Skill
 
 Anweisungen, die Claude befolgt wenn der Skill aktiv ist.
-
 ## Instructions
 
 ### Schritt 1 – ...
@@ -285,26 +265,26 @@ Supporting Files werden aus `SKILL.md` heraus **mit relativen Links** referenzie
 
 Alle Felder sind optional. Nur `description` wird empfohlen.
 
-| Feld | Beschreibung |
-|------|-------------|
-| `name` | Skill-Name, wird zum `/slash-command`. Kleinbuchstaben, Zahlen, Bindestriche (max 64 Zeichen). |
-| `description` | Was der Skill tut + wann er verwendet wird. Claude nutzt dies zur Entscheidung. |
-| `argument-hint` | Autocomplete-Hinweis, z.B. `[datei]` oder `[framework] [name]` |
-| `disable-model-invocation` | `true` → nur per `/name` aufrufbar, Claude triggert nicht automatisch |
-| `user-invocable` | `false` → nicht im `/`-Menü sichtbar, nur als Hintergrundwissen für Claude |
-| `allowed-tools` | Tools die Claude ohne Rückfrage nutzen darf, z.B. `Read, Grep, Glob` |
-| `model` | Modell das bei diesem Skill verwendet wird |
-| `context` | `fork` → läuft in isoliertem Subagent (ohne Gesprächskontext) |
-| `agent` | Subagent-Typ bei `context: fork`, z.B. `Explore`, `Plan`, `general-purpose` |
+| Feld                       | Beschreibung                                                                                   |
+| -------------------------- | ---------------------------------------------------------------------------------------------- |
+| `name`                     | Skill-Name, wird zum `/slash-command`. Kleinbuchstaben, Zahlen, Bindestriche (max 64 Zeichen). |
+| `description`              | Was der Skill tut + wann er verwendet wird. Claude nutzt dies zur Entscheidung.                |
+| `argument-hint`            | Autocomplete-Hinweis, z.B. `[datei]` oder `[framework] [name]`                                 |
+| `disable-model-invocation` | `true` → nur per `/name` aufrufbar, Claude triggert nicht automatisch                          |
+| `user-invocable`           | `false` → nicht im `/`-Menü sichtbar, nur als Hintergrundwissen für Claude                     |
+| `allowed-tools`            | Tools die Claude ohne Rückfrage nutzen darf, z.B. `Read, Grep, Glob`                           |
+| `model`                    | Modell das bei diesem Skill verwendet wird                                                     |
+| `context`                  | `fork` → läuft in isoliertem Subagent (ohne Gesprächskontext)                                  |
+| `agent`                    | Subagent-Typ bei `context: fork`, z.B. `Explore`, `Plan`, `general-purpose`                    |
 
 ### String-Substitutionen
 
-| Variable | Beschreibung |
-|----------|-------------|
-| `$ARGUMENTS` | Alle übergebenen Argumente (`/skill-name diese argumente`) |
-| `$ARGUMENTS[N]` | N-tes Argument (0-basiert), z.B. `$ARGUMENTS[0]` |
-| `$N` | Kurzform für `$ARGUMENTS[N]`, z.B. `$0`, `$1` |
-| `${CLAUDE_SESSION_ID}` | Aktuelle Session-ID |
+| Variable               | Beschreibung                                               |
+| ---------------------- | ---------------------------------------------------------- |
+| `$ARGUMENTS`           | Alle übergebenen Argumente (`/skill-name diese argumente`) |
+| `$ARGUMENTS[N]`        | N-tes Argument (0-basiert), z.B. `$ARGUMENTS[0]`           |
+| `$N`                   | Kurzform für `$ARGUMENTS[N]`, z.B. `$0`, `$1`              |
+| `${CLAUDE_SESSION_ID}` | Aktuelle Session-ID                                        |
 
 ### Dynamic Context Injection
 
@@ -312,6 +292,7 @@ Shell-Befehle werden **vor** dem Skill ausgeführt und deren Ausgabe eingesetzt:
 
 ```markdown
 ## Aktueller Status
+
 - Branch: !`git branch --show-current`
 - Änderungen: !`git diff --name-only`
 ```
@@ -320,11 +301,11 @@ Claude sieht nur das Ergebnis, nicht den Befehl.
 
 ### Wer darf was?
 
-| Frontmatter | User kann aufrufen | Claude kann aufrufen |
-|-------------|-------------------|---------------------|
-| _(Standard)_ | Ja | Ja |
-| `disable-model-invocation: true` | Ja | Nein |
-| `user-invocable: false` | Nein | Ja |
+| Frontmatter                      | User kann aufrufen | Claude kann aufrufen |
+| -------------------------------- | ------------------ | -------------------- |
+| _(Standard)_                     | Ja                 | Ja                   |
+| `disable-model-invocation: true` | Ja                 | Nein                 |
+| `user-invocable: false`          | Nein               | Ja                   |
 
 ### Projekt-Template verwenden
 

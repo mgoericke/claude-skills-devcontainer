@@ -1,11 +1,7 @@
 ---
 name: infografik-skill
-description: >
-  Erstellt professionelle, datengetriebene Infografiken als PNG-Dateien über die Hugging Face
-  Inference API (kostenlos). Verwende diesen Skill immer wenn der Nutzer eine Infografik,
-  visuelle Zusammenfassung, Datendarstellung, Chart-Übersicht oder illustrierte Statistik
-  erstellen möchte – auch wenn er nur "visualisiere das" oder "mach das übersichtlich" sagt.
-  Der Skill generiert das Bild per KI-Prompt über die Hugging Face API.
+description: Erstellt professionelle Infografiken als PNG über die Hugging Face Inference API. Verwende bei "Infografik erstellen", "visualisiere das", "mach das übersichtlich" oder "erstelle ein Diagramm".
+argument-hint: "[thema-oder-beschreibung]"
 ---
 
 # Infografik-Skill
@@ -205,8 +201,8 @@ Vor dem Präsentieren prüfen:
 
 | Datei | Beschreibung |
 |-------|-------------|
-| `references/farbpaletten.md` | 5 Themes mit Farbbeschreibungen für den Prompt – immer laden |
-| `references/beispieldaten.md` | Demo-Datensätze als Textbeschreibung – laden wenn kein eigener Datensatz vorhanden |
+| [references/farbpaletten.md](references/farbpaletten.md) | 5 Themes mit Farbbeschreibungen für den Prompt – immer laden |
+| [references/beispieldaten.md](references/beispieldaten.md) | Demo-Datensätze als Textbeschreibung – laden wenn kein eigener Datensatz vorhanden |
 
 ---
 

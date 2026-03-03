@@ -1,0 +1,87 @@
+# {{TITLE}}
+
+**{{SUBTITLE}}**
+
+---
+
+{{HOOK}}
+
+{{PROBLEM_STATEMENT}}
+
+---
+
+## {{SECTION_1_TITLE}}
+
+{{SECTION_1_CONTENT}}
+
+{{#IF CODE_EXAMPLES}}
+```{{LANGUAGE}}
+{{CODE_BLOCK_1}}
+```
+{{/IF}}
+
+---
+
+## {{SECTION_2_TITLE}}
+
+{{SECTION_2_CONTENT}}
+
+{{#IF CODE_EXAMPLES}}
+```{{LANGUAGE}}
+{{CODE_BLOCK_2}}
+```
+{{/IF}}
+
+---
+
+## {{SECTION_3_TITLE}}
+
+{{SECTION_3_CONTENT}}
+
+{{#IF CODE_EXAMPLES}}
+```{{LANGUAGE}}
+{{CODE_BLOCK_3}}
+```
+{{/IF}}
+
+---
+
+{{#IF SECTION_4_TITLE}}
+## {{SECTION_4_TITLE}}
+
+{{SECTION_4_CONTENT}}
+
+---
+{{/IF}}
+
+{{#IF SECTION_5_TITLE}}
+## {{SECTION_5_TITLE}}
+
+{{SECTION_5_CONTENT}}
+
+---
+{{/IF}}
+
+{{#IF VERIFICATION}}
+## {{VERIFICATION_TITLE_DE: "Alles zusammen testen" | EN: "Verification"}}
+
+{{VERIFICATION_CONTENT}}
+
+```bash
+{{VERIFICATION_COMMAND}}
+```
+
+{{EXPECTED_OUTPUT}}
+{{/IF}}
+
+---
+
+## {{CONCLUSION_TITLE_DE: "Fazit" | EN: "Conclusion"}}
+
+{{CONCLUSION_STRATEGIC_INSIGHT}}
+
+{{CONCLUSION_CLOSING_STATEMENT}}
+
+---
+
+*{{CO_AUTHOR: "Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via blog-post-skill"}}*

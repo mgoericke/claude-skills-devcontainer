@@ -1,10 +1,7 @@
 ---
 name: doc-skill
-description: >
-  Erstellt oder aktualisiert eine Projektdokumentation als Markdown-Seite im Verzeichnis docs/.
-  Verwende diesen Skill immer wenn ein Benutzer eine Projektdokumentation erstellen, ergänzen
-  oder aktualisieren möchte – auch bei Formulierungen wie "dokumentiere das Projekt",
-  "schreib eine Doku", "aktualisiere die docs" oder "erstelle eine README für das Projekt".
+description: Erstellt oder aktualisiert eine Projektdokumentation als Markdown-Seite in docs/. Verwende bei "dokumentiere das Projekt", "schreib eine Doku" oder "aktualisiere die docs".
+argument-hint: "[artifactId]"
 ---
 
 # Doc Skill
@@ -110,7 +107,7 @@ Nur fragen, was aus dem Quellcode nicht eindeutig hervorgeht:
 
 | Datei | Beschreibung |
 |-------|-------------|
-| `templates/project-doc.md.template` | Template für die Projektdokumentation |
+| [templates/project-doc.md.template](templates/project-doc.md.template) | Template für die Projektdokumentation |
 
 ### Ausgabepfad
 

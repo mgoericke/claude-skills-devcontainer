@@ -41,6 +41,15 @@ nicht als externe Tools.
 
   Jederzeit parallel nutzbar:
 ┌───────────────────┐
+│  review-skill     │  "Prüfe den Code" / "/review-skill src/"
+│                   │  → Strukturierter Report mit Findings
+├───────────────────┤
+│ blog-post-skill   │  "/blog-post-skill Quarkus und LangChain4j"
+│                   │  → docs/blog-<thema>.md
+├───────────────────┤
+│   html-skill      │  "Erstelle eine Landing Page"
+│                   │  → HTML mit Tailwind CSS (CDN)
+├───────────────────┤
 │ infografik-skill  │  "Erstelle eine Infografik zu ..."
 │                   │  → PNG via Hugging Face FLUX.1
 └───────────────────┘
@@ -137,3 +146,211 @@ Hugging Face Inference API (FLUX.1, kostenlos mit `HF_TOKEN`).
 
 **Voraussetzung:** `HF_TOKEN` als Umgebungsvariable auf dem Host gesetzt
 (einmalige Einrichtung unter https://huggingface.co/settings/tokens)
+
+---
+
+## review-skill
+
+**Zweck:** Systematisches Code-Review gegen Projekt-Konventionen, Architektur-Regeln
+und Best Practices – mit automatischer Git-Status-Erkennung.
+
+**Trigger:** `Prüfe den Code` · `Review die Änderungen` · `/review-skill src/main/java/`
+
+**Dynamischer Kontext:** Beim Aufruf werden automatisch Staged Changes, Unstaged Changes,
+Untracked Files und der aktuelle Branch injiziert – kein manuelles `git diff` nötig.
+
+**Report-Kategorien:**
+| Kategorie | Bedeutung |
+|-----------|-----------|
+| Kritisch | Sicherheitslücke, Datenverlust, Architektur-Verletzung |
+| Warnung | Konventions-Verletzung, fehlender Test |
+| Hinweis | Verbesserungsvorschlag, Stil |
+
+**Prüfkatalog:** Detaillierte Regeln in [references/review-checklist.md](../. claude/skills/review-skill/references/review-checklist.md)
+
+---
+
+## blog-post-skill
+
+**Zweck:** Erstellt technische Blog Posts als Markdown-Datei – basierend auf einem
+strukturierten Interview mit Zielgruppen-Anpassung (Developer / BA / PM).
+
+**Trigger:** `/blog-post-skill Quarkus und LangChain4j` · `Schreib einen Blog Post`
+
+**Ablauf:**
+1. Sprache wählen (Deutsch / Englisch)
+2. Zielgruppe wählen (Developer / Business Analysts / Projekt Manager)
+3. Themen-Interview (9 Fragen in 3 Gruppen)
+4. Gliederung bestätigen
+5. Blog Post generieren
+6. Optional: Hero Image via Hugging Face FLUX
+
+**Output-Pfad:** `docs/blog-<thema-kebab-case>.md`
+
+**Hinweis:** `disable-model-invocation: true` – nur per `/blog-post-skill` aufrufbar,
+Claude triggert ihn nicht automatisch.
+
+---
+
+## html-skill
+
+**Zweck:** Erstellt einfache, responsive HTML-Seiten mit **Tailwind CSS** via CDN-Link.
+Kein npm, kein Build-Tool – nur eine HTML-Datei.
+
+**Trigger:** `Erstelle eine Landing Page` · `/html-skill Kontaktformular`
+
+**Features:**
+- Tailwind CSS via CDN (`<script src="https://cdn.tailwindcss.com">`)
+- Mobile-first, responsive mit Breakpoints
+- Semantisches HTML (`<header>`, `<main>`, `<footer>`)
+- Barrierefreiheit (alt-Attribute, aria-labels)
+
+**Speicherort je Kontext:**
+| Kontext | Pfad |
+|---------|------|
+| Standalone | Projekt-Root |
+| Spring Boot | `src/main/resources/static/` |
+| Quarkus | `src/main/resources/META-INF/resources/` |
+
+---
+
+## Eigenen Skill erstellen
+
+Skills folgen dem [Agent Skills](https://agentskills.io) Open Standard und der
+[offiziellen Claude Code Dokumentation](https://code.claude.com/docs/en/skills).
+
+### Schnellstart
+
+1. **Verzeichnis anlegen:**
+
+```bash
+mkdir -p .claude/skills/mein-skill
+```
+
+2. **`SKILL.md` erstellen** – die einzige Pflichtdatei:
+
+```yaml
+---
+name: mein-skill
+description: Was der Skill tut und wann er verwendet wird. Claude nutzt diese Beschreibung um zu entscheiden, ob der Skill relevant ist.
+argument-hint: "[parameter]"
+---
+
+# Mein Skill
+
+Anweisungen, die Claude befolgt wenn der Skill aktiv ist.
+
+## Instructions
+
+### Schritt 1 – ...
+
+### Schritt 2 – ...
+```
+
+3. **Testen** – zwei Wege:
+
+```
+# Claude entscheidet automatisch (wenn description passt)
+Mach das, was mein Skill beschreibt
+
+# Direkt aufrufen
+/mein-skill optionale-argumente
+```
+
+### Verzeichnisstruktur
+
+```
+mein-skill/
+├── SKILL.md              # Hauptanweisungen (Pflicht, max. 500 Zeilen)
+├── templates/            # Templates zum Befüllen
+│   └── output.md.template
+├── references/           # Referenzmaterial (nur bei Bedarf geladen)
+│   └── checklist.md
+├── examples/             # Beispiel-Ausgaben
+│   └── sample.md
+└── scripts/              # Ausführbare Skripte
+    └── helper.sh
+```
+
+Supporting Files werden aus `SKILL.md` heraus **mit relativen Links** referenziert:
+
+```markdown
+## Additional resources
+
+- Für das Ausgabe-Template, siehe [templates/output.md.template](templates/output.md.template)
+- Für die Prüfregeln, siehe [references/checklist.md](references/checklist.md)
+```
+
+### Frontmatter-Referenz
+
+Alle Felder sind optional. Nur `description` wird empfohlen.
+
+| Feld | Beschreibung |
+|------|-------------|
+| `name` | Skill-Name, wird zum `/slash-command`. Kleinbuchstaben, Zahlen, Bindestriche (max 64 Zeichen). |
+| `description` | Was der Skill tut + wann er verwendet wird. Claude nutzt dies zur Entscheidung. |
+| `argument-hint` | Autocomplete-Hinweis, z.B. `[datei]` oder `[framework] [name]` |
+| `disable-model-invocation` | `true` → nur per `/name` aufrufbar, Claude triggert nicht automatisch |
+| `user-invocable` | `false` → nicht im `/`-Menü sichtbar, nur als Hintergrundwissen für Claude |
+| `allowed-tools` | Tools die Claude ohne Rückfrage nutzen darf, z.B. `Read, Grep, Glob` |
+| `model` | Modell das bei diesem Skill verwendet wird |
+| `context` | `fork` → läuft in isoliertem Subagent (ohne Gesprächskontext) |
+| `agent` | Subagent-Typ bei `context: fork`, z.B. `Explore`, `Plan`, `general-purpose` |
+
+### String-Substitutionen
+
+| Variable | Beschreibung |
+|----------|-------------|
+| `$ARGUMENTS` | Alle übergebenen Argumente (`/skill-name diese argumente`) |
+| `$ARGUMENTS[N]` | N-tes Argument (0-basiert), z.B. `$ARGUMENTS[0]` |
+| `$N` | Kurzform für `$ARGUMENTS[N]`, z.B. `$0`, `$1` |
+| `${CLAUDE_SESSION_ID}` | Aktuelle Session-ID |
+
+### Dynamic Context Injection
+
+Shell-Befehle werden **vor** dem Skill ausgeführt und deren Ausgabe eingesetzt:
+
+```markdown
+## Aktueller Status
+- Branch: !`git branch --show-current`
+- Änderungen: !`git diff --name-only`
+```
+
+Claude sieht nur das Ergebnis, nicht den Befehl.
+
+### Wer darf was?
+
+| Frontmatter | User kann aufrufen | Claude kann aufrufen |
+|-------------|-------------------|---------------------|
+| _(Standard)_ | Ja | Ja |
+| `disable-model-invocation: true` | Ja | Nein |
+| `user-invocable: false` | Nein | Ja |
+
+### Projekt-Template verwenden
+
+Das Template `.claude/skills/SKILL.md.template` enthält die Grundstruktur für neue Skills
+mit allen Konventionen dieses Projekts:
+
+```bash
+cp .claude/skills/SKILL.md.template .claude/skills/mein-skill/SKILL.md
+```
+
+Dann die Platzhalter (`{{...}}`) ersetzen und anpassen.
+
+### Skill in CLAUDE.md registrieren
+
+Neuen Skill in der Skill-Tabelle in `CLAUDE.md` eintragen:
+
+```markdown
+| `mein-skill` | Kurzbeschreibung wann der Skill verwendet wird |
+```
+
+### Checkliste für neue Skills
+
+- [ ] `SKILL.md` mit einzeiliger `description` im Frontmatter
+- [ ] `argument-hint` wenn der Skill Parameter akzeptiert
+- [ ] `disable-model-invocation: true` wenn der Skill Seiteneffekte hat
+- [ ] Supporting Files mit relativen Links referenziert
+- [ ] SKILL.md unter 500 Zeilen (Details in separate Dateien auslagern)
+- [ ] In `CLAUDE.md` Skill-Tabelle eingetragen
+- [ ] Getestet: `/mein-skill` und automatische Erkennung

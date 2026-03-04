@@ -2,7 +2,6 @@
 name: java-scaffold-skill
 description: Scaffolding für Java-Projekte mit Spring Boot oder Quarkus, PostgreSQL, RabbitMQ und Docker. Verwende diesen Skill wenn eine neue Java-Anwendung, Entity, Dockerfile oder docker-compose erstellt werden soll.
 argument-hint: "[framework] [beschreibung]"
-disable-model-invocation: true
 ---
 
 # Java Scaffold Skill

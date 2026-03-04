@@ -2,7 +2,6 @@
 name: blog-post-skill
 description: Erstellt technische Blog Posts im Stil von the-main-thread.com mit strukturiertem Interview und Zielgruppen-Anpassung. Verwende bei "schreib einen Blog Post", "erstelle einen Artikel" oder "write a blog post".
 argument-hint: "[thema]"
-disable-model-invocation: true
 ---
 
 # Blog Post Skill

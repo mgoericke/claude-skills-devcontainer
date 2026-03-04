@@ -1,5 +1,5 @@
 {
-  "name": "Java Dev (Spring Boot / Quarkus)",
+  "name": "Java Dev Spring Boot",
 
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
 

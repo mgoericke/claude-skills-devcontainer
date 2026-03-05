@@ -1,0 +1,126 @@
+{
+  "name": "Java Dev Spring Boot",
+
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+  "features": {
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "25",
+      "jdkDistro": "ms",
+      "installMaven": "true",
+      "mavenVersion": "3.9.9",
+      "installGradle": "false"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+      "installTools": "true"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "nodeGypDependencies": "true"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "dockerDashComposeVersion": "v2"
+    }
+  },
+
+  // NET_RAW: Pflicht für iptables im Sandbox-Firewall-Script
+  "runArgs": ["--cap-add=NET_RAW"],
+
+  // ── Umgebungsvariablen ──────────────────────────────────────────────────────
+  // Pflicht: ANTHROPIC_API_KEY auf dem Host setzen (macOS/Linux: ~/.zshrc, Windows: $env:)
+  // Optional: Weitere Tokens für Artifactory, GitHub Packages, NPM Registry usw.
+  //
+  // Alle Variablen werden vom Host durchgereicht – nie Tokens direkt hier eintragen!
+  // Nicht gesetzte Variablen werden als leerer String übergeben (kein Fehler).
+  "containerEnv": {
+    // Pflicht
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
+
+    // Optional – Artifactory / interne Maven Registry
+    "ARTIFACTORY_URL":      "${localEnv:ARTIFACTORY_URL}",
+    "ARTIFACTORY_USER":     "${localEnv:ARTIFACTORY_USER}",
+    "ARTIFACTORY_TOKEN":    "${localEnv:ARTIFACTORY_TOKEN}",
+
+    // Optional – GitHub Packages
+    "GITHUB_TOKEN":         "${localEnv:GITHUB_TOKEN}",
+
+    // Optional – NPM Registry (z.B. private Scope)
+    "NPM_TOKEN":            "${localEnv:NPM_TOKEN}",
+
+    // Optional – Hugging Face (Infografik-Skill: KI-Bildgenerierung)
+    "HF_TOKEN":             "${localEnv:HF_TOKEN}",
+
+    // Optional – Lokale KI-Modelle für Datensouveränität (Ollama / LM Studio)
+    // Beide Variablen gesetzt → Claude Code nutzt das lokale Modell statt der Cloud API.
+    // Nicht gesetzt → Standard: Anthropic Cloud API (ANTHROPIC_API_KEY wird genutzt).
+    //
+    // WICHTIG für DevContainer: Statt "localhost" immer "host.docker.internal" verwenden,
+    // da "localhost" im Container auf den Container selbst zeigt, nicht auf den Host!
+    //
+    // Ollama:    ANTHROPIC_BASE_URL=http://host.docker.internal:11434
+    //            ANTHROPIC_AUTH_TOKEN=ollama
+    // LM Studio: ANTHROPIC_BASE_URL=http://host.docker.internal:1234
+    //            ANTHROPIC_AUTH_TOKEN=lmstudio
+    "ANTHROPIC_BASE_URL":   "${localEnv:ANTHROPIC_BASE_URL}",
+    "ANTHROPIC_AUTH_TOKEN": "${localEnv:ANTHROPIC_AUTH_TOKEN}",
+
+    // Optional – weitere Custom-Variablen hier ergänzen
+    "CUSTOM_REGISTRY_URL":  "${localEnv:CUSTOM_REGISTRY_URL}"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "redhat.java",
+        "vscjava.vscode-maven",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-test",
+        "vmware.vscode-spring-boot",
+        "redhat.vscode-quarkus",
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "ms-azuretools.vscode-docker",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true
+      }
+    }
+  },
+
+  // ── Port-Forwarding ─────────────────────────────────────────────────────────
+  // Port 8080: Anwendungsport (Spring Boot / Quarkus)
+  // Port 8180: Keycloak Admin Console + OIDC Endpunkte
+  // onAutoForward: "notify" zeigt eine Benachrichtigung wenn der Port aktiv wird
+  "forwardPorts": [8080, 8180],
+  "portsAttributes": {
+    "8080": {
+      "label": "Application (HTTP)",
+      "onAutoForward": "notify"
+    },
+    "8180": {
+      "label": "Keycloak Admin Console",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "mounts": [
+    "source=claude-code-config-${devcontainerId},target=/root/.claude,type=volume",
+    "source=claude-code-m2-${devcontainerId},target=/root/.m2,type=volume"
+  ],
+
+  // ── Lifecycle Hooks ─────────────────────────────────────────────────────────
+  // postCreateCommand: einmalig beim ersten Container-Build
+  // postStartCommand:  bei jedem Start – Firewall muss nach jedem Restart neu gesetzt werden,
+  //                    da iptables-Regeln nicht persistent sind!
+  "postCreateCommand": "chmod +x .devcontainer/init-firewall.sh && echo '✅ Setup complete'",
+  "postStartCommand": "bash .devcontainer/init-firewall.sh",
+
+  "remoteUser": "root"
+}

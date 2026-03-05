@@ -1,0 +1,46 @@
+/**
+ * Spring Security Konfiguration für {{ARTIFACT_ID}}.
+ *
+ * <p>Verwendet moderne {@link org.springframework.security.web.SecurityFilterChain}-API
+ * (kein deprecated {@code WebSecurityConfigurerAdapter}).<br>
+ * Session-Management: STATELESS – geeignet für REST-APIs mit Token-basierter Auth.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
+package {{GROUP_ID}}.boundary.rest;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            // REST-API: kein CSRF notwendig (Token-basierte Auth)
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authz -> authz
+                // Actuator Health-Endpunkte immer öffentlich zugänglich
+                .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                // Swagger UI und OpenAPI-Doku öffentlich zugänglich
+                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                // API-Endpunkte erfordern Authentifizierung
+                .requestMatchers("/api/**").authenticated()
+                .anyRequest().authenticated()
+            );
+            // TODO: OAuth2 Resource Server für JWT konfigurieren:
+            // .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
+    }
+}

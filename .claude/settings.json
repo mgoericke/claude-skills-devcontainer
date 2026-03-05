@@ -1,0 +1,30 @@
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://app:app@localhost:5432/appdb"
+      ]
+    }
+  },
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:spring.io)",
+      "WebFetch(domain:docs.spring.io)",
+      "WebFetch(domain:quarkus.io)",
+      "WebFetch(domain:quarkiverse.github.io)",
+      "WebFetch(domain:hibernate.org)",
+      "WebFetch(domain:jakarta.ee)",
+      "WebFetch(domain:mvnrepository.com)",
+      "WebFetch(domain:central.sonatype.com)",
+      "WebFetch(domain:search.maven.org)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:rabbitmq.com)",
+      "WebFetch(domain:keycloak.org)",
+      "WebFetch(domain:flyway.io)",
+      "WebFetch(domain:postgresql.org)"
+    ]
+  }
+}

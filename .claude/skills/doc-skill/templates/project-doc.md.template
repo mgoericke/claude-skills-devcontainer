@@ -1,0 +1,244 @@
+# {{ARTIFACT_ID}}
+
+> {{PROJECT_DESCRIPTION}}
+
+**Framework:** {{FRAMEWORK}} · **Java:** {{JAVA_VERSION}} · **Stand:** {{DATE}}
+
+---
+
+## Inhaltsverzeichnis
+
+- [Lokale Entwicklung](#lokale-entwicklung)
+- [Architektur](#architektur)
+- [API-Referenz](#api-referenz)
+{{#if MESSAGING}}- [Messaging](#messaging)
+{{/if}}{{#if AUTH}}- [Auth / Keycloak](#auth--keycloak)
+{{/if}}- [Konfigurationsreferenz](#konfigurationsreferenz)
+- [Deployment](#deployment)
+- [Bekannte Einschränkungen](#bekannte-einschränkungen)
+
+---
+
+## Projektübersicht
+
+{{PROJECT_DESCRIPTION_LONG}}
+
+**Zielgruppe:** {{TARGET_AUDIENCE}}
+
+**Abhängige Dienste:**
+
+| Dienst | Zweck |
+|--------|-------|
+{{#if DB}}| PostgreSQL {{DB_VERSION}} | Primäre Datenbank |
+{{/if}}{{#if MESSAGING}}| RabbitMQ {{RABBITMQ_VERSION}} | Asynchrones Messaging |
+{{/if}}{{#if AUTH}}| Keycloak {{KEYCLOAK_VERSION}} | Authentifizierung / Autorisierung (OAuth2/OIDC) |
+{{/if}}
+
+---
+
+## Lokale Entwicklung
+
+### Voraussetzungen
+
+- Java {{JAVA_VERSION}}
+- Maven 3.9+
+- Docker + Docker Compose
+
+### Services starten
+
+```bash
+docker compose up -d
+```
+
+| Service | Adresse | Credentials |
+|---------|---------|-------------|
+{{#if DB}}| PostgreSQL | `localhost:5432` | `app` / `app` |
+{{/if}}{{#if MESSAGING}}| RabbitMQ Management | http://localhost:15672 | `app` / `app` |
+{{/if}}{{#if AUTH}}| Keycloak Admin | http://localhost:8180 | `admin` / `admin` |
+{{/if}}| Anwendung | http://localhost:{{APP_PORT}} | – |
+
+### Anwendung bauen und starten
+
+```bash
+# Bauen
+./mvnw clean package -DskipTests
+
+# Starten (lokal, außerhalb Docker)
+./mvnw {{FRAMEWORK_RUN_COMMAND}}
+```
+
+### Health Check
+
+```bash
+curl http://localhost:{{APP_PORT}}/{{HEALTH_ENDPOINT}}
+```
+
+### Tests ausführen
+
+```bash
+# Alle Tests
+./mvnw test
+
+# Nur Architekturtests
+./mvnw test -Dtest=ArchitectureTest
+```
+
+### Dependency-Updates prüfen
+
+```bash
+./mvnw versions:display-dependency-updates
+./mvnw versions:display-plugin-updates
+```
+
+---
+
+## Architektur
+
+Das Projekt folgt dem **BCE-Pattern** (Boundary / Control / Entity):
+
+```
+src/main/java/{{PACKAGE_PATH}}/
+├── boundary/
+│   ├── rest/          # REST-Endpunkte
+{{#if MESSAGING}}│   └── messaging/     # Messaging-Consumer / -Producer
+{{/if}}├── control/           # Business-Logik (Services)
+└── entity/            # JPA-Entities, Repositories, DTOs
+```
+
+Architekturregeln werden zur Build-Zeit durch **Taikai** (ArchUnit) geprüft:
+
+```bash
+./mvnw test -Dtest=ArchitectureTest
+```
+
+### Datenbankmigrationen
+
+Migrationen werden durch **Flyway** verwaltet:
+
+```
+src/main/resources/db/migration/
+├── V1__initial_schema.sql
+└── V2__...
+```
+
+Kein `ddl-auto=create` – alle Schemaänderungen über Flyway-Skripte.
+
+---
+
+## API-Referenz
+
+{{#if REST_ENDPOINTS}}
+| Methode | Pfad | Beschreibung | Auth |
+|---------|------|-------------|------|
+{{REST_ENDPOINTS}}
+{{else}}
+> Keine REST-Endpunkte konfiguriert.
+{{/if}}
+
+### Beispiele
+
+```bash
+# Beispiel-Request
+curl -X GET http://localhost:{{APP_PORT}}/{{EXAMPLE_ENDPOINT}} \
+  -H "Accept: application/json"
+```
+
+{{#if AUTH}}
+```bash
+# Authentifizierter Request (JWT)
+curl -X GET http://localhost:{{APP_PORT}}/{{EXAMPLE_ENDPOINT}} \
+  -H "Authorization: Bearer <token>"
+```
+{{/if}}
+
+---
+
+{{#if MESSAGING}}
+## Messaging
+
+| Richtung | Channel | Exchange / Queue | Payload |
+|----------|---------|-----------------|---------|
+{{MESSAGING_CHANNELS}}
+
+### Konfiguration (application.properties)
+
+```properties
+{{MESSAGING_CONFIG}}
+```
+
+---
+{{/if}}
+
+{{#if AUTH}}
+## Auth / Keycloak
+
+Die Anwendung ist als **OAuth2 Resource Server** konfiguriert.
+Alle gesicherten Endpunkte erfordern ein gültiges JWT-Token vom Keycloak-Realm.
+
+**Realm:** `{{KEYCLOAK_REALM}}`
+**Client-ID:** `{{KEYCLOAK_CLIENT_ID}}`
+
+### Token anfordern (Dev)
+
+```bash
+# Token vom Keycloak abrufen (Passwort-Flow – nur für Entwicklung!)
+curl -X POST http://localhost:8180/realms/{{KEYCLOAK_REALM}}/protocol/openid-connect/token \
+  -d "client_id={{KEYCLOAK_CLIENT_ID}}" \
+  -d "username=<user>" \
+  -d "password=<password>" \
+  -d "grant_type=password" | jq '.access_token'
+```
+
+---
+{{/if}}
+
+## Konfigurationsreferenz
+
+Alle Properties in `src/main/resources/application.properties`:
+
+| Property | Standardwert | Beschreibung |
+|----------|-------------|-------------|
+{{CONFIG_TABLE}}
+
+Umgebungsvariablen für Docker / Produktion:
+
+| Variable | Beschreibung |
+|----------|-------------|
+{{#if DB}}| `{{DB_URL_ENV}}` | JDBC-URL der Datenbank |
+| `{{DB_USER_ENV}}` | Datenbankbenutzer |
+| `{{DB_PASS_ENV}}` | Datenbankpasswort |
+{{/if}}{{#if MESSAGING}}| `{{RABBITMQ_HOST_ENV}}` | RabbitMQ Hostname |
+{{/if}}{{#if AUTH}}| `{{OIDC_URL_ENV}}` | Keycloak Issuer-URL / Auth-Server-URL |
+{{/if}}
+
+---
+
+## Deployment
+
+### Docker Image bauen
+
+```bash
+{{DOCKER_BUILD_COMMAND}}
+```
+
+### Mit Docker Compose starten
+
+```bash
+docker compose up -d
+```
+
+### Produktions-Hinweise
+
+- Keycloak in Produktion: `KC_DB=postgres` + eigene Datenbank (kein `start-dev`)
+- Secrets nie in `application.properties` – immer über Umgebungsvariablen
+- Health Check: `{{HEALTH_ENDPOINT}}` – muss in Load Balancer / Kubernetes konfiguriert werden
+
+---
+
+## Bekannte Einschränkungen
+
+{{KNOWN_LIMITATIONS}}
+
+---
+
+<!-- Generiert via doc-skill · Co-Author: Claude (claude-sonnet-4-6, Anthropic) -->

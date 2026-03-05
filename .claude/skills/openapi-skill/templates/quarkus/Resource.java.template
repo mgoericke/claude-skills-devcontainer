@@ -1,0 +1,30 @@
+package {{GROUP_ID}}.boundary.rest;
+
+import {{GROUP_ID}}.control.{{TAG}}Service;
+import {{GROUP_ID}}.entity.dto.*;
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
+/**
+ * JAX-RS Resource für {{TAG}}-Endpunkte.
+ *
+ * <p>Generiert aus OpenAPI-Spec: {{SPEC_FILE}}<br>
+ * Enthält nur HTTP-Mapping und Delegation – keine Business-Logik.
+ *
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via openapi-skill
+ */
+@Path("{{BASE_PATH}}")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class {{TAG}}Resource {
+
+    @Inject
+    {{TAG}}Service {{tag}}Service;
+
+    // ── Endpunkte (aus OpenAPI Spec) ────────────────────────────────────────────
+
+    {{METHODS}}
+}

@@ -1,0 +1,71 @@
+---
+name: {{SKILL_NAME}}
+description: {{SKILL_DESCRIPTION – ein Satz, was der Skill tut und wann er verwendet wird.}}
+argument-hint: "[{{ARGUMENT_HINT}}]"
+disable-model-invocation: false
+---
+
+# {{SKILL_TITLE}}
+
+{{KURZBESCHREIBUNG – 1-2 Sätze, was der Skill tut.}}
+
+> **Philosophie:** {{LEITSATZ – ein Satz, der die Haltung des Skills beschreibt.}}
+
+---
+
+## When to Use This Skill
+
+- {{Situation oder Trigger-Phrase, die den Skill auslöst}}
+- {{Weitere Situation}}
+- {{Formulierungsbeispiel des Users, z.B. "erstelle ein neues Projekt"}}
+
+## What This Skill Does
+
+1. {{Kern-Aktion 1 – was passiert konkret?}}
+2. {{Kern-Aktion 2}}
+3. {{Kern-Aktion 3}}
+
+## How to Use
+
+```
+{{Beispiel-Aufruf 1 – natürliche Sprache}}
+```
+
+```
+/{{SKILL_NAME}} {{BEISPIEL_ARGUMENT}}
+```
+
+---
+
+## Instructions
+
+> **Vor jeder Ausführung**:
+> 1. `.claude/lessons-learned.md` prüfen
+> 2. {{Weitere Pflicht-Prüfungen, z.B. Versionen im Internet abfragen}}
+
+### Schritt 1 – {{Titel}}
+
+{{Detaillierte Anweisungen für den ersten Schritt.}}
+
+### Schritt 2 – {{Titel}}
+
+{{Detaillierte Anweisungen für den zweiten Schritt.}}
+
+### Schritt 3 – {{Titel}}
+
+{{Detaillierte Anweisungen für den dritten Schritt.}}
+
+---
+
+## Additional resources
+
+- For {{BESCHREIBUNG}}, see [{{TEMPLATE_NAME}}]({{TEMPLATE_NAME}})
+- For {{BESCHREIBUNG}}, see [{{REFERENCE_NAME}}](references/{{REFERENCE_NAME}})
+
+---
+
+## Conventions
+
+- **Sprache:** Deutsch in Kommentaren/Doku, Englisch im Code
+- **Co-Author:** Jede generierte Datei enthält `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via {{SKILL_NAME}}`
+- {{Weitere skill-spezifische Konventionen}}

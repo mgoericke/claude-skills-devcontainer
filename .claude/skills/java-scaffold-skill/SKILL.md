@@ -1,6 +1,6 @@
 ---
 name: java-scaffold-skill
-description: Scaffolding für Java-Projekte mit Spring Boot oder Quarkus, PostgreSQL, RabbitMQ und Docker. Verwende diesen Skill wenn eine neue Java-Anwendung, Entity, Dockerfile oder docker-compose erstellt werden soll.
+description: Scaffolding fuer Java-Projekte mit Spring Boot oder Quarkus, PostgreSQL, RabbitMQ und Docker. Generiert pom.xml, BCE-Paketstruktur, Flyway-Migrationen, Architekturtests (Taikai), Dockerfile und docker-compose. Verwende diesen Skill bei neuen Java-Anwendungen, neuen Entities, Dockerfiles, docker-compose oder Architekturtests – auch bei "erstelle ein neues Projekt", "scaffold", "neues Modul", "neue Entity".
 argument-hint: "[framework] [beschreibung]"
 ---
 
@@ -12,16 +12,6 @@ Scaffolding für Java-Projekte mit Spring Boot oder Quarkus.
 > im Internet abfragen – niemals veraltete Versionen aus dem Gedächtnis verwenden.
 
 ---
-
-## When to Use This Skill
-
-- Ein neues Java-Projekt (Spring Boot oder Quarkus) soll erstellt werden
-- Eine neue Entity mit Repository, Service und Controller/Resource wird benötigt
-- Ein Dockerfile oder eine Docker Compose Datei soll generiert werden
-- Architekturtests (Taikai) sollen angelegt werden
-- Konfigurationsdateien (`application.properties`, `pom.xml`) sollen erstellt werden
-- Eine Flyway-Migration für eine neue Entity wird benötigt
-- Formulierungen wie "erstelle ein neues Projekt", "scaffold", "neues Modul", "neue Entity"
 
 ## What This Skill Does
 
@@ -97,9 +87,9 @@ aufgenommen. Nicht benötigte Dienste vollständig weglassen – keine auskommen
 
 Nie raten oder Defaults verwenden – immer explizit fragen.
 
-### Schritt 2 – Versionsprüfung (PFLICHT)
+### Schritt 2 – Versionspruefung
 
-**Bevor Code generiert wird**, müssen folgende Versionen aktuell abgefragt werden:
+Veraltete Dependency-Versionen fuehren zu Inkompatibilitaeten und Sicherheitsluecken. Daher vor jeder Code-Generierung die aktuellen Versionen im Internet pruefen:
 
 | Artifact | Wo prüfen |
 |----------|-----------|
@@ -137,7 +127,7 @@ Reihenfolge der Generierung:
 11. `docker-compose.yml` mit Health Checks
 12. `renovate.json`
 
-### Schritt 4 – Swagger UI (PFLICHT bei REST)
+### Schritt 4 – Swagger UI
 
 Jede Anwendung mit REST-Endpunkten erhält eine **Swagger UI**:
 
@@ -159,9 +149,9 @@ freigeben (bereits im Template enthalten):
 **Wichtig bei Quarkus:** `quarkus.swagger-ui.always-include=true` aktivieren, damit die
 Swagger UI auch im Produktions-Modus (nicht nur `quarkus:dev`) verfügbar bleibt.
 
-### Schritt 5 – Health Checks (PFLICHT)
+### Schritt 5 – Health Checks
 
-Jede Anwendung **muss** Health-Endpunkte bereitstellen:
+Health-Endpunkte sind die Grundlage fuer Docker-Healthchecks und Kubernetes-Probes. Ohne sie kann weder Docker noch ein Orchestrator den Zustand der Anwendung pruefen:
 
 | Framework | Endpunkt | Dependency |
 |-----------|----------|-----------|
@@ -172,9 +162,9 @@ Health Checks werden verwendet in:
 - `HEALTHCHECK` im Dockerfile
 - `healthcheck` im `docker-compose.yml`
 
-### Schritt 6 – Architekturtests (PFLICHT)
+### Schritt 6 – Architekturtests
 
-Taikai-Test **immer** anlegen. Template: `templates/arch/ArchitectureTest.java.template`
+Architekturtests mit Taikai stellen sicher, dass die BCE-Schichtentrennung auch bei wachsendem Projekt erhalten bleibt. Template: `templates/arch/ArchitectureTest.java.template`
 
 ```xml
 <dependency>
@@ -185,9 +175,9 @@ Taikai-Test **immer** anlegen. Template: `templates/arch/ArchitectureTest.java.t
 </dependency>
 ```
 
-### Schritt 7 – versions-maven-plugin (PFLICHT)
+### Schritt 7 – versions-maven-plugin
 
-Jede generierte `pom.xml` enthält das `versions-maven-plugin` im `<build><pluginManagement>` Block:
+Das versions-maven-plugin ermoeglicht Entwicklern, veraltete Dependencies lokal zu erkennen – ergaenzt Renovate fuer den CI/CD-Workflow. In jeder `pom.xml` im `<build><pluginManagement>` Block konfigurieren:
 
 ```xml
 <build>
@@ -213,9 +203,9 @@ Nützliche Befehle für Entwickler:
 ./mvnw versions:display-parent-updates
 ```
 
-### Schritt 8 – Renovate (PFLICHT)
+### Schritt 8 – Renovate
 
-Jedes generierte Projekt erhält `renovate.json` aus `templates/renovate.json`.
+Renovate erstellt automatisch Pull Requests fuer Dependency-Updates und haelt das Projekt aktuell. Jedes generierte Projekt erhaelt `renovate.json` aus `templates/renovate.json`.
 
 ---
 

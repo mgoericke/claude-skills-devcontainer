@@ -1,6 +1,6 @@
 ---
 name: openapi-skill
-description: Erstellt, erweitert und implementiert OpenAPI 3.x Spezifikationen. Verwende bei "erstelle eine API Spec", "erweitere die API", "neue OpenAPI Spec" oder "generiere Code aus der OpenAPI Spec".
+description: Erstellt, erweitert und implementiert OpenAPI 3.x Spezifikationen. Drei Modi – Spec erstellen (from scratch), Spec erweitern (bestehende Spec ergaenzen) und Code generieren (Java-Klassen im BCE-Pattern). Verwende diesen Skill bei "erstelle eine API Spec", "definiere die API", "erweitere die API", "generiere Code aus der OpenAPI Spec", "neue OpenAPI Spec" oder wenn eine REST-API designed werden soll.
 argument-hint: "[api-name oder spec-pfad]"
 ---
 
@@ -14,13 +14,6 @@ und **Code generieren** (Java-Klassen im BCE-Pattern aus einer Spec).
 > implementiert wird – der Vertrag steht im Mittelpunkt. Erst designen, dann bauen.
 
 ---
-
-## When to Use This Skill
-
-- Eine neue API soll designed und als OpenAPI Spec definiert werden
-- Eine bestehende OpenAPI Spec soll um neue Endpunkte oder Schemas erweitert werden
-- Eine OpenAPI-Spezifikation (YAML oder JSON) liegt vor und daraus soll Java-Code generiert werden
-- Formulierungen wie "erstelle eine API Spec", "definiere die API", "erweitere die API", "generiere Code aus der OpenAPI Spec", "neue OpenAPI Spec"
 
 ## What This Skill Does
 
@@ -54,9 +47,9 @@ Definiere eine REST-API für Bestellungen und Produkte
 > **Vor jeder Ausführung**:
 > 1. `.claude/lessons-learned.md` prüfen
 
-### Schritt 0 – Modus erkennen (PFLICHT)
+### Schritt 0 – Modus erkennen
 
-**Mit `AskUserQuestion` abfragen – BEVOR das Interview startet.**
+Die drei Modi (erstellen, erweitern, Code generieren) fuehren zu komplett unterschiedlichen Workflows. Den Modus zuerst mit `AskUserQuestion` klaeren, damit keine unnoetige Arbeit entsteht.
 
 ```
 Was möchtest du tun?
@@ -76,7 +69,7 @@ Je nach Modus zu den entsprechenden Schritten springen:
 
 ### Modus A: Neue Spec erstellen
 
-#### Schritt A1 – Grundlagen (PFLICHT)
+#### Schritt A1 – Grundlagen
 
 **Mit `AskUserQuestion` abfragen:**
 
@@ -98,7 +91,7 @@ Optionen:
 - **OAuth2** – Vollständiger OAuth2-Flow mit Scopes
 - **Keine Authentifizierung** – Öffentliche API
 
-#### Schritt A2 – Datenmodelle (PFLICHT)
+#### Schritt A2 – Datenmodelle
 
 **Zuerst:** Bestehende Entities im Projekt scannen (Verzeichnisse `entity/`, `entity/model/`, `entity/dto/`).
 
@@ -122,7 +115,7 @@ Wiederhole die Abfrage bis der Benutzer signalisiert, dass alle Modelle definier
 
 **Request/Response-Varianten:** Für jedes Schema prüfen, ob separate Request- und Response-Varianten nötig sind (z.B. `CreateOrderRequest` ohne `id`, `OrderResponse` mit `id` und Timestamps).
 
-#### Schritt A3 – Endpunkte (PFLICHT)
+#### Schritt A3 – Endpunkte
 
 Pro Datenmodell per `AskUserQuestion` abfragen:
 

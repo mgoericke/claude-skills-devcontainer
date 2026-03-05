@@ -88,7 +88,7 @@ Explizit abfragen, welche Dienste tatsächlich benötigt werden:
 
 | Dienst | Abhängigkeit (Spring) | Abhängigkeit (Quarkus) | Standard |
 |--------|----------------------|------------------------|---------|
-| **Datenbank** (PostgreSQL) | `spring-boot-starter-data-jpa`, `postgresql`, Flyway | `quarkus-hibernate-orm-panache`, `quarkus-jdbc-postgresql`, Flyway | Ja |
+| **Datenbank** (PostgreSQL) | `spring-boot-starter-data-jpa`, `postgresql`, `spring-boot-starter-flyway`, `flyway-database-postgresql` | `quarkus-hibernate-orm-panache`, `quarkus-jdbc-postgresql`, Flyway | Ja |
 | **REST / Swagger UI** | `springdoc-openapi-starter-webmvc-ui` | `quarkus-smallrye-openapi` | **Ja** (immer bei REST) |
 | **Messaging** (RabbitMQ) | `spring-boot-starter-amqp` | `quarkus-messaging-rabbitmq` | Nein |
 | **Auth / IAM** (Keycloak) | `spring-boot-starter-oauth2-resource-server` | `quarkus-oidc` | Nein |
@@ -249,7 +249,7 @@ Jedes generierte Projekt erhält `renovate.json` aus `templates/renovate.json`.
 
 - **Stack:** Java 25 · Spring Boot 4.x oder Quarkus 3.31+ · PostgreSQL 17 · RabbitMQ 4 · Keycloak 26.x · Maven 3.9 · Docker
 - **Architektur:** BCE-Pattern strikt (Boundary / Control / Entity)
-- **Entities:** Lombok `@Data` + `@Builder`
+- **Entities:** Lombok `@Data` + `@Builder` – `maven-compiler-plugin` muss Lombok als `annotationProcessorPath` konfigurieren
 - **Persistenz:** Flyway für alle Migrationen – kein `ddl-auto=create`
 - **Messaging:** RabbitMQ-Consumer immer in `boundary/messaging/`; Quarkus: `@Blocking` + `@Transactional` bei DB-Zugriffen im Consumer
 - **Dockerfile:** Spring Boot → `./Dockerfile` (Root); Quarkus → `src/main/docker/Dockerfile.jvm`

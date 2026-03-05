@@ -1,6 +1,6 @@
 ---
 name: infografik-skill
-description: Erstellt professionelle Infografiken als PNG über die Hugging Face Inference API. Verwende bei "Infografik erstellen", "visualisiere das", "mach das übersichtlich" oder "erstelle ein Diagramm".
+description: Erstellt professionelle Infografiken als PNG ueber die Hugging Face Inference API (FLUX.1-schnell). Unterstuetzt technische Dashboards, Architekturuebersichten, Prozessflows, Vergleiche, Timelines und kreative Poster. Verwende diesen Skill bei Infografiken, Visualisierungen, illustrierten Statistiken oder Roadmaps – auch bei "visualisiere das", "mach das uebersichtlich", "zeig das als Bild", "erstelle ein Diagramm" oder "erstelle eine Infografik".
 argument-hint: "[thema-oder-beschreibung]"
 ---
 
@@ -12,13 +12,6 @@ Erstellt professionelle Infografiken als PNG-Datei über die **Hugging Face Infe
 > Eine gute Infografik reduziert Komplexität – sie fügt keine hinzu.
 
 ---
-
-## When to Use This Skill
-
-- Der Nutzer möchte Daten visuell aufbereiten (KPI-Dashboard, Architekturübersicht, Prozessflow)
-- Eine Infografik, Visualisierung oder illustrierte Statistik soll erstellt werden
-- Formulierungen wie "visualisiere das", "mach das übersichtlich", "erstelle eine Infografik", "zeig das als Bild"
-- Vergleiche, Timelines, Roadmaps oder Fakten-Poster sollen als Bild generiert werden
 
 ## What This Skill Does
 
@@ -53,9 +46,9 @@ Der Nutzer benötigt ein **kostenloses Hugging Face-Konto** und ein Access Token
 
 ## Instructions
 
-### Schritt 1 – Stil-Abfrage (PFLICHT)
+### Schritt 1 – Stil-Abfrage
 
-**Bevor der Prompt generiert wird, MUSS der Nutzer mit `AskUserQuestion` nach Stil und Typ gefragt werden.**
+Der Grafikstil bestimmt Layout, Farbpalette und Detailgrad des Image-Prompts. Ohne diese Entscheidung wuerde der Prompt zu generisch ausfallen – daher immer zuerst mit `AskUserQuestion` abfragen.
 
 #### Frage 1 – Grafikstil (Zielgruppe)
 

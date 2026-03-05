@@ -31,6 +31,7 @@ Vor jeder Generierung `lessons-learned.md` prüfen.
 | `infografik-skill` | Infografik, Visualisierung, Diagramm |
 | `blog-post-skill` | Blog Post, Artikel, technischer Beitrag erstellen |
 | `frontend-skill` | Web-UIs: Dashboards (TailAdmin), Landing Pages, SPAs (Tailwind CSS) |
+| `skill-creator` | Neue Skills erstellen, bestehende Skills optimieren, Skill-Performance messen |
 
 ## Versionsstrategie (PFLICHT)
 

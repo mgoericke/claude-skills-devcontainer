@@ -1,6 +1,6 @@
 ---
 name: frontend-skill
-description: Erstellt moderne Web-UIs mit Tailwind CSS. Dashboards mit TailAdmin, Landing Pages und SPAs mit Tailwind CSS CDN. Verwende bei "erstelle ein Dashboard", "Landing Page", "Admin-UI", "Frontend", "Webseite" oder "UI".
+description: Erstellt moderne Web-UIs mit Tailwind CSS. Zwei Modi – Dashboards/Admin-Panels mit TailAdmin (Alpine.js + ApexCharts) und Websites/Landing Pages mit Tailwind CSS CDN. Verwende diesen Skill bei "erstelle ein Dashboard", "Landing Page", "Admin-UI", "Frontend", "Webseite", "UI bauen", "Portfolio-Seite" oder wenn eine responsive HTML-Seite mit Tailwind CSS gebraucht wird. Nicht verwenden fuer komplexe SPAs mit React/Vue/Angular.
 argument-hint: "[beschreibung]"
 ---
 
@@ -13,13 +13,6 @@ Erstellt moderne, responsive Web-UIs mit **Tailwind CSS**.
 > **Website** → Tailwind CSS CDN (kein Build-Tool)
 
 ---
-
-## When to Use This Skill
-
-- Ein Dashboard, Admin-Panel oder datenreiche UI soll erstellt werden
-- Eine Landing Page, SPA oder Marketing-Seite wird benötigt
-- Formulierungen wie "erstelle ein Dashboard", "Admin-UI", "Landing Page", "Frontend", "Webseite", "UI bauen"
-- **Nicht verwenden** für komplexe SPAs mit React/Vue/Angular – dafür eigenes Framework nutzen
 
 ## What This Skill Does
 
@@ -50,9 +43,9 @@ Baue mir eine Portfolio-Seite
 
 ## Instructions
 
-### Schritt 1 – Modus abfragen (PFLICHT)
+### Schritt 1 – Modus abfragen
 
-Vor jeder Generierung den Modus klären:
+Dashboard und Website verwenden unterschiedliche Technologie-Stacks und Layouts. Den Modus vorher klaeren, um den richtigen Stack einzusetzen:
 
 | Modus | Wann verwenden | Technologie |
 |-------|---------------|-------------|

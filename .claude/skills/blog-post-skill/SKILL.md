@@ -1,6 +1,6 @@
 ---
 name: blog-post-skill
-description: Erstellt technische Blog Posts im Stil von the-main-thread.com mit strukturiertem Interview und Zielgruppen-Anpassung. Verwende bei "schreib einen Blog Post", "erstelle einen Artikel" oder "write a blog post".
+description: Erstellt technische Blog Posts im Stil von the-main-thread.com mit strukturiertem Interview und Zielgruppen-Anpassung (Developer, Business Analysts, Projekt Manager). Verwende diesen Skill immer wenn ein Blog Post, Artikel, Tutorial, Anleitung, Erfahrungsbericht oder Fachbeitrag erstellt werden soll – auch bei informellen Anfragen wie "schreib was ueber X", "ich moechte ueber X bloggen" oder "mach einen Artikel draus". Auch verwenden wenn ein bestehender Entwurf in Blog-Post-Format gebracht werden soll.
 argument-hint: "[thema]"
 ---
 
@@ -14,13 +14,6 @@ strukturierten Interview und einem bewährten Template aus erfolgreichen Fachart
 > die über den Code hinausgeht.
 
 ---
-
-## When to Use This Skill
-
-- Ein technischer Blog Post, Artikel oder Fachbeitrag soll erstellt werden
-- Ein Tutorial, eine Anleitung oder ein Erfahrungsbericht soll geschrieben werden
-- Formulierungen wie "schreib einen Blog Post", "erstelle einen Artikel", "write a blog post", "ich möchte über X bloggen", "erstelle einen Beitrag"
-- Ein bestehender Entwurf soll in das Blog-Post-Format gebracht werden
 
 ## What This Skill Does
 
@@ -51,9 +44,9 @@ Write a blog post about Java FFM and native AI inference
 > 1. `.claude/lessons-learned.md` prüfen
 > 2. Template `templates/blog-post.md.template` laden
 
-### Schritt 1 – Sprache und Zielgruppe (PFLICHT)
+### Schritt 1 – Sprache und Zielgruppe abfragen
 
-**Mit `AskUserQuestion` abfragen – BEVOR das Interview startet.**
+Sprache und Zielgruppe bestimmen den gesamten Ton, die Tiefe und die Menge an Code-Beispielen im Post. Ohne diese Information wird der Post nicht zielgruppengerecht – daher immer zuerst mit `AskUserQuestion` abfragen.
 
 #### Frage 1 – Sprache
 
@@ -76,9 +69,9 @@ Optionen:
 - **Business Analysts** – Fachlicher Fokus, Code nur illustrativ, Nutzen und Prozesse im Vordergrund, Diagramme statt Implementierungsdetails
 - **Projekt Manager** – Strategischer Blick, Entscheidungshilfen, Risiken/Chancen, Aufwandseinschätzungen, wenig Code
 
-### Schritt 2 – Themen-Interview (PFLICHT)
+### Schritt 2 – Themen-Interview
 
-Fragen **sequenziell** stellen – eine Gruppe nach der anderen.
+Das Interview liefert die inhaltliche Grundlage fuer den gesamten Post. Fragen sequenziell stellen – eine Gruppe nach der anderen, damit der Nutzer nicht ueberfordert wird.
 
 #### Gruppe 1 – Kern
 

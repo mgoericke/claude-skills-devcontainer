@@ -22,7 +22,7 @@ services:
     restart: on-failure
 
   postgres:
-    image: postgres:17-alpine
+    image: postgres:17
     environment:
       POSTGRES_DB: product-servicedb
       POSTGRES_USER: app

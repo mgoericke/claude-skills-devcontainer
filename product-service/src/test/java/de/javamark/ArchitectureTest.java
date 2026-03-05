@@ -14,11 +14,21 @@
 package de.javamark;
 
 import com.enofex.taikai.Taikai;
+import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
+import com.tngtech.archunit.core.importer.ImportOption;
+import com.tngtech.archunit.lang.ArchRule;
 import org.junit.jupiter.api.Test;
+
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 class ArchitectureTest {
 
     private static final String BASE_PACKAGE = "de.javamark";
+
+    private final JavaClasses importedClasses = new ClassFileImporter()
+            .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+            .importPackages(BASE_PACKAGE);
 
     @Test
     void shouldFollowJavaConventions() {
@@ -56,22 +66,18 @@ class ArchitectureTest {
     }
 
     @Test
-    void shouldFollowNamingConventions() {
-        Taikai.builder()
-                .namespace(BASE_PACKAGE)
-                .java(java -> java
-                        .naming(naming -> naming
-                                .classesShouldMatch(
-                                        BASE_PACKAGE + ".boundary.rest",
-                                        ".*Resource|.*Controller"
-                                )
-                                .classesShouldMatch(
-                                        BASE_PACKAGE + ".control",
-                                        ".*Service"
-                                )
-                        )
-                )
-                .build()
-                .check();
+    void controllersShouldResideInBoundaryRest() {
+        ArchRule rule = classes()
+                .that().haveSimpleNameEndingWith("Controller")
+                .should().resideInAPackage("..boundary.rest..");
+        rule.check(importedClasses);
+    }
+
+    @Test
+    void servicesShouldResideInControl() {
+        ArchRule rule = classes()
+                .that().haveSimpleNameEndingWith("Service")
+                .should().resideInAPackage("..control..");
+        rule.check(importedClasses);
     }
 }

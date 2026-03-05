@@ -24,7 +24,10 @@
       "WebFetch(domain:rabbitmq.com)",
       "WebFetch(domain:keycloak.org)",
       "WebFetch(domain:flyway.io)",
-      "WebFetch(domain:postgresql.org)"
+      "WebFetch(domain:postgresql.org)",
+      "WebFetch(domain:tailwindcss.com)",
+      "WebFetch(domain:tailadmin.com)",
+      "WebFetch(domain:demo.tailadmin.com)"
     ]
   }
 }

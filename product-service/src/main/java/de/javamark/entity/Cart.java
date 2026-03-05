@@ -1,43 +1,33 @@
 /**
- * JPA-Entity für Product.
- *
- * <p>Erstellt mit Spring Boot 4.x · BCE-Architektur (Entity-Schicht)
+ * JPA-Entity für den Warenkorb.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via frontend-skill
  */
 package de.javamark.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product")
+@Table(name = "cart")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
-    private String name;
-
-    private String description;
-
-    @Column(nullable = false, precision = 19, scale = 2)
-    private BigDecimal price;
-
-    @Column(nullable = false)
-    private String category;
-
-    private String imageUrl;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<CartItem> items = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

@@ -1,43 +1,42 @@
 /**
- * JPA-Entity für Product.
- *
- * <p>Erstellt mit Spring Boot 4.x · BCE-Architektur (Entity-Schicht)
+ * JPA-Entity für eine Position im Warenkorb.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via frontend-skill
  */
 package de.javamark.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product")
+@Table(name = "cart_item")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id", nullable = false)
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Cart cart;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
     @Column(nullable = false)
-    private String name;
-
-    private String description;
-
-    @Column(nullable = false, precision = 19, scale = 2)
-    private BigDecimal price;
-
-    @Column(nullable = false)
-    private String category;
-
-    private String imageUrl;
+    private int quantity;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

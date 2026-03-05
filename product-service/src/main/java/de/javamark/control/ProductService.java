@@ -35,6 +35,11 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
+    public List<Product> findByCategory(String category) {
+        return productRepository.findByCategory(category);
+    }
+
+    @Transactional(readOnly = true)
     public Optional<Product> findById(UUID id) {
         return productRepository.findById(id);
     }
@@ -49,6 +54,8 @@ public class ProductService {
                     existing.setName(updated.getName());
                     existing.setDescription(updated.getDescription());
                     existing.setPrice(updated.getPrice());
+                    existing.setCategory(updated.getCategory());
+                    existing.setImageUrl(updated.getImageUrl());
                     return productRepository.save(existing);
                 });
     }

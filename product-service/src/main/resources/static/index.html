@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wollwerk – Dein Online-Shop für Strickwaren</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wool: { 50: '#fdf8f0', 100: '#f9edda', 200: '#f2d7b0', 300: '#e9bc7d', 400: '#df9b4a', 500: '#d68329', 600: '#c86c1f', 700: '#a6531c', 800: '#85431e', 900: '#6e381b' },
+                        knit: { 50: '#f4f7f4', 100: '#e2ebe2', 200: '#c6d7c7', 300: '#9db99f', 400: '#729574', 500: '#527855', 600: '#3f5f42', 700: '#344d36', 800: '#2c3e2e', 900: '#253427' }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via frontend-skill -->
+</head>
+<body class="bg-wool-50 text-gray-900" x-data="shopApp()">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="#" @click.prevent="closeDetail(); scrollTo('hero')" class="flex items-center gap-2">
+                    <svg class="h-8 w-8 text-wool-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                    </svg>
+                    <span class="text-xl font-bold text-gray-900">Woll<span class="text-wool-600">werk</span></span>
+                </a>
+
+                <div class="hidden md:flex items-center space-x-1">
+                    <button @click="closeDetail(); scrollTo('hero')" class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-wool-600 hover:bg-wool-50 transition">Start</button>
+                    <button @click="closeDetail(); activeCategory = ''; scrollTo('products')" class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-wool-600 hover:bg-wool-50 transition">Alle Produkte</button>
+                    <button @click="closeDetail(); activeCategory = 'Wolle'; scrollTo('products')" class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-wool-600 hover:bg-wool-50 transition">Wolle</button>
+                    <button @click="closeDetail(); activeCategory = 'Nadeln'; scrollTo('products')" class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-wool-600 hover:bg-wool-50 transition">Nadeln</button>
+                    <button @click="closeDetail(); activeCategory = 'Anleitungen'; scrollTo('products')" class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-wool-600 hover:bg-wool-50 transition">Anleitungen</button>
+                    <button @click="closeDetail(); activeCategory = 'Zubehoer'; scrollTo('products')" class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-wool-600 hover:bg-wool-50 transition">Zubehör</button>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="/admin/" class="text-xs text-gray-400 hover:text-wool-600 transition hidden sm:block">Admin</a>
+                    <button @click="cartOpen = !cartOpen" class="relative p-2 text-gray-600 hover:text-wool-600 transition">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                        </svg>
+                        <span x-show="cartItems.length > 0"
+                              class="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-wool-600 text-[11px] text-white flex items-center justify-center font-semibold"
+                              x-text="cartItems.reduce((s,i) => s + i.quantity, 0)"></span>
+                    </button>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-gray-600">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div x-show="mobileMenuOpen" x-collapse class="md:hidden border-t pb-4">
+                <button @click="closeDetail(); activeCategory = ''; scrollTo('products'); mobileMenuOpen = false" class="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-wool-50 rounded-lg">Alle Produkte</button>
+                <button @click="closeDetail(); activeCategory = 'Wolle'; scrollTo('products'); mobileMenuOpen = false" class="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-wool-50 rounded-lg">Wolle</button>
+                <button @click="closeDetail(); activeCategory = 'Nadeln'; scrollTo('products'); mobileMenuOpen = false" class="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-wool-50 rounded-lg">Nadeln</button>
+                <button @click="closeDetail(); activeCategory = 'Anleitungen'; scrollTo('products'); mobileMenuOpen = false" class="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-wool-50 rounded-lg">Anleitungen</button>
+                <button @click="closeDetail(); activeCategory = 'Zubehoer'; scrollTo('products'); mobileMenuOpen = false" class="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-wool-50 rounded-lg">Zubehör</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Detail View (overlay over main content) -->
+    <div x-show="selectedProduct" x-cloak class="pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-6">
+                <button @click="closeDetail()" class="text-sm text-wool-600 hover:text-wool-700 font-medium flex items-center gap-1">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    Zurück zu den Produkten
+                </button>
+            </nav>
+
+            <!-- Product Detail -->
+            <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
+                <div class="grid md:grid-cols-2 gap-0">
+                    <!-- Image -->
+                    <div class="bg-gray-50 p-8 flex items-center justify-center">
+                        <img :src="selectedProduct?.imageUrl || 'https://placehold.co/500x500/f5f0e1/c9b99a?text=Wollwerk'"
+                             :alt="selectedProduct?.name"
+                             class="rounded-xl max-h-[400px] object-cover shadow-lg">
+                    </div>
+
+                    <!-- Info -->
+                    <div class="p-8 flex flex-col">
+                        <span class="inline-block self-start rounded-full px-3 py-1 text-xs font-medium bg-wool-100 text-wool-700 mb-3"
+                              x-text="selectedProduct?.category"></span>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900" x-text="selectedProduct?.name"></h1>
+                        <p class="mt-4 text-gray-600 leading-relaxed" x-text="selectedProduct?.description"></p>
+
+                        <div class="mt-6 flex items-baseline gap-2">
+                            <span class="text-3xl font-bold text-wool-700" x-text="selectedProduct ? formatPrice(selectedProduct.price) : ''"></span>
+                            <span class="text-sm text-gray-400">inkl. MwSt.</span>
+                        </div>
+
+                        <!-- Details -->
+                        <div class="mt-6 border-t pt-6 space-y-3">
+                            <div class="flex items-center gap-2 text-sm text-gray-600">
+                                <svg class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Auf Lager – Versand in 1-2 Werktagen
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600">
+                                <svg class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Kostenloser Versand ab 50 €
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600">
+                                <svg class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                30 Tage Rückgaberecht
+                            </div>
+                        </div>
+
+                        <!-- Add to Cart -->
+                        <div class="mt-auto pt-6">
+                            <button @click="addToCart(selectedProduct)"
+                                    class="w-full flex items-center justify-center gap-2 rounded-xl bg-wool-600 px-6 py-3.5 text-sm font-semibold text-white hover:bg-wool-700 transition shadow-lg shadow-wool-600/25">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                                </svg>
+                                In den Warenkorb
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Similar Products -->
+            <div class="mt-12" x-show="similarProducts.length > 0">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">Ähnliche Produkte</h2>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <template x-for="product in similarProducts" :key="product.id">
+                        <div @click="openDetail(product)"
+                             class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 cursor-pointer">
+                            <div class="relative overflow-hidden">
+                                <img :src="product.imageUrl || 'https://placehold.co/400x400/f5f0e1/c9b99a?text=Wollwerk'"
+                                     :alt="product.name"
+                                     class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-sm font-semibold text-gray-900 group-hover:text-wool-600 transition truncate" x-text="product.name"></h3>
+                                <span class="text-sm font-bold text-wool-700 mt-1 block" x-text="formatPrice(product.price)"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Shop Content (hidden when detail is open) -->
+    <div x-show="!selectedProduct">
+        <!-- Hero Section -->
+        <header id="hero" class="relative pt-16 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <span class="inline-block rounded-full bg-wool-100 px-4 py-1.5 text-sm font-medium text-wool-700 mb-6">
+                            Handgemacht mit Liebe
+                        </span>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
+                            Dein Online-Shop für
+                            <span class="text-wool-600">Strickwaren</span>
+                        </h1>
+                        <p class="mt-6 text-lg text-gray-600 max-w-lg">
+                            Von feinster Merinowolle über Profi-Nadeln bis hin zu kreativen Strickanleitungen –
+                            alles für dein nächstes Projekt.
+                        </p>
+                        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                            <button @click="activeCategory = ''; scrollTo('products')"
+                                    class="rounded-lg bg-wool-600 px-6 py-3 text-sm font-medium text-white hover:bg-wool-700 transition shadow-lg shadow-wool-600/25">
+                                Jetzt stöbern
+                            </button>
+                            <button @click="activeCategory = 'Anleitungen'; scrollTo('products')"
+                                    class="rounded-lg border border-gray-300 px-6 py-3 text-sm font-medium text-gray-700 hover:bg-white transition">
+                                Anleitungen entdecken
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative hidden lg:block">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-4">
+                                <div class="rounded-2xl bg-wool-200 h-48 flex items-center justify-center text-wool-700">
+                                    <svg class="h-20 w-20 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                                    </svg>
+                                </div>
+                                <div class="rounded-2xl bg-knit-100 h-32 flex items-center justify-center text-knit-500">
+                                    <svg class="h-14 w-14 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="space-y-4 pt-8">
+                                <div class="rounded-2xl bg-amber-50 h-32 flex items-center justify-center text-amber-400">
+                                    <svg class="h-14 w-14 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="rounded-2xl bg-wool-100 h-48 flex items-center justify-center text-wool-400">
+                                    <svg class="h-20 w-20 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                              d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Trust Bar -->
+        <section class="border-y bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <p class="text-3xl font-bold text-wool-600" x-text="products.length + '+'"></p>
+                        <p class="mt-1 text-sm text-gray-500">Produkte</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-bold text-wool-600">100%</p>
+                        <p class="mt-1 text-sm text-gray-500">Handverlesene Qualität</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-bold text-wool-600">24h</p>
+                        <p class="mt-1 text-sm text-gray-500">Schneller Versand</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-bold text-wool-600">&#9829;</p>
+                        <p class="mt-1 text-sm text-gray-500">Mit Liebe gemacht</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Nav & Products -->
+        <section id="products" class="pt-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900">Unsere Produkte</h2>
+                    <p class="mt-3 text-gray-600">Von Wolle bis Anleitung – alles für dein Strickprojekt</p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-2 mb-10">
+                    <button @click="activeCategory = ''"
+                            :class="activeCategory === '' ? 'bg-wool-600 text-white shadow-lg shadow-wool-600/25' : 'bg-white text-gray-600 hover:bg-wool-50 border border-gray-200'"
+                            class="rounded-full px-5 py-2 text-sm font-medium transition">Alle</button>
+                    <button @click="activeCategory = 'Wolle'"
+                            :class="activeCategory === 'Wolle' ? 'bg-wool-600 text-white shadow-lg shadow-wool-600/25' : 'bg-white text-gray-600 hover:bg-wool-50 border border-gray-200'"
+                            class="rounded-full px-5 py-2 text-sm font-medium transition">Wolle</button>
+                    <button @click="activeCategory = 'Nadeln'"
+                            :class="activeCategory === 'Nadeln' ? 'bg-wool-600 text-white shadow-lg shadow-wool-600/25' : 'bg-white text-gray-600 hover:bg-wool-50 border border-gray-200'"
+                            class="rounded-full px-5 py-2 text-sm font-medium transition">Nadeln</button>
+                    <button @click="activeCategory = 'Anleitungen'"
+                            :class="activeCategory === 'Anleitungen' ? 'bg-wool-600 text-white shadow-lg shadow-wool-600/25' : 'bg-white text-gray-600 hover:bg-wool-50 border border-gray-200'"
+                            class="rounded-full px-5 py-2 text-sm font-medium transition">Anleitungen</button>
+                    <button @click="activeCategory = 'Zubehoer'"
+                            :class="activeCategory === 'Zubehoer' ? 'bg-wool-600 text-white shadow-lg shadow-wool-600/25' : 'bg-white text-gray-600 hover:bg-wool-50 border border-gray-200'"
+                            class="rounded-full px-5 py-2 text-sm font-medium transition">Zubehör</button>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-16">
+                    <template x-for="product in displayProducts" :key="product.id">
+                        <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+                            <div @click="openDetail(product)" class="cursor-pointer">
+                                <div class="relative overflow-hidden">
+                                    <img :src="product.imageUrl || 'https://placehold.co/400x400/f5f0e1/c9b99a?text=Wollwerk'"
+                                         :alt="product.name"
+                                         class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <span class="absolute top-3 left-3 rounded-full px-2.5 py-1 text-xs font-medium bg-white/90 backdrop-blur-sm text-gray-700"
+                                          x-text="product.category"></span>
+                                </div>
+                                <div class="p-5 pb-0">
+                                    <h3 class="font-semibold text-gray-900 group-hover:text-wool-600 transition" x-text="product.name"></h3>
+                                    <p class="mt-1.5 text-sm text-gray-500 line-clamp-2" x-text="product.description"></p>
+                                </div>
+                            </div>
+                            <div class="p-5 pt-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-lg font-bold text-wool-700" x-text="formatPrice(product.price)"></span>
+                                    <button @click.stop="addToCart(product)"
+                                            class="flex items-center gap-1.5 rounded-lg bg-wool-600 px-3 py-2 text-xs font-medium text-white hover:bg-wool-700 transition shadow-sm">
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                                        </svg>
+                                        In den Warenkorb
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div x-show="displayProducts.length === 0" class="text-center py-16">
+                    <svg class="mx-auto h-16 w-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                    </svg>
+                    <p class="mt-4 text-gray-500">Keine Produkte in dieser Kategorie gefunden.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="bg-white py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-gray-900">Warum Wollwerk?</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-8">
+                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-wool-100 text-wool-600 mb-5">
+                            <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">Premium Qualität</h3>
+                        <p class="mt-2 text-gray-600">Alle Produkte werden von Experten ausgewählt und auf Qualität geprüft.</p>
+                    </div>
+                    <div class="text-center p-8">
+                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-knit-100 text-knit-600 mb-5">
+                            <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">Kreative Anleitungen</h3>
+                        <p class="mt-2 text-gray-600">Von Anfänger bis Profi – detaillierte Anleitungen für jedes Niveau.</p>
+                    </div>
+                    <div class="text-center p-8">
+                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-amber-50 text-amber-600 mb-5">
+                            <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">Mit Liebe verpackt</h3>
+                        <p class="mt-2 text-gray-600">Nachhaltige Verpackung und schneller Versand innerhalb von 24 Stunden.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="rounded-3xl bg-gradient-to-br from-wool-600 to-wool-800 px-8 py-16 text-center text-white shadow-2xl">
+                    <h2 class="text-3xl font-bold">Bereit für dein nächstes Projekt?</h2>
+                    <p class="mt-4 text-lg text-wool-200 max-w-xl mx-auto">
+                        Entdecke unsere Auswahl an hochwertiger Wolle, Nadeln und Anleitungen.
+                    </p>
+                    <button @click="activeCategory = ''; scrollTo('products')"
+                            class="mt-8 inline-block rounded-lg bg-white px-8 py-3 text-sm font-medium text-wool-700 hover:bg-wool-50 transition shadow-lg">
+                        Alle Produkte ansehen
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-gray-400">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <span class="text-xl font-bold text-white">Woll<span class="text-wool-400">werk</span></span>
+                        <p class="mt-4 text-sm">Dein Online-Shop für hochwertige Strickwaren. Von der Wolle bis zur fertigen Anleitung.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Sortiment</h4>
+                        <ul class="mt-4 space-y-2">
+                            <li><button @click="activeCategory = 'Wolle'; scrollTo('products')" class="text-sm hover:text-white transition">Wolle</button></li>
+                            <li><button @click="activeCategory = 'Nadeln'; scrollTo('products')" class="text-sm hover:text-white transition">Nadeln</button></li>
+                            <li><button @click="activeCategory = 'Anleitungen'; scrollTo('products')" class="text-sm hover:text-white transition">Anleitungen</button></li>
+                            <li><button @click="activeCategory = 'Zubehoer'; scrollTo('products')" class="text-sm hover:text-white transition">Zubehör</button></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Service</h4>
+                        <ul class="mt-4 space-y-2">
+                            <li><a href="#" class="text-sm hover:text-white transition">Versand &amp; Lieferung</a></li>
+                            <li><a href="#" class="text-sm hover:text-white transition">Rückgabe</a></li>
+                            <li><a href="#" class="text-sm hover:text-white transition">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Rechtliches</h4>
+                        <ul class="mt-4 space-y-2">
+                            <li><a href="#" class="text-sm hover:text-white transition">Impressum</a></li>
+                            <li><a href="#" class="text-sm hover:text-white transition">Datenschutz</a></li>
+                            <li><a href="#" class="text-sm hover:text-white transition">AGB</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-12 border-t border-gray-800 pt-8 text-center text-sm">
+                    &copy; 2026 Wollwerk. Alle Rechte vorbehalten.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div x-show="cartOpen" x-cloak class="fixed inset-0 z-50">
+        <div x-show="cartOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+             class="fixed inset-0 bg-black/50" @click="cartOpen = false"></div>
+
+        <div x-show="cartOpen"
+             x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="translate-x-full"
+             x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-200 transform"
+             x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+             class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-10 flex flex-col">
+            <div class="flex items-center justify-between px-6 py-4 border-b">
+                <h3 class="text-lg font-semibold">Warenkorb</h3>
+                <button @click="cartOpen = false" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto px-6 py-4">
+                <div x-show="cartItems.length === 0" class="text-center py-16">
+                    <svg class="mx-auto h-16 w-16 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                    </svg>
+                    <p class="mt-4 text-gray-500">Dein Warenkorb ist leer.</p>
+                    <button @click="cartOpen = false" class="mt-4 text-sm text-wool-600 font-medium hover:underline">Weiter stöbern</button>
+                </div>
+
+                <div class="space-y-4">
+                    <template x-for="item in cartItems" :key="item.id">
+                        <div class="flex gap-4 rounded-xl border p-3">
+                            <img :src="item.product.imageUrl || 'https://placehold.co/80x80/f5f0e1/c9b99a?text=W'"
+                                 :alt="item.product.name" class="h-20 w-20 rounded-lg object-cover">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 truncate" x-text="item.product.name"></p>
+                                <p class="text-sm text-wool-600 font-semibold mt-1" x-text="formatPrice(item.product.price)"></p>
+                                <div class="mt-2 flex items-center gap-2">
+                                    <button @click="updateQty(item.id, item.quantity - 1)" class="rounded border h-7 w-7 flex items-center justify-center text-gray-500 hover:bg-gray-100">-</button>
+                                    <span class="text-sm font-medium w-6 text-center" x-text="item.quantity"></span>
+                                    <button @click="updateQty(item.id, item.quantity + 1)" class="rounded border h-7 w-7 flex items-center justify-center text-gray-500 hover:bg-gray-100">+</button>
+                                </div>
+                            </div>
+                            <button @click="removeFromCart(item.id)" class="text-gray-300 hover:text-red-500 transition self-start">&times;</button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div x-show="cartItems.length > 0" class="border-t px-6 py-4">
+                <div class="flex justify-between text-lg font-bold mb-4">
+                    <span>Gesamt</span>
+                    <span x-text="formatPrice(cartTotal)"></span>
+                </div>
+                <button class="w-full rounded-lg bg-wool-600 py-3 text-sm font-medium text-white hover:bg-wool-700 transition">
+                    Zur Kasse
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div x-show="toast.show" x-cloak
+         x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="translate-y-4 opacity-0"
+         x-transition:enter-end="translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-200"
+         class="fixed bottom-6 right-6 z-50 rounded-lg bg-knit-600 px-4 py-3 shadow-lg text-sm font-medium text-white"
+         x-text="toast.message">
+    </div>
+
+    <script>
+    const CART_API = '/api/cart';
+
+    function shopApp() {
+        return {
+            products: [],
+            activeCategory: '',
+            selectedProduct: null,
+            cartId: null,
+            cartItems: [],
+            cartOpen: false,
+            mobileMenuOpen: false,
+            toast: { show: false, message: '' },
+
+            async init() {
+                const res = await fetch('/api/products');
+                this.products = await res.json();
+                await this.initCart();
+            },
+
+            async initCart() {
+                const savedId = localStorage.getItem('wollwerk-cartId');
+                if (savedId) {
+                    const res = await fetch(`${CART_API}/${savedId}`);
+                    if (res.ok) {
+                        const cart = await res.json();
+                        this.cartId = cart.id;
+                        this.cartItems = cart.items || [];
+                        return;
+                    }
+                }
+                const res = await fetch(CART_API, { method: 'POST' });
+                const cart = await res.json();
+                this.cartId = cart.id;
+                this.cartItems = [];
+                localStorage.setItem('wollwerk-cartId', cart.id);
+            },
+
+            async refreshCart() {
+                const res = await fetch(`${CART_API}/${this.cartId}`);
+                if (res.ok) {
+                    const cart = await res.json();
+                    this.cartItems = cart.items || [];
+                }
+            },
+
+            get displayProducts() {
+                if (!this.activeCategory) return this.products;
+                return this.products.filter(p => p.category === this.activeCategory);
+            },
+
+            get similarProducts() {
+                if (!this.selectedProduct) return [];
+                return this.products
+                    .filter(p => p.category === this.selectedProduct.category && p.id !== this.selectedProduct.id)
+                    .slice(0, 4);
+            },
+
+            openDetail(product) {
+                this.selectedProduct = product;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+
+            closeDetail() {
+                this.selectedProduct = null;
+            },
+
+            formatPrice(price) {
+                return Number(price).toFixed(2).replace('.', ',') + ' \u20AC';
+            },
+
+            scrollTo(id) {
+                document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            },
+
+            async addToCart(product) {
+                await fetch(`${CART_API}/${this.cartId}/items`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ productId: product.id, quantity: 1 })
+                });
+                await this.refreshCart();
+                this.showToast(product.name + ' hinzugefügt');
+            },
+
+            async updateQty(itemId, newQuantity) {
+                if (newQuantity <= 0) {
+                    await this.removeFromCart(itemId);
+                    return;
+                }
+                await fetch(`${CART_API}/${this.cartId}/items/${itemId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity: newQuantity })
+                });
+                await this.refreshCart();
+            },
+
+            async removeFromCart(itemId) {
+                await fetch(`${CART_API}/${this.cartId}/items/${itemId}`, { method: 'DELETE' });
+                await this.refreshCart();
+            },
+
+            get cartTotal() {
+                return this.cartItems.reduce((sum, i) => sum + Number(i.product.price) * i.quantity, 0);
+            },
+
+            showToast(message) {
+                this.toast = { show: true, message };
+                setTimeout(() => { this.toast.show = false; }, 2000);
+            }
+        };
+    }
+    </script>
+
+    <style>
+        [x-cloak] { display: none !important; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    </style>
+</body>
+</html>

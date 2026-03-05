@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wollwerk Admin – Produktverwaltung</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via frontend-skill -->
+</head>
+<body class="bg-gray-100 text-gray-900" x-data="adminApp()">
+
+    <!-- Sidebar -->
+    <aside class="fixed left-0 top-0 z-50 flex h-screen w-64 flex-col bg-white shadow-lg transition-transform"
+           :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'">
+        <!-- Logo -->
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-gray-200">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100">
+                <svg class="h-6 w-6 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                </svg>
+            </div>
+            <div>
+                <span class="text-lg font-bold text-gray-900">Wollwerk</span>
+                <p class="text-xs text-gray-500">Admin-Panel</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="mt-4 px-4 space-y-1 flex-1">
+            <button @click="currentView = 'dashboard'"
+                    :class="currentView === 'dashboard' ? 'bg-amber-50 text-amber-700' : 'text-gray-600 hover:bg-gray-50'"
+                    class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/>
+                </svg>
+                Dashboard
+            </button>
+            <button @click="currentView = 'products'"
+                    :class="currentView === 'products' ? 'bg-amber-50 text-amber-700' : 'text-gray-600 hover:bg-gray-50'"
+                    class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                Produkte
+            </button>
+        </nav>
+
+        <!-- User -->
+        <div class="border-t border-gray-200 px-4 py-4">
+            <div class="flex items-center gap-3">
+                <div class="flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-sm font-semibold text-amber-700">AD</div>
+                <div>
+                    <p class="text-sm font-medium text-gray-900">Admin</p>
+                    <p class="text-xs text-gray-500">admin@wollwerk.de</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="lg:ml-64 min-h-screen">
+        <!-- Header -->
+        <header class="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-6 shadow-sm">
+            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden text-gray-500 hover:text-gray-700">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+            <h1 class="text-lg font-semibold text-gray-900" x-text="currentView === 'dashboard' ? 'Dashboard' : 'Produktverwaltung'"></h1>
+            <a href="/" class="text-sm text-amber-600 hover:text-amber-700 font-medium">Zum Shop &rarr;</a>
+        </header>
+
+        <div class="p-6">
+            <!-- Dashboard View -->
+            <div x-show="currentView === 'dashboard'" x-cloak>
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 mb-8">
+                    <div class="rounded-xl bg-white p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Produkte gesamt</p>
+                                <h3 class="mt-1 text-2xl font-bold text-gray-900" x-text="products.length">0</h3>
+                            </div>
+                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
+                                <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-xl bg-white p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Kategorien</p>
+                                <h3 class="mt-1 text-2xl font-bold text-gray-900" x-text="categories.length">0</h3>
+                            </div>
+                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-50">
+                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-xl bg-white p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Durchschnittspreis</p>
+                                <h3 class="mt-1 text-2xl font-bold text-gray-900" x-text="avgPrice + ' €'">0 €</h3>
+                            </div>
+                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-50">
+                                <svg class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-xl bg-white p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Gesamtwert</p>
+                                <h3 class="mt-1 text-2xl font-bold text-gray-900" x-text="totalValue + ' €'">0 €</h3>
+                            </div>
+                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-50">
+                                <svg class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produkte pro Kategorie -->
+                <div class="rounded-xl bg-white p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Produkte pro Kategorie</h3>
+                    <div class="space-y-3">
+                        <template x-for="cat in categories" :key="cat">
+                            <div class="flex items-center gap-4">
+                                <span class="w-28 text-sm font-medium text-gray-600" x-text="cat"></span>
+                                <div class="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
+                                    <div class="h-full rounded-full bg-amber-500 transition-all"
+                                         :style="'width: ' + (countByCategory(cat) / products.length * 100) + '%'"></div>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-700 w-8 text-right" x-text="countByCategory(cat)"></span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products View -->
+            <div x-show="currentView === 'products'" x-cloak>
+                <!-- Toolbar -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input type="text" x-model="searchQuery" placeholder="Produkte suchen..."
+                                   class="rounded-lg border border-gray-300 pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent w-64">
+                        </div>
+                        <select x-model="filterCategory"
+                                class="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500">
+                            <option value="">Alle Kategorien</option>
+                            <template x-for="cat in categories" :key="cat">
+                                <option :value="cat" x-text="cat"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <button @click="openCreateModal()"
+                            class="flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 transition">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Neues Produkt
+                    </button>
+                </div>
+
+                <!-- Table -->
+                <div class="rounded-xl bg-white shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b bg-gray-50">
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">Produkt</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">Kategorie</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500">Preis</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase text-gray-500">Erstellt</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium uppercase text-gray-500">Aktionen</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <template x-for="product in filteredProducts" :key="product.id">
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <img :src="product.imageUrl || 'https://placehold.co/40x40/e5e7eb/9ca3af?text=?'"
+                                                     :alt="product.name" class="h-10 w-10 rounded-lg object-cover">
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-900" x-text="product.name"></p>
+                                                    <p class="text-xs text-gray-500 max-w-xs truncate" x-text="product.description"></p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                                                  :class="categoryColor(product.category)"
+                                                  x-text="product.category"></span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right text-sm font-medium text-gray-900" x-text="formatPrice(product.price)"></td>
+                                        <td class="px-6 py-4 text-sm text-gray-500" x-text="formatDate(product.createdAt)"></td>
+                                        <td class="px-6 py-4 text-right">
+                                            <div class="flex justify-end gap-2">
+                                                <button @click="openEditModal(product)"
+                                                        class="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-amber-600 transition">
+                                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                    </svg>
+                                                </button>
+                                                <button @click="deleteProduct(product.id)"
+                                                        class="rounded-lg p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600 transition">
+                                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="border-t px-6 py-3 text-sm text-gray-500">
+                        <span x-text="filteredProducts.length"></span> von <span x-text="products.length"></span> Produkten
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create/Edit Modal -->
+    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center">
+        <!-- Backdrop -->
+        <div x-show="modalOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-black/50" @click="modalOpen = false"></div>
+
+        <!-- Modal -->
+        <div x-show="modalOpen" x-transition
+             class="relative z-10 w-full max-w-lg rounded-xl bg-white p-6 shadow-xl mx-4">
+            <div class="flex items-center justify-between border-b pb-4">
+                <h3 class="text-lg font-semibold" x-text="editingProduct ? 'Produkt bearbeiten' : 'Neues Produkt'"></h3>
+                <button @click="modalOpen = false" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <form @submit.prevent="saveProduct()" class="mt-4 space-y-4">
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700">Name *</label>
+                    <input type="text" x-model="form.name" required
+                           class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700">Beschreibung</label>
+                    <textarea x-model="form.description" rows="3"
+                              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium text-gray-700">Preis (€) *</label>
+                        <input type="number" step="0.01" min="0" x-model="form.price" required
+                               class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium text-gray-700">Kategorie *</label>
+                        <select x-model="form.category" required
+                                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500">
+                            <option value="">Bitte wählen</option>
+                            <option value="Wolle">Wolle</option>
+                            <option value="Nadeln">Nadeln</option>
+                            <option value="Anleitungen">Anleitungen</option>
+                            <option value="Zubehoer">Zubehör</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700">Bild-URL</label>
+                    <input type="url" x-model="form.imageUrl"
+                           class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                           placeholder="https://...">
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" @click="modalOpen = false"
+                            class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+                        Abbrechen
+                    </button>
+                    <button type="submit"
+                            class="rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-amber-700 transition">
+                        <span x-text="editingProduct ? 'Speichern' : 'Erstellen'"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div x-show="toast.show" x-cloak
+         x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="translate-y-4 opacity-0"
+         x-transition:enter-end="translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+         class="fixed bottom-6 right-6 z-50 rounded-lg px-4 py-3 shadow-lg text-sm font-medium text-white"
+         :class="toast.type === 'success' ? 'bg-green-600' : 'bg-red-600'"
+         x-text="toast.message">
+    </div>
+
+    <script>
+    const API_BASE = '/api/products';
+
+    function adminApp() {
+        return {
+            sidebarOpen: false,
+            currentView: 'dashboard',
+            products: [],
+            searchQuery: '',
+            filterCategory: '',
+            modalOpen: false,
+            editingProduct: null,
+            form: { name: '', description: '', price: '', category: '', imageUrl: '' },
+            toast: { show: false, message: '', type: 'success' },
+
+            async init() {
+                await this.loadProducts();
+            },
+
+            async loadProducts() {
+                const res = await fetch(API_BASE);
+                this.products = await res.json();
+            },
+
+            get categories() {
+                return [...new Set(this.products.map(p => p.category))].sort();
+            },
+
+            get avgPrice() {
+                if (!this.products.length) return '0,00';
+                const avg = this.products.reduce((sum, p) => sum + Number(p.price), 0) / this.products.length;
+                return avg.toFixed(2).replace('.', ',');
+            },
+
+            get totalValue() {
+                const total = this.products.reduce((sum, p) => sum + Number(p.price), 0);
+                return total.toFixed(2).replace('.', ',');
+            },
+
+            countByCategory(cat) {
+                return this.products.filter(p => p.category === cat).length;
+            },
+
+            get filteredProducts() {
+                return this.products.filter(p => {
+                    const matchSearch = !this.searchQuery ||
+                        p.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                        (p.description && p.description.toLowerCase().includes(this.searchQuery.toLowerCase()));
+                    const matchCategory = !this.filterCategory || p.category === this.filterCategory;
+                    return matchSearch && matchCategory;
+                });
+            },
+
+            categoryColor(cat) {
+                const colors = {
+                    'Wolle': 'bg-amber-100 text-amber-800',
+                    'Nadeln': 'bg-blue-100 text-blue-800',
+                    'Anleitungen': 'bg-purple-100 text-purple-800',
+                    'Zubehoer': 'bg-green-100 text-green-800'
+                };
+                return colors[cat] || 'bg-gray-100 text-gray-800';
+            },
+
+            formatPrice(price) {
+                return Number(price).toFixed(2).replace('.', ',') + ' €';
+            },
+
+            formatDate(dateStr) {
+                if (!dateStr) return '';
+                return new Date(dateStr).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            },
+
+            openCreateModal() {
+                this.editingProduct = null;
+                this.form = { name: '', description: '', price: '', category: '', imageUrl: '' };
+                this.modalOpen = true;
+            },
+
+            openEditModal(product) {
+                this.editingProduct = product;
+                this.form = {
+                    name: product.name,
+                    description: product.description || '',
+                    price: product.price,
+                    category: product.category,
+                    imageUrl: product.imageUrl || ''
+                };
+                this.modalOpen = true;
+            },
+
+            async saveProduct() {
+                const body = {
+                    name: this.form.name,
+                    description: this.form.description || null,
+                    price: Number(this.form.price),
+                    category: this.form.category,
+                    imageUrl: this.form.imageUrl || null
+                };
+
+                if (this.editingProduct) {
+                    const res = await fetch(`${API_BASE}/${this.editingProduct.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    if (res.ok) {
+                        this.showToast('Produkt aktualisiert', 'success');
+                    } else {
+                        this.showToast('Fehler beim Aktualisieren', 'error');
+                    }
+                } else {
+                    const res = await fetch(API_BASE, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    if (res.ok) {
+                        this.showToast('Produkt erstellt', 'success');
+                    } else {
+                        this.showToast('Fehler beim Erstellen', 'error');
+                    }
+                }
+
+                this.modalOpen = false;
+                await this.loadProducts();
+            },
+
+            async deleteProduct(id) {
+                if (!confirm('Produkt wirklich löschen?')) return;
+                const res = await fetch(`${API_BASE}/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    this.showToast('Produkt gelöscht', 'success');
+                } else {
+                    this.showToast('Fehler beim Löschen', 'error');
+                }
+                await this.loadProducts();
+            },
+
+            showToast(message, type) {
+                this.toast = { show: true, message, type };
+                setTimeout(() => { this.toast.show = false; }, 3000);
+            }
+        };
+    }
+    </script>
+
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</body>
+</html>

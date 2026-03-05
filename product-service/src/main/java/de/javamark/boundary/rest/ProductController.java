@@ -31,7 +31,10 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findAll() {
+    public List<Product> findAll(@RequestParam(required = false) String category) {
+        if (category != null && !category.isBlank()) {
+            return productService.findByCategory(category);
+        }
         return productService.findAll();
     }
 

@@ -76,6 +76,12 @@ ALLOWED_DOMAINS=(
   "keycloak.org"
   "flyway.io"
   "postgresql.org"
+
+  # Frontend / CSS
+  "tailwindcss.com"
+  "tailadmin.com"
+  "demo.tailadmin.com"
+  "cdn.tailwindcss.com"
 )
 
 # ── Optionale Domains aus Umgebungsvariablen ──────────────────────────────────

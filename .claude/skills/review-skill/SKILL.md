@@ -1,6 +1,6 @@
 ---
 name: review-skill
-description: Prüft geänderten oder bestehenden Code gegen Projekt-Konventionen, Architektur-Regeln und Best Practices. Verwende bei "review code", "prüfe den Code", "code review" oder "Qualitätsprüfung".
+description: Prueft geaenderten oder bestehenden Code gegen Projekt-Konventionen, Architektur-Regeln (BCE) und Best Practices. Erfasst automatisch staged/unstaged Changes oder Branch-Diffs. Verwende diesen Skill bei "review code", "pruefe den Code", "code review", "schau dir den Code an", "Qualitaetspruefung" oder wenn Code vor einem Commit oder Merge geprueft werden soll.
 argument-hint: "[dateien-oder-verzeichnis]"
 ---
 
@@ -12,13 +12,6 @@ Systematisches Code-Review gegen Projekt-Konventionen, Architektur-Regeln und Be
 > den Konventionen des Projekts folgt und langfristig wartbar bleibt.
 
 ---
-
-## When to Use This Skill
-
-- Geänderter Code soll vor einem Commit oder Merge geprüft werden
-- Die Einhaltung von BCE-Pattern, Coding-Standards oder Sicherheitsregeln soll überprüft werden
-- Ein neues Feature wurde implementiert und soll gegen die Projekt-Konventionen validiert werden
-- Formulierungen wie "review code", "prüfe den Code", "code review", "review changes", "schau dir den Code an", "Qualitätsprüfung"
 
 ## What This Skill Does
 

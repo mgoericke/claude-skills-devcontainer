@@ -1,6 +1,6 @@
 ---
 name: spec-feature-skill
-description: Spec Driven Development – erfragt fachliche Features per strukturierter Interview-Sequenz und erstellt daraus eine Spezifikationsdatei in specs/. Verwende bei "Feature spezifizieren", "erstelle eine Spec" oder "beschreibe das Feature".
+description: Spec Driven Development – erfragt fachliche Features per strukturierter Interview-Sequenz (Kontext, Verhalten, Technik, Qualitaet) und erstellt daraus eine Spezifikationsdatei in specs/. Verwende diesen Skill bei "Feature spezifizieren", "erstelle eine Spec", "beschreibe das Feature", "was soll das System tun?" oder wenn Anforderungen strukturiert erfasst werden sollen bevor Code geschrieben wird.
 argument-hint: "[feature-name]"
 ---
 
@@ -14,13 +14,6 @@ Tests und Dokumentation dient.
 > zwischen Fachlichkeit und Code.
 
 ---
-
-## When to Use This Skill
-
-- Ein neues fachliches Feature soll beschrieben werden, bevor Code geschrieben wird
-- Anforderungen sollen strukturiert erfasst und dokumentiert werden
-- Eine Grundlage für Implementierung, Tests und Dokumentation wird benötigt
-- Formulierungen wie "spezifiziere ein Feature", "beschreibe das Feature", "erstelle eine Spec", "was soll das System tun?"
 
 ## What This Skill Does
 
@@ -46,10 +39,9 @@ Beschreibe das Feature Benutzerregistrierung bevor wir implementieren
 
 ## Instructions
 
-### Schritt 1 – Interview (Pflicht)
+### Schritt 1 – Interview
 
-Fragen **sequenziell** stellen – eine Gruppe nach der anderen, nicht alle auf einmal.
-Antworten sammeln und am Ende der Phase zusammenfassen.
+Das Interview ist die inhaltliche Grundlage fuer die gesamte Spec. Fragen sequenziell stellen – eine Gruppe nach der anderen, damit der Nutzer fokussiert antworten kann. Antworten sammeln und am Ende der Phase zusammenfassen.
 
 #### Gruppe 1 – Kontext
 

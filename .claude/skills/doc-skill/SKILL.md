@@ -1,6 +1,6 @@
 ---
 name: doc-skill
-description: Erstellt oder aktualisiert eine Projektdokumentation als Markdown-Seite in docs/. Verwende bei "dokumentiere das Projekt", "schreib eine Doku" oder "aktualisiere die docs".
+description: Erstellt oder aktualisiert Projektdokumentation als Markdown-Seite in docs/. Analysiert automatisch pom.xml, Properties, docker-compose und Quellcode – fragt nur was aus dem Code nicht hervorgeht. Verwende diesen Skill bei "dokumentiere das Projekt", "schreib eine Doku", "aktualisiere die docs", "erstelle eine README" oder wenn ein neues Projekt eine technische Dokumentation braucht.
 argument-hint: "[artifactId]"
 ---
 
@@ -13,13 +13,6 @@ und eines strukturierten Interviews.
 > Gute Doku entsteht aus dem Quellcode, nicht neben ihm.
 
 ---
-
-## When to Use This Skill
-
-- Eine Projektdokumentation soll erstellt oder aktualisiert werden
-- Ein neues Projekt wurde angelegt und braucht eine technische Dokumentation
-- Bestehende Dokumentation soll mit neuen Features ergänzt werden
-- Formulierungen wie "dokumentiere das Projekt", "schreib eine Doku", "aktualisiere die docs", "erstelle eine README für das Projekt"
 
 ## What This Skill Does
 

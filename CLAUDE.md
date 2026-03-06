@@ -30,7 +30,8 @@ Vor jeder Generierung `lessons-learned.md` prüfen.
 | `doc-skill` | Projektdokumentation erstellen oder aktualisieren |
 | `infografik-skill` | Infografik, Visualisierung, Diagramm |
 | `blog-post-skill` | Blog Post, Artikel, technischer Beitrag erstellen |
-| `html-skill` | Einfache HTML-Seiten mit Tailwind CSS erstellen |
+| `frontend-skill` | Web-UIs: Dashboards (TailAdmin), Landing Pages, SPAs (Tailwind CSS) |
+| `skill-creator` | Neue Skills erstellen, bestehende Skills optimieren, Skill-Performance messen |
 
 ## Versionsstrategie (PFLICHT)
 

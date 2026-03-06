@@ -1,6 +1,6 @@
 ---
 name: coworker-skill
-description: Phasen-basierter Coworker fuer End-to-End Projekt-Setup. Fuehrt durch Spezifikation, API-Design und Code-Generierung – Phase fuer Phase mit Review dazwischen. Verwende bei "neues Projekt starten", "Coworker", "Projekt aufsetzen end-to-end".
+description: Phasen-basierter Coworker fuer End-to-End Projekt-Setup. Fuehrt durch Spezifikation, API-Design und Code-Generierung mit Review nach jeder Phase. Verwende diesen Skill wenn ein neues Projekt von Grund auf aufgesetzt werden soll oder der Entwickler sich durch den kompletten Workflow fuehren lassen moechte. Auch bei "neues Projekt starten", "Coworker", "fuehr mich durch das Setup", "ich brauche ein neues Projekt" oder "Projekt aufsetzen end-to-end".
 argument-hint: "[projektname oder thema]"
 disable-model-invocation: true
 ---
@@ -16,12 +16,6 @@ und Feedback-Moeglichkeit nach jeder Phase.
 > Nichts passiert ohne Bestaetigung.
 
 ---
-
-## When to Use This Skill
-
-- Ein neues Projekt soll von Grund auf aufgesetzt werden
-- Der Entwickler moechte sich durch den kompletten Workflow fuehren lassen
-- Formulierungen wie "neues Projekt starten", "Coworker starten", "Projekt aufsetzen end-to-end", "fuehr mich durch das Setup", "ich brauche ein neues Projekt"
 
 ## What This Skill Does
 

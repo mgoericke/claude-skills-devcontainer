@@ -128,6 +128,18 @@ Token für Git-Registries (GitHub Packages, GitLab Registry, Gitea, Bitbucket) h
 - **Taikai** – basiert auf ArchUnit, weniger Boilerplate, Quarkus-spezifische Regeln eingebaut → bevorzugen
 - **ArchUnit** – direkter, mehr Flexibilität bei komplexen Custom-Rules
 
+**Achtung:** Taikai's `NamingConfigurer` hat **kein** `classesShouldMatch(String package, String regex)`.
+Für paket-spezifische Naming-Regeln (z.B. "Controller nur in boundary.rest") direkt ArchUnit verwenden:
+```java
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+
+ArchRule rule = classes()
+        .that().haveSimpleNameEndingWith("Controller")
+        .should().resideInAPackage("..boundary.rest..");
+rule.check(importedClasses);
+```
+ArchUnit wird transitiv über Taikai mitgeliefert – keine zusätzliche Dependency nötig.
+
 Dependency (nur `test` scope!):
 ```xml
 <dependency>
@@ -189,7 +201,22 @@ Spring Boot 4.0 (November 2025) bringt:
 - Basiert auf **Spring Framework 7** und **Jakarta EE 11**
 - Servlet 6.1 als Baseline (Servlet 5.x nicht mehr unterstützt)
 - **Vollständige Java 25 Unterstützung**
-- Modularisiertes Codebase (kleinere, fokussierte JARs)
+- **Modularisierte Auto-Configuration** (kleinere, fokussierte JARs)
+
+**WICHTIG – Modularisierung:** In Spring Boot 4.x reicht `flyway-core` allein NICHT mehr
+für die Auto-Configuration. Statt `flyway-core` muss `spring-boot-starter-flyway` verwendet werden:
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-flyway</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.flywaydb</groupId>
+    <artifactId>flyway-database-postgresql</artifactId>
+</dependency>
+```
+Ohne `spring-boot-starter-flyway` wird Flyway nicht gestartet und Hibernate `validate`
+schlägt fehl mit "missing table".
 
 Migration von 3.x: https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide
 
@@ -293,3 +320,47 @@ Flyway führt die Migration vor Hibernate aus → Schema existiert → Validate 
 
 Beide ergänzen sich. Renovate ist **kein** Maven-Dependency – es ist ein externer Service.
 GitHub App: https://github.com/apps/renovate
+
+---
+
+## Lombok – Annotation Processor Pflicht (Spring Boot + Maven)
+
+**Problem:** Lombok `@Data`, `@Builder` etc. erzeugen Getter/Setter zur Compile-Zeit.
+Ohne explizite Annotation-Processor-Konfiguration im `maven-compiler-plugin` findet
+der Compiler die generierten Methoden nicht → `cannot find symbol` für Getter/Setter.
+
+**Lösung:** Im `<build><plugins>` Block den `maven-compiler-plugin` mit Lombok als
+`annotationProcessorPath` konfigurieren:
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+        <annotationProcessorPaths>
+            <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+            </path>
+        </annotationProcessorPaths>
+    </configuration>
+</plugin>
+```
+
+**Zusätzlich:** Lombok aus dem finalen JAR ausschließen (Spring Boot Maven Plugin):
+```xml
+<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <configuration>
+        <excludes>
+            <exclude>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+            </exclude>
+        </excludes>
+    </configuration>
+</plugin>
+```
+
+Beide Plugin-Einträge sind **PFLICHT** bei jedem Spring Boot Projekt mit Lombok.

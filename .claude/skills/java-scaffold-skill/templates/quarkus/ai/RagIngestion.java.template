@@ -1,0 +1,76 @@
+/**
+ * Document-Ingestion fuer RAG – laedt Dokumente in die Vektordatenbank.
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Control-Schicht / AI)
+ *
+ * <p>Wird beim Anwendungsstart ausgefuehrt ({@code @Startup}).
+ * Dokumente werden in Segmente aufgeteilt, als Vektoren eingebettet
+ * und im EmbeddingStore (PgVector) gespeichert.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
+package {{GROUP_ID}}.control.ai;
+
+import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.splitter.DocumentSplitters;
+import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.store.embedding.EmbeddingStore;
+import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
+import io.quarkus.logging.Log;
+import io.quarkus.runtime.Startup;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
+@ApplicationScoped
+public class {{RAG_INGESTION_CLASS}} {
+
+    @Inject
+    EmbeddingStore embeddingStore;
+
+    @Inject
+    EmbeddingModel embeddingModel;
+
+    @Startup
+    public void ingest() {
+        Log.info("Starte Document-Ingestion...");
+
+        var ingestor = EmbeddingStoreIngestor.builder()
+                .embeddingStore(embeddingStore)
+                .embeddingModel(embeddingModel)
+                .documentSplitter(DocumentSplitters.recursive(500, 50))
+                .build();
+
+        List<Document> documents = loadDocuments();
+        ingestor.ingest(documents);
+
+        Log.infof("Document-Ingestion abgeschlossen: %d Dokumente verarbeitet", documents.size());
+    }
+
+    private List<Document> loadDocuments() {
+        // TODO: Dokumente aus dem gewuenschten Verzeichnis laden
+        // Beispiel: Markdown-Dateien aus src/main/resources/documents/
+        Path documentsDir = Path.of("src/main/resources/documents");
+        try (var paths = Files.list(documentsDir)) {
+            return paths
+                    .filter(p -> p.toString().endsWith(".md") || p.toString().endsWith(".txt"))
+                    .map(this::loadDocument)
+                    .toList();
+        } catch (IOException e) {
+            Log.warn("Dokumentenverzeichnis nicht gefunden: " + documentsDir, e);
+            return List.of();
+        }
+    }
+
+    private Document loadDocument(Path path) {
+        try {
+            return Document.from(Files.readString(path));
+        } catch (IOException e) {
+            throw new RuntimeException("Fehler beim Laden von: " + path, e);
+        }
+    }
+}

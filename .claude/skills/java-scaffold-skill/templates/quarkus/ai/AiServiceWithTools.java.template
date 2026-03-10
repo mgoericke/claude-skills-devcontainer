@@ -1,0 +1,33 @@
+/**
+ * AI Service mit Tool-Integration (Function Calling).
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ *
+ * <p>Dieser Service bindet Tools ein, die das LLM bei Bedarf aufrufen kann.
+ * Tools werden als CDI-Beans registriert und per {@code @ToolBox} referenziert.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
+package {{GROUP_ID}}.boundary.ai;
+
+import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
+import io.quarkiverse.langchain4j.ToolBox;
+import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.SessionScoped;
+
+import {{GROUP_ID}}.control.ai.{{TOOL_CLASS_NAME}};
+
+@SessionScoped
+@RegisterAiService
+public interface {{AI_SERVICE_NAME}} {
+
+    @SystemMessage("""
+            Du bist ein hilfreicher Assistent fuer {{DOMAIN_DESCRIPTION}}.
+            Du hast Zugriff auf Tools, die du bei Bedarf aufrufen kannst.
+            Nutze die Tools, um praezise Antworten zu geben.
+            """)
+    @ToolBox({{TOOL_CLASS_NAME}}.class)
+    String chat(@UserMessage String userMessage);
+}

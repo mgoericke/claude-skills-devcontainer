@@ -1,0 +1,43 @@
+/**
+ * Guardrails fuer AI Services – validiert Ein- und Ausgaben.
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Control-Schicht / AI)
+ *
+ * <p>Guardrails werden als CDI-Beans implementiert und per
+ * {@code @InputGuardrails} / {@code @OutputGuardrails} am AI Service registriert.
+ *
+ * <p>Seit quarkus-langchain4j 1.x werden die Upstream-LangChain4j-Klassen
+ * aus {@code dev.langchain4j.guardrail} verwendet (nicht mehr {@code io.quarkiverse}).
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @see <a href="https://docs.quarkiverse.io/quarkus-langchain4j/dev/guardrails.html">Guardrails Docs</a>
+ */
+package {{GROUP_ID}}.control.ai;
+
+import dev.langchain4j.guardrail.GuardrailResult;
+import dev.langchain4j.guardrail.InputGuardrail;
+import dev.langchain4j.guardrail.InputGuardrailParams;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+
+/**
+ * Beispiel Input-Guardrail: prueft Benutzereingaben vor dem LLM-Aufruf.
+ */
+@ApplicationScoped
+@Named("{{INPUT_GUARDRAIL_NAME}}")
+public class {{INPUT_GUARDRAIL_NAME}} implements InputGuardrail {
+
+    @Override
+    public GuardrailResult validate(InputGuardrailParams params) {
+        String userMessage = params.userMessage().singleText();
+
+        // TODO: Validierungslogik implementieren
+        // Beispiel: Prompt-Injection erkennen, Laenge pruefen, etc.
+        if (userMessage == null || userMessage.isBlank()) {
+            return failure("Leere Eingabe ist nicht erlaubt.");
+        }
+
+        return success();
+    }
+}

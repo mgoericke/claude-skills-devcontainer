@@ -1,0 +1,38 @@
+/**
+ * AI Tool – wird vom LLM ueber Function Calling aufgerufen.
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Control-Schicht / AI)
+ *
+ * <p>Tools sind CDI-Beans mit {@code @Tool}-annotierten Methoden.
+ * Das LLM entscheidet anhand der Beschreibung, wann ein Tool aufgerufen wird.
+ *
+ * <p><b>Wichtig:</b> Bei Datenbankzugriffen innerhalb eines Tools immer
+ * {@code @Blocking} und {@code @Transactional} verwenden.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @see <a href="https://docs.quarkiverse.io/quarkus-langchain4j/dev/function-calling.html">Function Calling Docs</a>
+ */
+package {{GROUP_ID}}.control.ai;
+
+import dev.langchain4j.agent.tool.Tool;
+import io.smallrye.common.annotation.Blocking;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+
+@ApplicationScoped
+public class {{TOOL_CLASS_NAME}} {
+
+    // TODO: Services oder Repositories injizieren
+    // @Inject
+    // {{ENTITY_NAME}}Repository repository;
+
+    @Tool("Beschreibung der Funktion fuer das LLM – so praezise wie moeglich")
+    @Blocking
+    @Transactional
+    public String {{TOOL_METHOD_NAME}}(String parameter) {
+        // TODO: Implementierung
+        return "Ergebnis";
+    }
+}

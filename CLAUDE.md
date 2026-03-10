@@ -12,6 +12,7 @@ DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.
 | Build | Maven 3.9.x |
 | Architektur | Taikai (basiert auf ArchUnit) |
 | Auth / IAM | Keycloak 26.x |
+| AI | Quarkus LangChain4j (OpenAI, Ollama, Anthropic) + PgVector |
 | Infrastruktur | Docker + Docker Compose |
 
 ## Skills & Wissensmanagement
@@ -23,7 +24,7 @@ Vor jeder Generierung `lessons-learned.md` prüfen.
 | Skill | Trigger |
 |-------|---------|
 | `coworker-skill` | End-to-End Projekt-Setup, phasen-basiert mit Review |
-| `java-scaffold-skill` | Neues Projekt, neue Entity, Dockerfile, docker-compose |
+| `java-scaffold-skill` | Neues Projekt, neue Entity, Dockerfile, docker-compose, AI Service, LangChain4j |
 | `spec-feature-skill` | Feature spezifizieren, bevor Code entsteht |
 | `openapi-skill` | OpenAPI Spec erstellen, erweitern oder Code daraus generieren |
 | `review-skill` | Code-Review, Qualitätsprüfung, geänderten Code prüfen |
@@ -42,6 +43,7 @@ Pflicht-URLs:
 - Spring Boot: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent
 - Quarkus: https://mvnrepository.com/artifact/io.quarkus.platform/quarkus-bom
 - Taikai: https://central.sonatype.com/artifact/com.enofex/taikai
+- LangChain4j (bei AI-Projekten): https://mvnrepository.com/artifact/io.quarkiverse.langchain4j/quarkus-langchain4j-bom
 
 Jede generierte `pom.xml` enthält:
 - `versions-maven-plugin` (lokale Versionsabfrage via `./mvnw versions:display-dependency-updates`)
@@ -54,7 +56,8 @@ Jede generierte `pom.xml` enthält:
 - **Health Checks**: Jede Anwendung muss `/actuator/health` (Spring) oder `/q/health` (Quarkus) bereitstellen (PFLICHT)
 - **Persistenz**: Flyway – kein `ddl-auto=create`
 - **Messaging (Quarkus)**: SmallRye `mp.messaging.*` Keys – Details in `lessons-learned.md`
-- **Quarkus `@Blocking`**: Bei DB-Zugriffen im `@Incoming`-Consumer immer `@Blocking @Transactional`
+- **Quarkus `@Blocking`**: Bei DB-Zugriffen im `@Incoming`-Consumer und `@Tool`-Methoden immer `@Blocking @Transactional`
+- **AI-Architektur**: AI Services in `boundary/ai/`, Tools + RAG + Guardrails in `control/ai/`
 - **Branches**: Neue Features IMMER in einem separaten Branch umsetzen – niemals direkt auf `main` (gilt auch für Forks dieses Projekts)
 - **Commits**: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
 - **Sprache**: Deutsch in Kommentaren/Doku, Englisch im Code

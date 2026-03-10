@@ -364,3 +364,222 @@ der Compiler die generierten Methoden nicht → `cannot find symbol` für Getter
 ```
 
 Beide Plugin-Einträge sind **PFLICHT** bei jedem Spring Boot Projekt mit Lombok.
+
+---
+
+## Quarkus LangChain4j – AI-Integration
+
+### Dependencies und BOM
+
+**Quarkiverse LangChain4j BOM** statt einzelner Versionen verwenden:
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.quarkiverse.langchain4j</groupId>
+            <artifactId>quarkus-langchain4j-bom</artifactId>
+            <version><!-- PRÜFEN: https://mvnrepository.com/artifact/io.quarkiverse.langchain4j/quarkus-langchain4j-bom --></version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+
+LLM-Provider Extensions:
+- `io.quarkiverse.langchain4j:quarkus-langchain4j-openai` (OpenAI + kompatible APIs)
+- `io.quarkiverse.langchain4j:quarkus-langchain4j-ollama` (lokales LLM)
+- `io.quarkiverse.langchain4j:quarkus-langchain4j-anthropic` (Claude)
+
+RAG-Vektorspeicher:
+- `io.quarkiverse.langchain4j:quarkus-langchain4j-pgvector` (empfohlen, nutzt vorhandene PostgreSQL)
+
+Aktuelle Version prüfen: https://mvnrepository.com/artifact/io.quarkiverse.langchain4j/quarkus-langchain4j-openai
+
+---
+
+## Quarkus LangChain4j – AI Service Patterns
+
+### @RegisterAiService
+
+Deklarative AI Services werden als Interface mit `@RegisterAiService` erstellt.
+Quarkus generiert die Implementierung zur Build-Zeit:
+
+```java
+@SessionScoped  // oder @ApplicationScoped
+@RegisterAiService
+public interface MyAssistant {
+    @SystemMessage("Du bist ein hilfreicher Assistent.")
+    String chat(@UserMessage String userMessage);
+}
+```
+
+**Scope-Wahl:**
+- `@SessionScoped` → eigene Chat-Memory pro Session (WebSocket, HTTP-Session)
+- `@ApplicationScoped` → shared, kein Memory (oder expliziter @MemoryId)
+
+**Tools registrieren:** Per `@ToolBox` an der Methode oder `tools=` am Interface:
+```java
+@ToolBox(MyTool.class)
+String chat(@UserMessage String message);
+```
+
+---
+
+## Quarkus LangChain4j – Tools / Function Calling
+
+**Wichtig:** `@Tool`-Methoden mit Datenbankzugriff immer `@Blocking` + `@Transactional`:
+```java
+@Tool("Beschreibung fuer das LLM")
+@Blocking
+@Transactional
+public String findOrder(long orderId) { ... }
+```
+
+Ohne `@Blocking` → gleicher Fehler wie bei `@Incoming` (Deadlock auf I/O-Thread).
+
+Tool-Klassen sind CDI-Beans (`@ApplicationScoped`) und liegen in `control/ai/`.
+Tool-Beschreibungen muessen praezise sein – das LLM entscheidet anhand der Beschreibung.
+
+---
+
+## Quarkus LangChain4j – RAG mit PgVector
+
+**Docker Image:** `pgvector/pgvector:pg17` statt `postgres:17-alpine` verwenden,
+damit die PgVector Extension vorinstalliert ist.
+
+**Konfiguration:**
+```properties
+quarkus.langchain4j.pgvector.dimension=1536  # OpenAI Embeddings
+# oder 384 fuer Ollama nomic-embed-text
+```
+
+**Ingestion** beim Start via `@Startup` Bean.
+**Retrieval** via `Supplier<RetrievalAugmentor>` CDI-Bean.
+
+---
+
+## Quarkus LangChain4j – Guardrails
+
+**ACHTUNG:** Die Quarkus-eigene Guardrail-Implementierung wurde zugunsten der
+Upstream-LangChain4j-Implementierung entfernt.
+
+**Richtig:** `dev.langchain4j.guardrail.InputGuardrail` / `OutputGuardrail`
+**Falsch:** `io.quarkiverse.langchain4j.guardrails.*` (deprecated/entfernt)
+
+```properties
+quarkus.langchain4j.guardrails.max-retries=3  # Default: 3
+```
+
+---
+
+## Quarkus LangChain4j – Dev Services deaktivieren
+
+Ollama Dev Services starten automatisch einen Container – im DevContainer deaktivieren:
+```properties
+quarkus.langchain4j.ollama.devservices.enabled=false
+```
+
+Gilt analog fuer alle Provider Dev Services. Echte Services via `docker compose up`.
+
+---
+
+## AI-Architektur im BCE-Pattern
+
+AI-Komponenten im BCE-Pattern:
+- `boundary/ai/` → AI Service Interfaces (`@RegisterAiService`)
+- `control/ai/` → Tools, RAG-Komponenten, Guardrails
+- `boundary/rest/` → REST-Endpunkte fuer AI Service
+
+**Architekturtest** im `ArchitectureTest.java.template` enthält Regeln:
+- `@RegisterAiService` Interfaces → `boundary.ai`
+- `@Tool` Klassen → `control.ai`
+
+---
+
+## Quarkus LangChain4j – Agentic Workflows
+
+### @Agent vs. @RegisterAiService
+
+| Aspekt | `@RegisterAiService` | `@Agent` |
+|--------|---------------------|----------|
+| Zweck | Deklarativer AI Service (Chat, Q&A) | Autonomer Agent mit Tool-Zugriff |
+| Methoden | Mehrere Methoden erlaubt | **Genau EINE Methode** (Single Responsibility) |
+| Verhalten | Reaktiv (antwortet auf Fragen) | Proaktiv (loest Aufgaben selbststaendig) |
+| Workflow | Standalone | Kombinierbar in Workflows |
+
+### Workflow-Patterns (quarkus-langchain4j-agentic)
+
+Dependency: `io.quarkiverse.langchain4j:quarkus-langchain4j-agentic`
+
+| Pattern | Annotation | Beschreibung |
+|---------|-----------|-------------|
+| **Sequence** | `@SequenceAgent` | Agents nacheinander (A → B → C) |
+| **Parallel** | `@ParallelAgent` | Agents gleichzeitig auf separaten Threads |
+| **Conditional** | `@ConditionalAgent` | Bedingte Ausfuehrung via `@ActivationCondition` |
+| **Loop** | `@LoopAgent` | Iterativ bis Exit-Bedingung erfuellt |
+| **Supervisor** | `@SupervisorAgent` | LLM entscheidet dynamisch, welcher Agent laeuft |
+| **A2A** | `@A2AClientAgent` | Remote-Agent via Agent-to-Agent Protokoll |
+
+### AgenticScope – gemeinsamer Zustand
+
+Alle Agents in einem Workflow teilen sich einen `AgenticScope`.
+Daten werden ueber `outputKey` zwischen Agents weitergegeben.
+`@Output` Methode extrahiert Werte aus dem Scope fuer das Endergebnis.
+
+### Builder API (programmatisch)
+
+```java
+// Loop mit Exit-Bedingung
+var loop = AgenticServices.loopBuilder(MyLoop.class)
+    .subAgents(writer, reviewer)
+    .outputKey("result")
+    .exitCondition(scope -> scope.readState("score", 0.0) >= 0.8)
+    .maxIterations(5)
+    .build();
+```
+
+---
+
+## Quarkus LangChain4j – Fault Tolerance (Produktion)
+
+**PFLICHT fuer Produktionsanwendungen.** LLM-Aufrufe koennen jederzeit fehlschlagen.
+
+Dependency: `io.quarkus:quarkus-smallrye-fault-tolerance`
+
+```java
+@Timeout(5000)
+@Retry(maxRetries = 3, delay = 100)
+@Fallback(MyFallback.class)
+String chat(@UserMessage String message);
+```
+
+Fallback-Handler gibt benutzerfreundliche Fehlermeldung zurueck.
+
+---
+
+## Quarkus LangChain4j – Easy RAG (einfachste Variante)
+
+Dependency: `io.quarkiverse.langchain4j:quarkus-langchain4j-easy-rag`
+
+Automatische Ingestion aus Verzeichnis – keine Programmierung noetig:
+```properties
+quarkus.langchain4j.easy-rag.path=src/main/resources/rag
+quarkus.langchain4j.easy-rag.max-segment-size=100
+quarkus.langchain4j.easy-rag.max-overlap-size=25
+quarkus.langchain4j.easy-rag.max-results=3
+```
+
+Fuer produktionsreife Anwendungen → PgVector + eigene Ingestion-Pipeline bevorzugen.
+
+---
+
+## Quarkus LangChain4j – RAG Best Practices
+
+1. **Gleiches Embedding-Modell** fuer Ingestion und Retrieval verwenden (PFLICHT)
+2. **Segment-Groesse** ist kritisch: zu gross → ungenaue Ergebnisse, zu klein → fehlender Kontext
+3. **PgVector Dimension** muss zum Embedding-Modell passen:
+   - OpenAI `text-embedding-ada-002`: **1536**
+   - Ollama `nomic-embed-text`: **384**
+   - ONNX `bge-small-en-q` (lokal): **384**
+4. Lokale Embedding-Modelle (ONNX) bevorzugen wenn keine Daten das System verlassen sollen

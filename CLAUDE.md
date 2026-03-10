@@ -58,7 +58,7 @@ Jede generierte `pom.xml` enthält:
 - **Messaging (Quarkus)**: SmallRye `mp.messaging.*` Keys – Details in `lessons-learned.md`
 - **Quarkus `@Blocking`**: Bei DB-Zugriffen im `@Incoming`-Consumer und `@Tool`-Methoden immer `@Blocking @Transactional`
 - **AI-Architektur**: AI Services in `boundary/ai/`, Tools + RAG + Guardrails in `control/ai/`
-- **Branches**: Neue Features IMMER in einem separaten Branch umsetzen – niemals direkt auf `main` (gilt auch für Forks dieses Projekts)
+- **Branches**: Neue Features IMMER in einem separaten Branch umsetzen – niemals direkt auf `main`
 - **Commits**: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
 - **Sprache**: Deutsch in Kommentaren/Doku, Englisch im Code
 - **Beispiele**: Fachlich neutral (`order`, `product`, `event`, `item`) – keine Domänennamen

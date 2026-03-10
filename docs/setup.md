@@ -7,28 +7,11 @@
 
 ---
 
-## 1 – Fork erstellen
-
-Neue Projekte werden als **Fork** dieses Repositories angelegt. Dadurch können
-Template-Updates (neue Skills, DevContainer-Verbesserungen, neue Coding-Standards)
-jederzeit per `git` eingespielt werden.
-
-GitHub: Schaltfläche **"Fork"** oben rechts auf der Repository-Seite.
-Dadurch entsteht `github.com/<deine-org>/<dein-repo>` als eigene Kopie.
+## 1 – Repository klonen
 
 ```bash
-# Fork klonen
-git clone git@github.com:<deine-org>/<dein-repo>.git
+git clone <repository-url>
 cd <dein-repo>
-
-# Template als "upstream" Remote einrichten
-git remote add upstream git@github.com:<template-org>/claude-skills-devcontainer.git
-git fetch upstream
-
-# Remotes prüfen
-git remote -v
-# origin    git@github.com:<deine-org>/<dein-repo>.git  (fetch/push)
-# upstream  git@github.com:<template-org>/claude-skills-devcontainer.git  (fetch/push)
 ```
 
 ---

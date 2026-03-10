@@ -52,7 +52,7 @@ Das Template ist kein leerer Startpunkt. Es definiert klare technische Vorgaben,
 - **Infrastruktur** – PostgreSQL, RabbitMQ, Keycloak per `docker compose up -d` startklar
 - **Health Checks** – `/actuator/health` (Spring) oder `/q/health` (Quarkus) sind Pflicht
 
-Alles liegt unter Versionskontrolle. **Definiert, kontrollierbar, wiederholbar.** Änderungen sind im Git-Log nachvollziehbar und per Fork-Workflow auf alle Projekte verteilbar.
+Alles liegt unter Versionskontrolle. **Definiert, kontrollierbar, wiederholbar.** Änderungen sind im Git-Log nachvollziehbar.
 
 ### Claude Code Skills: Team-Wissen kodifiziert
 

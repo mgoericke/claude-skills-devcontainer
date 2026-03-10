@@ -20,13 +20,13 @@ graph TD
 
     C -.-|"Interview → specs/feature.md"| C
     D -.-|"api/name.yaml ODER<br>boundary/rest/ + entity/dto/"| D
-    E -.-|"pom.xml, docker-compose,<br>Flyway, Dockerfile,<br>ArchitekturTest, renovate.json"| E
+    E -.-|"pom.xml, docker-compose,<br>Flyway, Dockerfile,<br>ArchitekturTest, renovate.json,<br>AI Services (LangChain4j)"| E
     F -.-|"docs/artifactId.md"| F
 
     G[Jederzeit parallel nutzbar]
     G --- H[review-skill]
     G --- I[blog-post-skill]
-    G --- J[html-skill]
+    G --- J[frontend-skill]
     G --- K[infografik-skill]
 
     style A fill:#f9f,stroke:#333
@@ -113,11 +113,12 @@ Unterstuetzt drei Modi: Spec erstellen, Spec erweitern und Code generieren.
 ## java-scaffold-skill
 
 **Zweck:** Erstellt den vollständigen Projekt-Rahmen für eine neue Java-Anwendung –
-inklusive Build-Konfiguration, Infrastruktur und Architekturtests.
+inklusive Build-Konfiguration, Infrastruktur, Architekturtests und optional AI-Integration
+via LangChain4j.
 
-**Trigger:** `Erstelle ein neues Quarkus-Projekt`
+**Trigger:** `Erstelle ein neues Quarkus-Projekt` · `AI Service` · `Chatbot` · `RAG` · `LangChain4j`
 
-**Pflichtabfragen:** groupId · artifactId · Framework · benötigte Dienste (DB / Messaging / Keycloak)
+**Pflichtabfragen:** groupId · artifactId · Framework · benötigte Dienste (DB / Messaging / Keycloak) · AI-Support (optional)
 
 **Generiert:**
 | Artefakt | Beschreibung |
@@ -126,8 +127,21 @@ inklusive Build-Konfiguration, Infrastruktur und Architekturtests.
 | `docker-compose.yml` | Nur mit bestätigten Diensten |
 | `application.properties` | Framework-spezifisch vorkonfiguriert |
 | `Dockerfile` | Spring: Projekt-Root · Quarkus: `src/main/docker/` |
-| `ArchitectureTest.java` | Taikai-basierte BCE-Regel-Prüfung |
+| `ArchitectureTest.java` | Taikai-basierte BCE-Regel-Prüfung (inkl. AI-Schicht-Regeln) |
 | `renovate.json` | Automatische Dependency-Update-PRs |
+
+**AI-Support (optional, Quarkus + LangChain4j):**
+| Artefakt | Beschreibung |
+|----------|-------------|
+| AI Service (`boundary/ai/`) | `@RegisterAiService` Interface mit System-/User-Prompt |
+| AI Tools (`control/ai/`) | `@Tool`-Klassen für Function Calling |
+| RAG Pipeline (`control/ai/`) | Document-Ingestion + RetrievalAugmentor mit PgVector |
+| Guardrails (`control/ai/`) | Input-/Output-Validierung |
+| Agents (`boundary/ai/`) | Autonome Agents mit Workflow-Patterns |
+| Fault Tolerance | `@Timeout`, `@Retry`, `@Fallback` für Produktion |
+| `docker-compose-ai.yml` | PgVector + optionales Ollama |
+
+**AI-Profile:** Chat · Chat + Tools · Chat + RAG · Chat + Guardrails · Agentic · Fault Tolerant · Vollständig
 
 **Versions-Pflicht:** Vor jeder Generierung werden aktuelle Versionen im Internet
 abgefragt – niemals aus dem Gedächtnis.
@@ -208,16 +222,22 @@ Claude triggert ihn nicht automatisch.
 
 ---
 
-## html-skill
+## frontend-skill
 
-**Zweck:** Erstellt einfache, responsive HTML-Seiten mit **Tailwind CSS** via CDN-Link.
-Kein npm, kein Build-Tool – nur eine HTML-Datei.
+**Zweck:** Erstellt moderne Web-UIs mit **Tailwind CSS**. Zwei Modi: Dashboards/Admin-Panels
+mit TailAdmin (Alpine.js + ApexCharts) und Websites/Landing Pages mit Tailwind CSS CDN.
 
-**Trigger:** `Erstelle eine Landing Page` · `/html-skill Kontaktformular`
+**Trigger:** `Erstelle ein Dashboard` · `Landing Page` · `Admin-UI` · `Frontend`
+
+**Modi:**
+| Modus | Stack | Beschreibung |
+|-------|-------|-------------|
+| Dashboard / Admin-Panel | TailAdmin + Alpine.js + ApexCharts | Datengetriebene UIs mit Charts, Tabellen, Formularen |
+| Website / Landing Page | Tailwind CSS CDN | Responsive Seiten ohne Build-Tool |
 
 **Features:**
 
-- Tailwind CSS via CDN (`<script src="https://cdn.tailwindcss.com">`)
+- Tailwind CSS (CDN oder TailAdmin)
 - Mobile-first, responsive mit Breakpoints
 - Semantisches HTML (`<header>`, `<main>`, `<footer>`)
 - Barrierefreiheit (alt-Attribute, aria-labels)

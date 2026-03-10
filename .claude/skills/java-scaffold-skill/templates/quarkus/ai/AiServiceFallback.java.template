@@ -1,0 +1,27 @@
+/**
+ * Fallback-Handler fuer den AI Service bei LLM-Ausfaellen.
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Control-Schicht / AI)
+ *
+ * <p>Wird aufgerufen, wenn der LLM-Aufruf trotz Retries fehlschlaegt.
+ * Gibt eine benutzerfreundliche Fehlermeldung zurueck.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
+package {{GROUP_ID}}.control.ai;
+
+import io.quarkus.logging.Log;
+import org.eclipse.microprofile.faulttolerance.ExecutionContext;
+import org.eclipse.microprofile.faulttolerance.FallbackHandler;
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+public class {{AI_SERVICE_NAME}}Fallback implements FallbackHandler<String> {
+
+    @Override
+    public String handle(ExecutionContext context) {
+        Log.errorf("AI Service nicht erreichbar: %s", context.getFailure().getMessage());
+        return "Der AI-Assistent ist derzeit nicht verfuegbar. Bitte versuchen Sie es spaeter erneut.";
+    }
+}

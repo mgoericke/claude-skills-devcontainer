@@ -1,0 +1,34 @@
+/**
+ * AI Service mit RAG (Retrieval Augmented Generation).
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ *
+ * <p>Dieser Service nutzt einen {@code RetrievalAugmentor}, um Antworten mit
+ * domänenspezifischem Wissen aus einer Vektordatenbank (PgVector) anzureichern.
+ *
+ * <p><b>Auto-Wiring:</b> Der {@code Supplier<RetrievalAugmentor>} CDI-Bean
+ * (siehe {@code {{RAG_RETRIEVER_CLASS}}}) wird automatisch von Quarkus LangChain4j
+ * erkannt und diesem Service zugeordnet. Keine explizite Konfiguration noetig.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
+package {{GROUP_ID}}.boundary.ai;
+
+import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
+import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+@RegisterAiService
+public interface {{AI_SERVICE_NAME}} {
+
+    @SystemMessage("""
+            Du bist ein Experte fuer {{DOMAIN_DESCRIPTION}}.
+            Beantworte Fragen basierend auf den bereitgestellten Dokumenten.
+            Wenn die Dokumente keine Antwort enthalten, sage es ehrlich.
+            Zitiere relevante Stellen aus den Dokumenten.
+            """)
+    String chat(@UserMessage String question);
+}

@@ -15,6 +15,7 @@ Claude übernimmt Scaffolding, Spezifikation, Architektur und Code-Generierung.
 - **OpenAPI → Java** – REST-Endpunkte + DTOs aus einer OpenAPI 3.x Spec generieren (optional)
 - **Projekt-Dokumentation** – liest Quellcode und Konfiguration aus, erstellt `docs/<projekt>.md`
 - **Infografik-Skill** – KI-Bildgenerierung via Hugging Face FLUX.1 (optional)
+- **Review und Findings** – automatische Code-Reviews prüfen Templates und generierten Code gegen Projekt-Konventionen, Architektur-Regeln (BCE) und Best Practices; gefundene Fehler (falsche Imports, fehlende Dependencies, Inkonsistenzen) werden direkt behoben
 - **Fork-Workflow** – Template-Updates lassen sich jederzeit per `git merge` einspielen
 
 ## Schnellstart

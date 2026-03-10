@@ -1,0 +1,82 @@
+# Docker Compose – AI-Stack fuer Quarkus LangChain4j Anwendungen
+# Co-Author: Claude (claude-sonnet-4-6, Anthropic)
+#
+# Dienste:
+#   - Anwendung (Quarkus JVM)
+#   - PostgreSQL 17 mit PgVector Extension (Datenbank + Vektorspeicher)
+#   - Ollama (lokales LLM – optional, wenn OpenAI/Anthropic genutzt wird)
+#
+# Start: docker compose -f docker-compose-ai.yml up -d
+
+services:
+
+  {{ARTIFACT_ID}}:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8080:8080"
+    environment:
+      # ── Datenbank ──
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres:5432/{{ARTIFACT_ID}}db
+      QUARKUS_DATASOURCE_USERNAME: app
+      QUARKUS_DATASOURCE_PASSWORD: app
+      # ── LLM Provider (nur EINEN konfigurieren) ──
+      # Option A: OpenAI
+      QUARKUS_LANGCHAIN4J_OPENAI_API_KEY: ${OPENAI_API_KEY:-demo}
+      # Option B: Ollama (lokal)
+      #QUARKUS_LANGCHAIN4J_OLLAMA_BASE_URL: http://ollama:11434
+      # Option C: Anthropic
+      #QUARKUS_LANGCHAIN4J_ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/q/health/live | grep '\"status\":\"UP\"' || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    restart: on-failure
+
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_DB: {{ARTIFACT_ID}}db
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d {{ARTIFACT_ID}}db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Ollama – lokales LLM (optional, auskommentieren wenn Cloud-API genutzt wird)
+  #ollama:
+  #  image: ollama/ollama:latest
+  #  ports:
+  #    - "11434:11434"
+  #  volumes:
+  #    - ollama_data:/root/.ollama
+  #  # GPU-Zugriff (NVIDIA): Kommentar entfernen wenn GPU verfuegbar
+  #  #deploy:
+  #  #  resources:
+  #  #    reservations:
+  #  #      devices:
+  #  #        - driver: nvidia
+  #  #          count: 1
+  #  #          capabilities: [gpu]
+  #  healthcheck:
+  #    test: ["CMD-SHELL", "curl -sf http://localhost:11434/api/tags || exit 1"]
+  #    interval: 15s
+  #    timeout: 5s
+  #    start_period: 30s
+  #    retries: 5
+
+volumes:
+  postgres_data:
+  #ollama_data:

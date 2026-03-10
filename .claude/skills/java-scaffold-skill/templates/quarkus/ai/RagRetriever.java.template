@@ -1,0 +1,46 @@
+/**
+ * RAG Retrieval Augmentor – reichert LLM-Anfragen mit Dokumentenwissen an.
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Control-Schicht / AI)
+ *
+ * <p>Dieser Bean wird automatisch vom AI Service genutzt, um relevante
+ * Dokument-Segmente aus der Vektordatenbank (PgVector) abzurufen und
+ * dem LLM-Prompt hinzuzufuegen.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ */
+package {{GROUP_ID}}.control.ai;
+
+import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.rag.DefaultRetrievalAugmentor;
+import dev.langchain4j.rag.RetrievalAugmentor;
+import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
+import dev.langchain4j.store.embedding.EmbeddingStore;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import java.util.function.Supplier;
+
+@ApplicationScoped
+public class {{RAG_RETRIEVER_CLASS}} implements Supplier<RetrievalAugmentor> {
+
+    @Inject
+    EmbeddingStore embeddingStore;
+
+    @Inject
+    EmbeddingModel embeddingModel;
+
+    @Override
+    public RetrievalAugmentor get() {
+        var contentRetriever = EmbeddingStoreContentRetriever.builder()
+                .embeddingStore(embeddingStore)
+                .embeddingModel(embeddingModel)
+                .maxResults(3)
+                .minScore(0.7)
+                .build();
+
+        return DefaultRetrievalAugmentor.builder()
+                .contentRetriever(contentRetriever)
+                .build();
+    }
+}

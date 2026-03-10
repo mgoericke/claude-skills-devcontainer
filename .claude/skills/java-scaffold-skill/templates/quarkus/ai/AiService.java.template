@@ -1,0 +1,30 @@
+/**
+ * Deklarativer AI Service – LangChain4j Integration.
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ *
+ * <p>Der AI Service wird von Quarkus LangChain4j zur Build-Zeit implementiert.
+ * {@code @RegisterAiService} erzeugt automatisch einen CDI-Bean.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @see <a href="https://docs.quarkiverse.io/quarkus-langchain4j/dev/ai-services.html">AI Services Docs</a>
+ */
+package {{GROUP_ID}}.boundary.ai;
+
+import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
+import io.quarkiverse.langchain4j.RegisterAiService;
+import jakarta.enterprise.context.SessionScoped;
+
+@SessionScoped
+@RegisterAiService
+public interface {{AI_SERVICE_NAME}} {
+
+    @SystemMessage("""
+            Du bist ein hilfreicher Assistent fuer {{DOMAIN_DESCRIPTION}}.
+            Antworte praezise und fachlich korrekt.
+            Wenn du etwas nicht weisst, sage es ehrlich.
+            """)
+    String chat(@UserMessage String userMessage);
+}

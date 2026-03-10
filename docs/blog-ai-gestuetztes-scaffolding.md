@@ -60,14 +60,14 @@ Skills in `.claude/skills/` bringen Claude Code bei, wie das Team arbeitet. Kein
 
 | Skill | Was er tut |
 |-------|-----------|
-| `java-scaffold-skill` | Generiert Projekte, Entities, Dockerfiles nach Team-Konventionen |
+| `java-scaffold-skill` | Generiert Projekte, Entities, Dockerfiles, **AI Services** nach Team-Konventionen |
 | `spec-feature-skill` | Erfragt fachliche Requirements per Interview, erstellt Specs |
 | `openapi-skill` | Erstellt, erweitert oder implementiert OpenAPI Specs per Interview |
 | `review-skill` | Prüft Code gegen Architektur-Regeln und Best Practices |
 | `doc-skill` | Erstellt und aktualisiert Projektdokumentation |
 | `infografik-skill` | Generiert Infografiken per Hugging Face API |
 | `blog-post-skill` | Erstellt technische Blog Posts (wie diesen hier) |
-| `html-skill` | Baut einfache HTML-Seiten mit Tailwind CSS |
+| `frontend-skill` | Baut Web-UIs: Dashboards (TailAdmin), Landing Pages (Tailwind CSS) |
 
 Neben den Skills bringt das Template auch einen **MCP Server für PostgreSQL** mit. Damit lassen sich Datenbankinhalte direkt im Chat abfragen – in natürlicher Sprache, ohne SQL-Client zu öffnen.
 
@@ -94,7 +94,8 @@ Die Konventionen stehen in der `CLAUDE.md` – für Mensch und Maschine lesbar:
 | Build | Maven 3.9 |
 | Architektur-Tests | Taikai (ArchUnit) |
 | Auth / IAM | Keycloak 26.x |
-| AI | Claude Code |
+| AI (Entwickler-Tool) | Claude Code |
+| AI (in der Anwendung) | Quarkus LangChain4j (OpenAI, Ollama, Anthropic) + PgVector |
 
 ### Lokale Modelle und Datensouveränität
 
@@ -162,8 +163,65 @@ Erstelle eine neue API Spec für den Order-Service
 
 Der `openapi-skill` führt durch ein Interview: Datenmodelle, Endpunkte, Auth-Schema. Am Ende steht eine valide OpenAPI 3.x Spec in `api/`. Bestehende Entities im Projekt werden erkannt und zur Übernahme angeboten. Aus der fertigen Spec kann direkt Java-Code generiert werden – DTOs, Controller, Service-Stubs.
 
+### AI-Fachanwendungen mit LangChain4j
+
+Seit dem letzten Update kann der `java-scaffold-skill` auch **AI-gestützte Fachanwendungen** generieren. Statt nur CRUD-Services zu bauen, lassen sich jetzt komplette LLM-Integrationen scaffolden:
+
+```
+> Erstelle ein neues Quarkus Projekt mit AI-Support (LangChain4j)
+
+Claude: Welche AI-Features brauchst du?
+
+  LLM-Provider?        OpenAI
+  AI-Features?         Chat + Tools + RAG
+  Vektorspeicher?      PgVector
+  Fault Tolerance?     Ja
+
+Claude generiert das AI-Projekt …
+
+✅ pom.xml              – Quarkus 3.31+, LangChain4j BOM, PgVector, Fault Tolerance
+✅ AI Service            – @RegisterAiService mit SystemMessage und ToolBox
+✅ AI Tools              – @Tool-Klassen fuer Function Calling (DB-Zugriff)
+✅ RAG Pipeline          – Document-Ingestion + RetrievalAugmentor mit PgVector
+✅ Guardrails            – Input-Validierung gegen Prompt Injection
+✅ REST-Endpunkt         – /ai/chat als JSON-API
+✅ Fault Tolerance       – @Timeout, @Retry, @Fallback fuer Produktion
+✅ docker-compose-ai.yml – pgvector/pgvector:pg17 + optionales Ollama
+✅ Architekturtests      – AI Services in boundary/ai/, Tools in control/ai/
+```
+
+**7 AI-Profile** stehen zur Verfügung – von einem einfachen Chatbot bis hin zu agentic Workflows mit autonomen Agents:
+
+| Profil | Beschreibung |
+|--------|-------------|
+| **Chat** | Einfacher AI Service mit System-/User-Prompt |
+| **Chat + Tools** | Function Calling – das LLM greift auf Datenbank und REST-APIs zu |
+| **Chat + RAG** | Dokumentensuche über PgVector (Retrieval Augmented Generation) |
+| **Chat + Guardrails** | Ein-/Ausgabevalidierung gegen Prompt Injection |
+| **Agentic** | Autonome Agents mit Workflow-Orchestrierung (Sequence, Parallel, Loop, Supervisor) |
+| **Fault Tolerant** | Produktionsreifes Setup mit Retry, Timeout und Fallback |
+| **Vollständig** | Alle Features kombiniert |
+
+Die AI-Komponenten folgen dem gleichen BCE-Pattern wie der Rest der Anwendung:
+- **AI Services** (`@RegisterAiService`) liegen in `boundary/ai/`
+- **Tools, RAG, Guardrails** liegen in `control/ai/`
+- **REST-Endpunkte** für den AI Service in `boundary/rest/`
+
+Die Architekturtests erzwingen diese Struktur automatisch – ein `@Tool` in `boundary/rest/` lässt den Build fehlschlagen.
+
+**Drei LLM-Provider** werden unterstützt:
+- **OpenAI** (oder kompatible APIs wie vLLM, LM Studio)
+- **Ollama** (lokal, ohne API-Key – perfekt für datensensible Projekte)
+- **Anthropic** (Claude)
+
 ### Weitere Prompts zum Ausprobieren
 
+```
+Erstelle eine Fachanwendung mit Chatbot und RAG (Dokumentensuche)
+```
+```
+Generiere einen AI Service mit Tool-Integration fuer mein Quarkus-Projekt
+```
 ```
 Erweitere die API in api/orders.yaml um einen Product-Endpunkt
 ```

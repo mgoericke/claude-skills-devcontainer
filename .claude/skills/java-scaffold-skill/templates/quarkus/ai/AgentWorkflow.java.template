@@ -1,0 +1,83 @@
+/**
+ * Agentic Workflow – orchestriert mehrere Agents.
+ *
+ * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ *
+ * <p>Verfuegbare Workflow-Patterns:
+ * <ul>
+ *   <li>{@code @SequenceAgent} – sequenzielle Ausfuehrung (Agent A → B → C)
+ *   <li>{@code @ParallelAgent} – parallele Ausfuehrung auf separaten Threads
+ *   <li>{@code @ConditionalAgent} – bedingte Ausfuehrung basierend auf Regeln
+ *   <li>{@code @LoopAgent} – iterative Ausfuehrung bis Exit-Bedingung erfuellt
+ *   <li>{@code @SupervisorAgent} – LLM-gesteuertes dynamisches Routing
+ * </ul>
+ *
+ * <p>Alle Agents teilen sich einen {@code AgenticScope} fuer den Datenaustausch.
+ * Daten werden ueber {@code outputKey} zwischen Agents weitergegeben.
+ *
+ * @author Development Team
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @see <a href="https://quarkus.io/blog/agentic-ai-patterns/">Agentic AI Patterns</a>
+ */
+package {{GROUP_ID}}.boundary.ai;
+
+// ── Beispiel: Sequenzieller Workflow ──────────────────────────────────────
+//
+// Ein sequenzieller Workflow fuehrt Agents nacheinander aus.
+// Jeder Agent schreibt sein Ergebnis in den AgenticScope (outputKey),
+// nachfolgende Agents koennen darauf zugreifen.
+//
+// @ApplicationScoped
+// @SequenceAgent
+// public interface {{WORKFLOW_NAME}} {
+//
+//     // Definiert die Reihenfolge der Agents
+//     @Agent
+//     String run(@V("input") String input);
+// }
+//
+// ── Beispiel: Supervisor Workflow ─────────────────────────────────────────
+//
+// Ein Supervisor-Agent entscheidet dynamisch (via LLM), welcher Agent
+// als naechstes aufgerufen wird.
+//
+// @ApplicationScoped
+// @SupervisorAgent
+// public interface {{WORKFLOW_NAME}} {
+//
+//     @SystemMessage("Entscheide welcher Agent die Anfrage am besten bearbeiten kann.")
+//     @Agent
+//     String route(@V("input") String input);
+// }
+//
+// ── Aufbau via AgenticServices Builder API ────────────────────────────────
+//
+// Fuer komplexere Workflows die programmatische API verwenden:
+//
+// import io.quarkiverse.langchain4j.agentic.AgenticServices;
+//
+// // Sequenz
+// var workflow = AgenticServices.sequenceBuilder(MyWorkflow.class)
+//         .subAgents(agentA, agentB, agentC)
+//         .outputKey("result")
+//         .build();
+//
+// // Loop mit Exit-Bedingung
+// var loop = AgenticServices.loopBuilder(MyLoop.class)
+//         .subAgents(writer, reviewer)
+//         .outputKey("result")
+//         .exitCondition(scope -> scope.readState("score", 0.0) >= 0.8)
+//         .maxIterations(5)
+//         .build();
+
+import io.quarkiverse.langchain4j.Agent;
+
+/**
+ * Workflow-Definition.
+ *
+ * TODO: Workflow-Pattern waehlen und implementieren.
+ * Siehe Kommentare oben fuer Beispiele.
+ */
+public class {{WORKFLOW_NAME}} {
+    // Programmatische Workflow-Definition hier implementieren
+}

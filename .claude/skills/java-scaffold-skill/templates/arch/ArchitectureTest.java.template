@@ -87,7 +87,29 @@ class ArchitectureTest {
     void servicesShouldResideInControl() {
         ArchRule rule = classes()
                 .that().haveSimpleNameEndingWith("Service")
+                .and().areNotAnnotatedWith("io.quarkiverse.langchain4j.RegisterAiService")
                 .should().resideInAPackage("..control..");
+        rule.check(importedClasses);
+    }
+
+    // ── AI-Schichten (nur bei LangChain4j-Projekten relevant) ──────────────
+
+    @Test
+    void aiServicesShouldResideInBoundaryAi() {
+        ArchRule rule = classes()
+                .that().areAnnotatedWith("io.quarkiverse.langchain4j.RegisterAiService")
+                .should().resideInAPackage("..boundary.ai..");
+        rule.check(importedClasses);
+    }
+
+    @Test
+    void aiToolsShouldResideInControlAi() {
+        ArchRule rule = classes()
+                .that().containAnyMethodsThat(
+                        com.tngtech.archunit.base.DescribedPredicate.describe(
+                                "annotated with @Tool",
+                                method -> method.isAnnotatedWith("dev.langchain4j.agent.tool.Tool")))
+                .should().resideInAPackage("..control.ai..");
         rule.check(importedClasses);
     }
 }

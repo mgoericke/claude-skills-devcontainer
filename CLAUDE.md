@@ -23,16 +23,16 @@ Check `lessons-learned.md` before every generation.
 
 | Skill | Trigger |
 |-------|---------|
-| `coworker-skill` | End-to-end project setup, phase-based with review |
-| `java-scaffold-skill` | New project, new entity, AI Service, LangChain4j |
-| `infrastructure-skill` | Dockerfile, docker-compose, Helm Charts, CI/CD pipelines |
-| `spec-feature-skill` | Specify a feature before code is written |
-| `openapi-skill` | Create, extend, or generate code from an OpenAPI spec |
-| `review-skill` | Code review, quality check, review changed code |
-| `doc-skill` | Create or update project documentation |
-| `infografik-skill` | Infographic, visualization, diagram |
-| `blog-post-skill` | Blog post, article, technical contribution |
-| `frontend-skill` | Web UIs: Dashboards (TailAdmin), Landing Pages, SPAs (Tailwind CSS) |
+| `coworker` | End-to-end project setup, phase-based with review |
+| `java-scaffold` | New project, new entity, AI Service, LangChain4j |
+| `infrastructure` | Dockerfile, docker-compose, Helm Charts, CI/CD pipelines |
+| `spec-feature` | Specify a feature before code is written |
+| `openapi` | Create, extend, or generate code from an OpenAPI spec |
+| `review` | Code review, quality check, review changed code |
+| `doc` | Create or update project documentation |
+| `infografik` | Infographic, visualization, diagram |
+| `blog-post` | Blog post, article, technical contribution |
+| `frontend` | Web UIs: Simple HTML pages, Dashboards (TailAdmin), Landing Pages (Tailwind CSS) |
 | `skill-creator` | Create new skills, optimize existing skills, measure skill performance |
 
 ## Version Strategy (MANDATORY)
@@ -67,7 +67,7 @@ Every generated `pom.xml` must contain:
 
 Every generated Java file must contain:
 ```
-@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
+@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold
 ```
 Properties/YAML files as comment: `# Co-Author: Claude (claude-sonnet-4-6, Anthropic)`
 

@@ -1,6 +1,6 @@
 # Website Patterns (Tailwind CSS)
 
-Reference patterns for the website mode of the frontend-skill.
+Reference patterns for the website mode of the frontend.
 Based on Tailwind CSS Showcase: https://tailwindcss.com/showcase
 
 ---

@@ -1,5 +1,5 @@
 ---
-name: openapi-skill
+name: openapi
 description: Creates, extends, and implements OpenAPI 3.x specifications. Three modes – create spec (from scratch), extend spec (add to existing spec), and generate code (Java classes in BCE pattern). Use this skill for "create an API spec", "define the API", "extend the API", "generate code from the OpenAPI spec", "new OpenAPI spec" or when a REST API needs to be designed.
 argument-hint: "[api-name or spec-path]"
 ---
@@ -227,7 +227,7 @@ Existing paths and schemas remain unchanged.
 
 Before generation – if not already known:
 
-If the skill is called with arguments (`/openapi-skill api/openapi.yaml`), `$ARGUMENTS` is used as the spec path.
+If the skill is called with arguments (`/openapi api/openapi.yaml`), `$ARGUMENTS` is used as the spec path.
 
 | # | Question | Hint |
 |---|----------|------|
@@ -387,22 +387,22 @@ public class {{TAG}}Service {
 - No Hibernate / JPA in DTOs – these are pure transfer objects
 - No business logic in controller/resource – only delegation to service
 - `UnsupportedOperationException` as placeholder – signals "not yet implemented"
-- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via openapi-skill`
+- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via openapi`
 
 ### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – business requirements
+[spec-feature]      optional – business requirements
         |
-[openapi-skill]           <-- create spec OR extend OR generate code
+[openapi]           <-- create spec OR extend OR generate code
         |
-[java-scaffold-skill]     framework: DB, messaging, infra – do NOT regenerate REST/DTOs
+[java-scaffold]     framework: DB, messaging, infra – do NOT regenerate REST/DTOs
         |
-[review-skill]            code review
+[review]            code review
         |
-[doc-skill]               project documentation
+[doc]               project documentation
 ```
 
-**Important for java-scaffold-skill:** If openapi-skill has already generated code,
+**Important for java-scaffold:** If openapi has already generated code,
 **do not** regenerate `boundary/rest/` and `entity/dto/` classes – only generate the rest
 of the project framework (pom.xml, docker-compose, application.properties, Flyway, architecture test).

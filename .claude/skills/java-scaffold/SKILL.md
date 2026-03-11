@@ -1,6 +1,6 @@
 ---
-name: java-scaffold-skill
-description: Scaffolding for Java projects with Spring Boot or Quarkus, PostgreSQL, RabbitMQ, and LangChain4j AI. Generates pom.xml, BCE package structure, Flyway migrations, architecture tests (Taikai), and application code. Supports AI business applications with LangChain4j (AI Services, Tools/Function Calling, RAG, Guardrails). Use this skill for new Java applications, new entities, architecture tests, AI services, or AI integrations – also for "create a new project", "scaffold", "new module", "new entity", "AI Service", "Chatbot", "RAG", "LangChain4j". For Dockerfiles, docker-compose, and infrastructure, use the infrastructure-skill.
+name: java-scaffold
+description: Scaffolding for Java projects with Spring Boot or Quarkus, PostgreSQL, RabbitMQ, and LangChain4j AI. Generates pom.xml, BCE package structure, Flyway migrations, architecture tests (Taikai), and application code. Supports AI business applications with LangChain4j (AI Services, Tools/Function Calling, RAG, Guardrails). Use this skill for new Java applications, new entities, architecture tests, AI services, or AI integrations – also for "create a new project", "scaffold", "new module", "new entity", "AI Service", "Chatbot", "RAG", "LangChain4j". For Dockerfiles, docker-compose, and infrastructure, use the infrastructure skill.
 argument-hint: "[framework] [description]"
 ---
 
@@ -25,7 +25,7 @@ Scaffolding for Java projects with Spring Boot or Quarkus – including AI suppo
 8. **Creates architecture tests** – Taikai-based ArchitectureTest (incl. AI layer rules)
 9. **Creates Renovate config** – automatic dependency update PRs
 
-> **Note:** Dockerfiles, docker-compose, and other infrastructure are handled by the **infrastructure-skill**.
+> **Note:** Dockerfiles, docker-compose, and other infrastructure are handled by the **infrastructure**.
 
 ## How to Use
 
@@ -74,7 +74,7 @@ the following questions before generating code**:
 
 **Ask before scaffolding:** Is there an OpenAPI specification for this project?
 
-- **Yes** → run `openapi-skill` first; then during scaffold
+- **Yes** → run `openapi` first; then during scaffold
   **do not** regenerate `boundary/rest/` and `entity/dto/` – only the framework
   (pom.xml, docker-compose, application.properties, Flyway, architecture test, Dockerfile).
 - **No** → proceed normally, generate all layers.
@@ -165,7 +165,7 @@ Generation order:
 14. Architecture test (`ArchitectureTest.java`) – incl. AI layer rules if AI support
 15. `renovate.json`
 
-> **Next step:** Run `infrastructure-skill` to generate Dockerfile, docker-compose, and other infrastructure.
+> **Next step:** Run `infrastructure` to generate Dockerfile, docker-compose, and other infrastructure.
 
 ### Step 3a – AI Dependencies (Quarkus + LangChain4j)
 
@@ -415,20 +415,20 @@ Renovate automatically creates pull requests for dependency updates and keeps th
 - **Examples:** Domain-neutral (`order`, `product`, `event`, `item`)
 - **Language:** English in comments/docs and code
 - **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
-- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill`
+- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold`
 
 ### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – business requirements
+[spec-feature]      optional – business requirements
         |
-[openapi-skill]           if OpenAPI spec available
+[openapi]           if OpenAPI spec available
         |
-[java-scaffold-skill]     application: pom.xml, BCE, AI, Flyway
+[java-scaffold]     application: pom.xml, BCE, AI, Flyway
         |
-[infrastructure-skill]    Dockerfile, docker-compose, Helm
+[infrastructure]    Dockerfile, docker-compose, Helm
         |
-[review-skill]            code review
+[review]            code review
         |
-[doc-skill]               project documentation
+[doc]               project documentation
 ```

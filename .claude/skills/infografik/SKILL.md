@@ -1,5 +1,5 @@
 ---
-name: infografik-skill
+name: infografik
 description: Creates professional infographics as PNG via the Hugging Face Inference API (FLUX.1-schnell). Supports technical dashboards, architecture overviews, process flows, comparisons, timelines, and creative posters. Use this skill for infographics, visualizations, illustrated statistics, or roadmaps – also for "visualize this", "make this clear", "show this as an image", "create a diagram", or "create an infographic".
 argument-hint: "[topic-or-description]"
 ---

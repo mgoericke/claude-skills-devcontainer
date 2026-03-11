@@ -10,24 +10,26 @@ not as external tools.
 
 ```mermaid
 graph TD
-    A[Idea / Requirement] --> B[coworker-skill]
-    B -->|or use individual skills directly| C[spec-feature-skill]
-    C --> D[openapi-skill]
-    D --> E[java-scaffold-skill]
-    E --> F[doc-skill]
+    A[Idea / Requirement] --> B[coworker]
+    B -->|or use individual skills directly| C[spec-feature]
+    C --> D[openapi]
+    D --> E[java-scaffold]
+    E --> E2[infrastructure]
+    E2 --> F[doc]
 
     B -.-|"Orchestrates all phases<br>with review in between"| B
 
     C -.-|"Interview → specs/feature.md"| C
     D -.-|"api/name.yaml OR<br>boundary/rest/ + entity/dto/"| D
-    E -.-|"pom.xml, docker-compose,<br>Flyway, Dockerfile,<br>ArchitectureTest, renovate.json,<br>AI Services (LangChain4j)"| E
+    E -.-|"pom.xml, BCE, Flyway,<br>ArchitectureTest, renovate.json,<br>AI Services (LangChain4j)"| E
+    E2 -.-|"Dockerfile, docker-compose,<br>Helm Charts, CI/CD"| E2
     F -.-|"docs/artifactId.md"| F
 
     G[Usable in parallel at any time]
-    G --- H[review-skill]
-    G --- I[blog-post-skill]
-    G --- J[frontend-skill]
-    G --- K[infografik-skill]
+    G --- H[review]
+    G --- I[blog-post]
+    G --- J[frontend]
+    G --- K[infografik]
 
     style A fill:#f9f,stroke:#333
     style B fill:#bbf,stroke:#333
@@ -36,7 +38,7 @@ graph TD
 
 ---
 
-## coworker-skill
+## coworker
 
 **Purpose:** Phase-based coworker for end-to-end setup of new projects.
 Orchestrates existing skills in the correct order – with review
@@ -49,9 +51,9 @@ and feedback opportunity after each phase.
 | Phase | What happens | Result |
 |-------|-------------|--------|
 | 1 – Project Context | Framework, services, project name | Fundamental decisions |
-| 2 – Specify Feature | Delegates to `spec-feature-skill` | `specs/<feature>.md` |
-| 3 – Design API | Delegates to `openapi-skill` (Mode A) | `api/<service>.yaml` |
-| 4 – Generate Code | `java-scaffold-skill` + `openapi-skill` (Mode C) | Runnable project |
+| 2 – Specify Feature | Delegates to `spec-feature` | `specs/<feature>.md` |
+| 3 – Design API | Delegates to `openapi` (Mode A) | `api/<service>.yaml` |
+| 4 – Generate Code | `java-scaffold` + `openapi` (Mode C) | Runnable project |
 | 5 – Summary | Overview + next steps | Recommendations |
 
 **Flexibility:**
@@ -61,7 +63,7 @@ and feedback opportunity after each phase.
 
 ---
 
-## spec-feature-skill
+## spec-feature
 
 **Purpose:** Structured feature interview before implementation – produces a
 spec file as a shared language between business requirements and code.
@@ -78,7 +80,7 @@ spec file as a shared language between business requirements and code.
 
 ---
 
-## openapi-skill
+## openapi
 
 **Purpose:** Creates, extends, and implements OpenAPI 3.x specifications.
 Supports three modes: create spec, extend spec, and generate code.
@@ -105,16 +107,16 @@ Supports three modes: create spec, extend spec, and generate code.
 | DTOs | `entity/dto/` | Java Records with validation annotations from the spec |
 | Service stubs | `control/` | Empty service classes with correct method signatures |
 
-**Note:** If this skill has generated code, `java-scaffold-skill`
+**Note:** If this skill has generated code, `java-scaffold`
 will **not** generate `boundary/rest/` and `entity/dto/` again.
 
 ---
 
-## java-scaffold-skill
+## java-scaffold
 
 **Purpose:** Creates the complete project framework for a new Java application –
-including build configuration, infrastructure, architecture tests, and optionally AI integration
-via LangChain4j.
+including build configuration, architecture tests, and optionally AI integration
+via LangChain4j. For Dockerfiles, docker-compose, and infrastructure, use the `infrastructure` skill.
 
 **Trigger:** `Create a new Quarkus project` · `AI Service` · `Chatbot` · `RAG` · `LangChain4j`
 
@@ -124,9 +126,7 @@ via LangChain4j.
 | Artifact | Description |
 |----------|-------------|
 | `pom.xml` | With current versions (always queried from the internet) |
-| `docker-compose.yml` | Only with confirmed services |
 | `application.properties` | Framework-specific preconfigured |
-| `Dockerfile` | Spring: project root · Quarkus: `src/main/docker/` |
 | `ArchitectureTest.java` | Taikai-based BCE rule validation (incl. AI layer rules) |
 | `renovate.json` | Automatic dependency update PRs |
 
@@ -148,7 +148,28 @@ from the internet – never from memory.
 
 ---
 
-## doc-skill
+## infrastructure
+
+**Purpose:** Infrastructure scaffolding for Java projects – Dockerfiles, docker-compose,
+Helm Charts, and CI/CD pipelines. Reads existing project configuration to detect
+framework, services, and health endpoints automatically.
+
+**Trigger:** `Create a Dockerfile` · `docker-compose` · `Helm chart` · `CI/CD pipeline` · `Infrastructure`
+
+**Generates:**
+| Artifact | Description |
+|----------|-------------|
+| `Dockerfile` | Multi-stage build with health checks, non-root user |
+| `docker-compose.yml` | All required services with health checks and volumes |
+| Helm Charts | Kubernetes deployment manifests (future) |
+| CI/CD pipelines | GitHub Actions, GitLab CI (future) |
+
+**Behavior:** Reads `pom.xml` and `application.properties` first – never guesses
+framework or services. Uses templates from `templates/spring/` or `templates/quarkus/`.
+
+---
+
+## doc
 
 **Purpose:** Creates or updates `docs/<artifactId>.md` based on the existing
 project – automatically reads source code and configuration before asking questions.
@@ -166,7 +187,7 @@ when the respective dependencies are active in the `pom.xml`.
 
 ---
 
-## infografik-skill
+## infografik
 
 **Purpose:** Generates professional infographics as PNG files via the
 Hugging Face Inference API (FLUX.1, free with `HF_TOKEN`).
@@ -178,12 +199,12 @@ Hugging Face Inference API (FLUX.1, free with `HF_TOKEN`).
 
 ---
 
-## review-skill
+## review
 
 **Purpose:** Systematic code review against project conventions, architecture rules,
 and best practices – with automatic Git status detection.
 
-**Trigger:** `Check the code` · `Review the changes` · `/review-skill src/main/java/`
+**Trigger:** `Check the code` · `Review the changes` · `/review src/main/java/`
 
 **Dynamic context:** On invocation, staged changes, unstaged changes,
 untracked files, and the current branch are automatically injected – no manual `git diff` needed.
@@ -195,16 +216,16 @@ untracked files, and the current branch are automatically injected – no manual
 | Warning | Convention violation, missing test |
 | Note | Improvement suggestion, style |
 
-**Review catalog:** Detailed rules in [references/review-checklist.md](../. claude/skills/review-skill/references/review-checklist.md)
+**Review catalog:** Detailed rules in [references/review-checklist.md](../. claude/skills/review/references/review-checklist.md)
 
 ---
 
-## blog-post-skill
+## blog-post
 
 **Purpose:** Creates technical blog posts as Markdown files – based on a
 structured interview with audience adaptation (Developer / BA / PM).
 
-**Trigger:** `/blog-post-skill Quarkus and LangChain4j` · `Write a blog post`
+**Trigger:** `/blog-post Quarkus and LangChain4j` · `Write a blog post`
 
 **Process:**
 
@@ -217,21 +238,22 @@ structured interview with audience adaptation (Developer / BA / PM).
 
 **Output path:** `docs/blog-<topic-kebab-case>.md`
 
-**Note:** `disable-model-invocation: true` – only callable via `/blog-post-skill`,
+**Note:** `disable-model-invocation: true` – only callable via `/blog-post`,
 Claude does not trigger it automatically.
 
 ---
 
-## frontend-skill
+## frontend
 
-**Purpose:** Creates modern web UIs with **Tailwind CSS**. Two modes: Dashboards/Admin panels
-with TailAdmin (Alpine.js + ApexCharts) and Websites/Landing Pages with Tailwind CSS CDN.
+**Purpose:** Creates modern web UIs with **Tailwind CSS**. Three modes: Simple HTML pages (no JS),
+Dashboards/Admin panels with TailAdmin (Alpine.js + ApexCharts), and Websites/Landing Pages with Tailwind CSS CDN.
 
-**Trigger:** `Create a dashboard` · `Landing page` · `Admin UI` · `Frontend`
+**Trigger:** `Create a dashboard` · `Landing page` · `Admin UI` · `Frontend` · `Simple HTML page` · `Static page`
 
 **Modes:**
 | Mode | Stack | Description |
 |------|-------|-------------|
+| Simple | HTML + Tailwind CSS CDN | Static pages, forms, quick prototypes (no JavaScript) |
 | Dashboard / Admin Panel | TailAdmin + Alpine.js + ApexCharts | Data-driven UIs with charts, tables, forms |
 | Website / Landing Page | Tailwind CSS CDN | Responsive pages without build tools |
 

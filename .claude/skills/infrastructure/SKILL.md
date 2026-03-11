@@ -1,5 +1,5 @@
 ---
-name: infrastructure-skill
+name: infrastructure
 description: Infrastructure scaffolding for Java projects – Dockerfiles, docker-compose, Helm Charts, and CI/CD pipelines. Reads existing pom.xml and application.properties to detect framework, services, and health endpoints automatically. Use this skill for "create a Dockerfile", "docker-compose", "Helm chart", "CI/CD pipeline", "infrastructure", "containerize", or "deploy".
 argument-hint: "[infrastructure type] [description]"
 ---
@@ -118,14 +118,14 @@ Reserved for GitHub Actions / GitLab CI pipelines. Not yet implemented.
 
 - **Language:** English in comments
 - **Commits:** Conventional Commits (`chore:` for infrastructure changes)
-- **Co-Author:** `# Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via infrastructure-skill`
+- **Co-Author:** `# Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via infrastructure`
 
 ### Position in Workflow
 
 ```
 [java-scaffold-skill]     application code, pom.xml, BCE, Flyway
         |
-[infrastructure-skill]    Dockerfile, docker-compose, Helm, CI/CD
+[infrastructure]    Dockerfile, docker-compose, Helm, CI/CD
         |
 [review-skill]            code review
         |

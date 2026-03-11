@@ -47,7 +47,7 @@ The template is not an empty starting point. It defines clear technical specific
 
 - **Base image, Java version, Git** – defined in `devcontainer.json`, not "install Java 25 somehow"
 - **Docker-in-Docker** – build containers and use `docker compose` directly in the DevContainer
-- **BOM and dependency versions** – the `java-scaffold-skill` queries current versions live and generates a `pom.xml` with `versions-maven-plugin` and `renovate.json`
+- **BOM and dependency versions** – the `java-scaffold` queries current versions live and generates a `pom.xml` with `versions-maven-plugin` and `renovate.json`
 - **Architecture specifications** – BCE pattern, Taikai architecture tests, Flyway instead of ddl-auto
 - **Infrastructure** – PostgreSQL, RabbitMQ, Keycloak ready to start via `docker compose up -d`
 - **Health checks** – `/actuator/health` (Spring) or `/q/health` (Quarkus) are mandatory
@@ -60,18 +60,18 @@ Skills in `.claude/skills/` teach Claude Code how the team works. Not vague prom
 
 | Skill | What it does |
 |-------|-------------|
-| `java-scaffold-skill` | Generates projects, entities, Dockerfiles, **AI services** according to team conventions |
-| `spec-feature-skill` | Gathers business requirements via interview, creates specs |
-| `openapi-skill` | Creates, extends, or implements OpenAPI specs via interview |
-| `review-skill` | Checks code against architecture rules and best practices |
-| `doc-skill` | Creates and updates project documentation |
-| `infografik-skill` | Generates infographics via Hugging Face API |
-| `blog-post-skill` | Creates technical blog posts (like this one) |
-| `frontend-skill` | Builds web UIs: dashboards (TailAdmin), landing pages (Tailwind CSS) |
+| `java-scaffold` | Generates projects, entities, Dockerfiles, **AI services** according to team conventions |
+| `spec-feature` | Gathers business requirements via interview, creates specs |
+| `openapi` | Creates, extends, or implements OpenAPI specs via interview |
+| `review` | Checks code against architecture rules and best practices |
+| `doc` | Creates and updates project documentation |
+| `infografik` | Generates infographics via Hugging Face API |
+| `blog-post` | Creates technical blog posts (like this one) |
+| `frontend` | Builds web UIs: dashboards (TailAdmin), landing pages (Tailwind CSS) |
 
 Besides skills, the template also includes an **MCP server for PostgreSQL**. This allows querying database contents directly in the chat – in natural language, without opening a SQL client.
 
-The skills are not generic. They know the team's stack. The `java-scaffold-skill` knows that Flyway is mandatory, that health checks are part of the deal, that Taikai architecture tests must be in every project.
+The skills are not generic. They know the team's stack. The `java-scaffold` knows that Flyway is mandatory, that health checks are part of the deal, that Taikai architecture tests must be in every project.
 
 The conventions are in `CLAUDE.md` – readable by both humans and machines:
 
@@ -153,7 +153,7 @@ Especially valuable for prototypes and proofs of concept. Instead of investing h
 Specify feature: Send orders via event to RabbitMQ
 ```
 
-The `spec-feature-skill` conducts a structured interview and creates a specification in `specs/`. Only then is code written – based on the spec, not on assumptions.
+The `spec-feature` conducts a structured interview and creates a specification in `specs/`. Only then is code written – based on the spec, not on assumptions.
 
 ### Design APIs
 
@@ -161,11 +161,11 @@ The `spec-feature-skill` conducts a structured interview and creates a specifica
 Create a new API spec for the Order Service
 ```
 
-The `openapi-skill` guides through an interview: data models, endpoints, auth schema. The result is a valid OpenAPI 3.x spec in `api/`. Existing entities in the project are detected and offered for adoption. From the finished spec, Java code can be generated directly – DTOs, controllers, service stubs.
+The `openapi` guides through an interview: data models, endpoints, auth schema. The result is a valid OpenAPI 3.x spec in `api/`. Existing entities in the project are detected and offered for adoption. From the finished spec, Java code can be generated directly – DTOs, controllers, service stubs.
 
 ### AI Business Applications with LangChain4j
 
-Since the last update, the `java-scaffold-skill` can also generate **AI-powered business applications**. Instead of just building CRUD services, complete LLM integrations can now be scaffolded:
+Since the last update, the `java-scaffold` can also generate **AI-powered business applications**. Instead of just building CRUD services, complete LLM integrations can now be scaffolded:
 
 ```
 > Create a new Quarkus project with AI support (LangChain4j)
@@ -245,4 +245,4 @@ DevContainers make the environment reproducible. Claude Code Skills make the **d
 
 ---
 
-*Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via blog-post-skill*
+*Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via blog-post*

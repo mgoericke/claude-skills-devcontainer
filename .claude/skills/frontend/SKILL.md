@@ -1,6 +1,6 @@
 ---
-name: frontend-skill
-description: Creates modern web UIs with Tailwind CSS. Two modes – Dashboards/Admin Panels with TailAdmin (Alpine.js + ApexCharts) and Websites/Landing Pages with Tailwind CSS CDN. Use this skill for "create a dashboard", "landing page", "admin UI", "frontend", "website", "build a UI", "portfolio page" or when a responsive HTML page with Tailwind CSS is needed. Do not use for complex SPAs with React/Vue/Angular.
+name: frontend
+description: Creates modern web UIs with Tailwind CSS. Three modes – Simple HTML pages (no JS), Dashboards/Admin Panels with TailAdmin (Alpine.js + ApexCharts), and Websites/Landing Pages with Tailwind CSS CDN. Use this skill for "create a dashboard", "landing page", "admin UI", "frontend", "website", "build a UI", "portfolio page", "create an HTML page", "simple website", "static page", "build me a form" or when a responsive HTML page with Tailwind CSS is needed. Do not use for complex SPAs with React/Vue/Angular.
 argument-hint: "[description]"
 ---
 
@@ -8,27 +8,32 @@ argument-hint: "[description]"
 
 Creates modern, responsive web UIs with **Tailwind CSS**.
 
-> **Philosophy:** Two modes for different requirements:
+> **Philosophy:** Three modes for different requirements:
+> **Simple** → Pure HTML + Tailwind CSS CDN (no JavaScript, no build tool)
 > **Dashboard** → TailAdmin (HTML + Tailwind CSS + Alpine.js)
-> **Website** → Tailwind CSS CDN (no build tool)
+> **Website** → Tailwind CSS CDN (no build tool, optional JS)
 
 ---
 
 ## What This Skill Does
 
-1. **Asks for the mode** – Dashboard/Admin UI or Website/Landing Page
+1. **Asks for the mode** – Simple HTML, Dashboard/Admin UI, or Website/Landing Page
 2. **Generates HTML** – Responsive, semantically correct, styled with Tailwind CSS
-3. **Adds interactivity** – Alpine.js for dashboards, optional for websites
+3. **Adds interactivity** – Alpine.js for dashboards, optional for websites, none for simple
 4. **Saves the files** – In the project or at a desired path
 
 ## How to Use
+
+```
+Create a simple contact form
+```
 
 ```
 Create a dashboard for order overview
 ```
 
 ```
-/frontend-skill Admin panel with KPI cards and table
+/frontend Admin panel with KPI cards and table
 ```
 
 ```
@@ -45,15 +50,63 @@ Build me a portfolio page
 
 ### Step 1 – Ask for mode
 
-Dashboard and website use different technology stacks and layouts. Clarify the mode beforehand to use the right stack:
+The three modes use different technology stacks and layouts. Clarify the mode beforehand to use the right stack:
 
 | Mode | When to use | Technology |
 |------|-------------|------------|
+| **Simple** | Simple HTML pages, forms, static content, quick prototypes | HTML + Tailwind CSS CDN (no JavaScript) |
 | **Dashboard** | Admin panels, dashboards, data-rich UIs, tables, charts | TailAdmin + Alpine.js + ApexCharts |
-| **Website** | Landing pages, SPAs, marketing pages, portfolios | Tailwind CSS CDN |
+| **Website** | Landing pages, marketing pages, portfolios, SaaS pages | Tailwind CSS CDN (optional JS) |
 
-If `$ARGUMENTS` clearly indicate the mode (e.g. "Dashboard", "Admin"), start directly.
+If `$ARGUMENTS` clearly indicate the mode (e.g. "Dashboard", "Admin", "simple form", "landing page"), start directly.
 Otherwise ask.
+
+---
+
+## Simple Mode (Pure HTML)
+
+For simple, static pages without JavaScript. Perfect for forms, simple dashboards, admin UIs, and quick prototypes.
+
+> **Philosophy:** Not every interface needs a framework.
+> Sometimes a well-designed HTML page is enough.
+
+### Simple Skeleton
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend -->
+    <!-- Content here -->
+</body>
+</html>
+```
+
+### Simple Style Rules
+
+- **Tailwind CSS via CDN** – no local build, no npm
+- **No JavaScript** – unless the user explicitly asks for it
+- **Semantic HTML** – `<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`
+- **Responsive** – Mobile-first with `sm:`, `md:`, `lg:` breakpoints
+- **Accessibility** – `alt` attributes, `aria-label` where meaningful, sufficient contrast
+
+### Simple Tailwind Class Guidelines
+
+| Element | Classes |
+|---------|---------|
+| Container | `max-w-4xl mx-auto px-4 py-8` |
+| Cards | `bg-white rounded-lg shadow-md p-6` |
+| Buttons | `bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg` |
+| Forms | `border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent` |
+| Tables | `w-full border-collapse` with `divide-y divide-gray-200` |
+| H1 | `text-3xl font-bold` |
+| H2 | `text-xl font-semibold` |
 
 ---
 
@@ -89,7 +142,7 @@ Otherwise ask.
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body class="bg-gray-100 text-gray-900" x-data="dashboardData()">
-    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend-skill -->
+    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend -->
 
     <!-- Sidebar -->
     <aside class="fixed left-0 top-0 z-50 flex h-screen w-64 flex-col bg-white shadow-lg">
@@ -182,7 +235,7 @@ Alpine.js is used for all interactive elements:
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-900">
-    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend-skill -->
+    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend -->
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md shadow-sm z-50">
@@ -276,7 +329,7 @@ Storage location depending on context:
 ### Co-Author
 
 ```html
-<!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend-skill -->
+<!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend -->
 ```
 
 ---

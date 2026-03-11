@@ -1,5 +1,5 @@
 ---
-name: review-skill
+name: review
 description: Reviews changed or existing code against project conventions, architecture rules (BCE), and best practices. Automatically captures staged/unstaged changes or branch diffs. Use this skill for "review code", "check the code", "code review", "look at the code", "quality check" or when code should be reviewed before a commit or merge.
 argument-hint: "[files-or-directory]"
 ---
@@ -53,7 +53,7 @@ The following Git information is automatically injected on invocation:
 
 ### Step 1 – Capture Changes
 
-If `$ARGUMENTS` was provided (e.g. `/review-skill src/main/java/`), review those files/directories.
+If `$ARGUMENTS` was provided (e.g. `/review src/main/java/`), review those files/directories.
 
 Otherwise, evaluate the **dynamic context** above – in this order:
 
@@ -196,13 +196,13 @@ Only fix after explicit confirmation – never automatically.
 ### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – business requirements
+[spec-feature]      optional – business requirements
         |
-[openapi-skill]           if OpenAPI spec needed
+[openapi]           if OpenAPI spec needed
         |
-[java-scaffold-skill]     framework: DB, messaging, infra
+[java-scaffold]     framework: DB, messaging, infra
         |
-[review-skill]            <-- code review
+[review]            <-- code review
         |
-[doc-skill]               project documentation
+[doc]               project documentation
 ```

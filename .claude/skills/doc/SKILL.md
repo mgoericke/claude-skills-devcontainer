@@ -1,5 +1,5 @@
 ---
-name: doc-skill
+name: doc
 description: Creates or updates project documentation as a Markdown page in docs/. Automatically analyzes pom.xml, properties, docker-compose, and source code – only asks what cannot be derived from the code. Use this skill for "document the project", "write docs", "update the docs", "create a README" or when a new project needs technical documentation.
 argument-hint: "[artifactId]"
 ---
@@ -77,7 +77,7 @@ Only ask what cannot be clearly derived from the source code:
 → **Do not overwrite** existing manual additions by the user – only update empty or
   outdated sections.
 → Add an update note at the end of the file:
-  `_Last updated: {{DATE}} (doc-skill)_`
+  `_Last updated: {{DATE}} (doc)_`
 
 ### Template Sections
 
@@ -118,18 +118,18 @@ The `docs/` directory is created if it does not exist.
 - **Filename:** `<artifactId>.md` in kebab-case
 - Version numbers taken from `pom.xml` – no guessing
 - Passwords / secrets only as placeholders (`<your-secret>`) – never real values
-- **Co-Author:** `<!-- Generated via doc-skill · Co-Author: Claude (claude-sonnet-4-6, Anthropic) -->`
+- **Co-Author:** `<!-- Generated via doc · Co-Author: Claude (claude-sonnet-4-6, Anthropic) -->`
 
 ### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – business requirements
+[spec-feature]      optional – business requirements
         |
-[openapi-skill]           if OpenAPI spec needed
+[openapi]           if OpenAPI spec needed
         |
-[java-scaffold-skill]     framework: DB, messaging, infra
+[java-scaffold]     framework: DB, messaging, infra
         |
-[review-skill]            code review
+[review]            code review
         |
-[doc-skill]               <-- project documentation
+[doc]               <-- project documentation
 ```

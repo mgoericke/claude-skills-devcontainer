@@ -1,17 +1,17 @@
 /**
- * AI Service mit RAG (Retrieval Augmented Generation).
+ * AI Service with RAG (Retrieval Augmented Generation).
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Boundary layer / AI)
  *
- * <p>Dieser Service nutzt einen {@code RetrievalAugmentor}, um Antworten mit
- * domänenspezifischem Wissen aus einer Vektordatenbank (PgVector) anzureichern.
+ * <p>This service uses a {@code RetrievalAugmentor} to enrich responses with
+ * domain-specific knowledge from a vector database (PgVector).
  *
- * <p><b>Auto-Wiring:</b> Der {@code Supplier<RetrievalAugmentor>} CDI-Bean
- * (siehe {@code {{RAG_RETRIEVER_CLASS}}}) wird automatisch von Quarkus LangChain4j
- * erkannt und diesem Service zugeordnet. Keine explizite Konfiguration noetig.
+ * <p><b>Auto-Wiring:</b> The {@code Supplier<RetrievalAugmentor>} CDI bean
+ * (see {@code {{RAG_RETRIEVER_CLASS}}}) is automatically detected by Quarkus LangChain4j
+ * and assigned to this service. No explicit configuration needed.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.boundary.ai;
 
@@ -25,10 +25,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 public interface {{AI_SERVICE_NAME}} {
 
     @SystemMessage("""
-            Du bist ein Experte fuer {{DOMAIN_DESCRIPTION}}.
-            Beantworte Fragen basierend auf den bereitgestellten Dokumenten.
-            Wenn die Dokumente keine Antwort enthalten, sage es ehrlich.
-            Zitiere relevante Stellen aus den Dokumenten.
+            You are an expert for {{DOMAIN_DESCRIPTION}}.
+            Answer questions based on the provided documents.
+            If the documents do not contain an answer, say so honestly.
+            Cite relevant passages from the documents.
             """)
     String chat(@UserMessage String question);
 }

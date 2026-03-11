@@ -1,6 +1,6 @@
-# Sub-Agents Architecture Übersicht
+# Sub-Agents Architecture Overview
 
-## System-Architektur
+## System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -46,46 +46,46 @@
                         ↓
             ┌──────────────────────────┐
             │    Main Conversation     │
-            │    - Issues zu fixa      │
-            │    - Code zu integieren  │
+            │    - Issues to fix       │
+            │    - Code to integrate   │
             └──────────────────────────┘
 ```
 
 ---
 
-## Detaillierte Agent Flows
+## Detailed Agent Flows
 
-### Flow 1: Parallele Code-Reviews
+### Flow 1: Parallel Code Reviews
 
 ```
-START: Code-Änderungen vorhanden
+START: Code changes present
 │
 ├─ Trigger: "Use the security-reviewer, architecture-reviewer,
 │            and performance-reviewer to analyze the changes"
 │
-├─ PARALLEL EXECUTION (t=0 bis t=~25s):
+├─ PARALLEL EXECUTION (t=0 to t=~25s):
 │
-├─┬─ Security-Reviewer                    time: 10-15s
+├─┬─ Security Reviewer                    time: 10-15s
 │ │  Read: src/main/java/**/*.java
 │ │  Grep: hardcoded secrets, API keys
-│ │  Check: Auth, CORS, Input-Validation
+│ │  Check: Auth, CORS, input validation
 │ │  Output: Security Issues Report
 │ │
 │ ├─ [Results ready at t=12s]
 │
-├─┬─ Architecture-Reviewer                time: 15-20s
-│ │  Read: Package-Structure
-│ │  Grep: Layer Violations, Imports
-│ │  Analyze: Taikai Rules
-│ │  Output: Architecture Violations
+├─┬─ Architecture Reviewer                time: 15-20s
+│ │  Read: Package structure
+│ │  Grep: Layer violations, imports
+│ │  Analyze: Taikai rules
+│ │  Output: Architecture violations
 │ │
 │ ├─ [Results ready at t=18s]
 │
-└─┬─ Performance-Reviewer                 time: 15-20s
-  │  Read: SQL Queries, Loop Patterns
+└─┬─ Performance Reviewer                 time: 15-20s
+  │  Read: SQL queries, loop patterns
   │  Grep: N+1, DISTINCT, select *
-  │  Check: Blocking, Reactive
-  │  Output: Performance Issues
+  │  Check: Blocking, reactive
+  │  Output: Performance issues
   │
   └─ [Results ready at t=20s]
 
@@ -93,12 +93,12 @@ SYNTHESIS (t=~25s):
 │
 ├─ Combine all 3 reports
 ├─ Prioritize by severity
-├─ Return to Main Session
+├─ Return to main session
 │
 END: Ready for fixes
 ```
 
-### Flow 2: AI-Service Generierung
+### Flow 2: AI Service Generation
 
 ```
 START: New AI Service Feature
@@ -120,31 +120,31 @@ START: New AI Service Feature
 ├─ GENERATION PHASE (isolated context):
 │ │
 │ ├─ Boundary Layer (3 files):
-│ │  - ChatbotBoundary.java (REST-Endpoint)
+│ │  - ChatbotBoundary.java (REST endpoint)
 │ │  - request/ChatRequest.java (DTO)
 │ │  - response/ChatResponse.java (DTO)
 │ │
 │ ├─ Control Layer (4 files):
-│ │  - ChatbotService.java (Orchestration)
-│ │  - ChatbotTools.java (@Tool Definitions)
-│ │  - ChatbotRAGService.java (Vector-Search)
-│ │  - ChatbotGuardrailService.java (Validation)
+│ │  - ChatbotService.java (orchestration)
+│ │  - ChatbotTools.java (@Tool definitions)
+│ │  - ChatbotRAGService.java (vector search)
+│ │  - ChatbotGuardrailService.java (validation)
 │ │
 │ ├─ Entity Layer (2 files):
-│ │  - ChatHistory.java (JPA Entity)
-│ │  - ChatDocument.java (RAG Documents)
+│ │  - ChatHistory.java (JPA entity)
+│ │  - ChatDocument.java (RAG documents)
 │ │
 │ ├─ Infrastructure (3 files):
 │ │  - V001__Create_chatbot_tables.sql (Flyway)
-│ │  - application.properties (Config)
-│ │  - Tests (3 Test classes)
+│ │  - application.properties (config)
+│ │  - Tests (3 test classes)
 │ │
-│ └─ Generated: ~15 Files total
+│ └─ Generated: ~15 files total
 │
 ├─ VALIDATION PHASE:
 │ │
-│ ├─ Taikai Architecture Tests Updated
-│ ├─ All imports correct (BCE-Pattern)
+│ ├─ Taikai architecture tests updated
+│ ├─ All imports correct (BCE pattern)
 │ ├─ Tests compileable
 │ │
 │ └─ Ready-to-test state
@@ -168,31 +168,31 @@ END: Feature complete
 
 ### Sub-Agent Context
 
-Jeder Sub-Agent hat **isolierten, frischen Context**:
+Each sub-agent has **isolated, fresh context**:
 
 ```
 ┌─────────────────────────────────────────┐
 │      Sub-Agent Isolated Context         │
 ├─────────────────────────────────────────┤
-│ System Prompt (Agent-spezifisch)        │
-│ CLAUDE.md (Projekt-Conventions)         │
-│ Git Status (aktuelle Branch)             │
-│ Skill Content (falls preloaded)         │
+│ System Prompt (agent-specific)          │
+│ CLAUDE.md (project conventions)         │
+│ Git Status (current branch)             │
+│ Skill Content (if preloaded)            │
 │ Tool Access (restricted)                │
 │ Session ID (independent)                │
-│ Permission Mode (agent-spezifisch)      │
+│ Permission Mode (agent-specific)        │
 └─────────────────────────────────────────┘
 
-Größe: ~5-10k Tokens (abhängig von Codebase)
-Dauer: 1-5 Minuten (depending on Task Complexity)
-Cost: ~1-5¢ pro Agent (~0.3-1.5k output tokens)
+Size: ~5-10k tokens (depending on codebase)
+Duration: 1-5 minutes (depending on task complexity)
+Cost: ~1-5 cents per agent (~0.3-1.5k output tokens)
 ```
 
-### Main Session Context (Vor Sub-Agents)
+### Main Session Context (Before Sub-Agents)
 
 ```
 ┌─────────────────────────────────────────┐
-│    Main Session Context (Erhalten)      │
+│    Main Session Context (Preserved)     │
 ├─────────────────────────────────────────┤
 │ Conversation History                    │
 │ User Instructions                       │
@@ -203,28 +203,28 @@ Cost: ~1-5¢ pro Agent (~0.3-1.5k output tokens)
 └─────────────────────────────────────────┘
 ```
 
-### Kontext Flow
+### Context Flow
 
 ```
 Session Start:
   Main Context = ~20k tokens
          ↓
-Sub-Agent Spawn (Security-Reviewer):
-  - Main Context remains unchanged
-  - Sub-Agent gets fresh ~5k token context
+Sub-Agent Spawn (Security Reviewer):
+  - Main context remains unchanged
+  - Sub-agent gets fresh ~5k token context
   - Independent execution
          ↓
 Sub-Agent Returns Results (~1k summary tokens):
-  - Appended to Main Context
+  - Appended to main context
   - User reads + decides
-  - Main Context now ~21k tokens
+  - Main context now ~21k tokens
          ↓
-Repeat for other Sub-Agents:
+Repeat for other sub-agents:
   - Same isolation pattern
   - Parallel execution
   - Results synthesized
          ↓
-Main Context grows to ~25-30k tokens
+Main context grows to ~25-30k tokens
   - Still within reasonable limits
   - Full conversation history preserved
   - Ready for next task
@@ -234,80 +234,80 @@ Main Context grows to ~25-30k tokens
 
 ## Tool Access Matrix
 
-| Tool | Security | Architecture | Performance | AI-Generator |
+| Tool | Security | Architecture | Performance | AI Generator |
 |------|----------|--------------|-------------|--------------|
-| Read | ✅ | ✅ | ✅ | ✅ |
-| Grep | ✅ | ✅ | ✅ | ✅ |
-| Glob | ✅ | ✅ | ✅ | ✅ |
-| Bash | ✅ | ✅ | ✅ | ✅ |
-| Write | ❌ | ❌ | ❌ | ✅ |
-| Edit | ❌ | ❌ | ❌ | ✅ |
-| Agent | ❌ | ❌ | ❌ | ❌ |
+| Read | Yes | Yes | Yes | Yes |
+| Grep | Yes | Yes | Yes | Yes |
+| Glob | Yes | Yes | Yes | Yes |
+| Bash | Yes | Yes | Yes | Yes |
+| Write | No | No | No | Yes |
+| Edit | No | No | No | Yes |
+| Agent | No | No | No | No |
 
-**Read-Only Agents**: Können nicht ändern, nur analysieren
-**Generator**: Kann schreiben/editieren, für Scaffolding
+**Read-Only Agents**: Cannot modify, only analyze
+**Generator**: Can write/edit, for scaffolding
 
 ---
 
-## Performance Charakteristiken
+## Performance Characteristics
 
 ### Execution Time
 
 ```
-Sequential (ohne Parallelisierung):
-  Security-Review:    15s
-  Architecture-Review: 20s
-  Performance-Review:  20s
+Sequential (without parallelization):
+  Security review:      15s
+  Architecture review:  20s
+  Performance review:   20s
   ───────────────────────
   Total: 55 seconds
 
-Parallel (Sub-Agents):
-  All 3 parallel: 25 seconds (2.2x schneller! 🚀)
+Parallel (sub-agents):
+  All 3 parallel: 25 seconds (2.2x faster!)
 ```
 
 ### Token Usage
 
 ```
-Pro Sub-Agent Review:
+Per sub-agent review:
   Input:  ~500 tokens (codebase + prompt)
   Output: ~1000 tokens (report)
-  Cost:   ~0.5¢
+  Cost:   ~0.5 cents
 
-Alle 3 parallel:
-  Total Cost: ~1.5¢ (vs. $$$ für Manual Review)
+All 3 in parallel:
+  Total cost: ~1.5 cents (vs. $$$ for manual review)
 
-AI-Service Generator:
+AI Service Generator:
   Input:  ~1000 tokens
   Output: ~3000 tokens (15 files)
-  Cost:   ~2-3¢
+  Cost:   ~2-3 cents
 ```
 
 ---
 
-## Skalierung: Wenn es größer wird
+## Scaling: When It Gets Bigger
 
-### Jetzt (< 10 Agents)
+### Now (< 10 Agents)
 ```
-✅ Sub-Agents in .claude/agents/
-✅ Parallel Execution
-✅ Manual Triggering
+Sub-agents in .claude/agents/
+Parallel execution
+Manual triggering
 ```
 
-### Später (10-50 Agents)
+### Later (10-50 Agents)
 ```
-✅ Use Agent Teams für massive Parallelisierung
-✅ Specialized agent routing (Coordinator Agent)
-✅ Shared Memory between Agents (persistent)
-✅ Conditional delegation (bei spezifischen File-Types)
+Use agent teams for massive parallelization
+Specialized agent routing (coordinator agent)
+Shared memory between agents (persistent)
+Conditional delegation (for specific file types)
 ```
 
 ### Enterprise (50+ Agents)
 ```
-✅ Plugin-basierte Agent Distribution
-✅ Agent Marketplace für Reuse
-✅ Central Agent Registry
-✅ Permission Policies
-✅ Cost Tracking & Optimization
+Plugin-based agent distribution
+Agent marketplace for reuse
+Central agent registry
+Permission policies
+Cost tracking & optimization
 ```
 
 ---
@@ -315,86 +315,86 @@ AI-Service Generator:
 ## Error Handling & Recovery
 
 ```
-Szenario: Sub-Agent schlägt fehl
+Scenario: Sub-agent fails
 
-1. Agent Crash:
-   ├─ Claude erkennt Fehler
-   ├─ Gibt Error-Report zurück
-   └─ Main Session bleibt intakt ✅
+1. Agent crash:
+   ├─ Claude detects the error
+   ├─ Returns error report
+   └─ Main session remains intact
 
-2. Permission Denied:
-   ├─ Agent kann Tool nicht nutzen
-   ├─ Fallback zu eingeschränkten Tools
-   └─ User wird informiert
+2. Permission denied:
+   ├─ Agent cannot use a tool
+   ├─ Fallback to restricted tools
+   └─ User is informed
 
 3. Timeout (>5 min):
-   ├─ Agent wird abgebrochen
-   ├─ Partial results zurückgegeben
+   ├─ Agent is terminated
+   ├─ Partial results returned
    ├─ Can be resumed
-   └─ Cost wird nicht berechnet
+   └─ Cost is not charged
 
 4. Recovery:
-   Resume Agent mit: "Continue that task"
-   └─ Behält full context
+   Resume agent with: "Continue that task"
+   └─ Retains full context
 ```
 
 ---
 
 ## Monitoring & Debugging
 
-### Agent Ausführung tracken
+### Tracking Agent Execution
 
 ```bash
-# Siehe aktuelle/abgeschlossene Agents
+# View current/completed agents
 claude agents
 
-# Agent Logs (lokal gespeichert)
+# Agent logs (stored locally)
 ~/.claude/projects/[project]/[sessionId]/subagents/
   ├── agent-[id-1].jsonl
   ├── agent-[id-2].jsonl
   └── agent-[id-3].jsonl
 ```
 
-### Agent Debug-Output
+### Agent Debug Output
 
 ```bash
-# Im Claude Code CLI:
+# In the Claude Code CLI:
 /debug agents
-# oder
-claude --verbose (zeigt Agent execution details)
+# or
+claude --verbose (shows agent execution details)
 ```
 
 ---
 
 ## Best Practices Summary
 
-| Aspekt | DO ✅ | DON'T ❌ |
-|--------|--------|----------|
-| **Triggering** | Gruppe von Agents parallel | Einen Agent auf Zeile in Loop |
-| **Context** | Agents für große Tasks | Main-Conversation für alle |
-| **Results** | Synthesize + Summarize | Alle Reports ungefiltert |
-| **Customization** | Agent-Prompts anpassen | Neue Agents ständig erstellen |
-| **Tools** | Begrenzte Tools für Focus | Alle Tools für jeden Agent |
+| Aspect | DO | DON'T |
+|--------|-----|-------|
+| **Triggering** | Group of agents in parallel | One agent per line in a loop |
+| **Context** | Agents for large tasks | Main conversation for everything |
+| **Results** | Synthesize + summarize | All reports unfiltered |
+| **Customization** | Adapt agent prompts | Constantly create new agents |
+| **Tools** | Limited tools for focus | All tools for every agent |
 
 ---
 
-## Nächste Stufen in der Automation
+## Next Levels of Automation
 
-Geplante Features (nach Sub-Agents):
+Planned features (after sub-agents):
 
 1. **Hooks** (Level 2)
-   - post-edit pom.xml → Version-Check
-   - pre-prompt-submit → Checklist
+   - post-edit pom.xml → version check
+   - pre-prompt-submit → checklist
 
 2. **Rules** (Level 2)
-   - `.claude/rules/java.md` → Language-specific Guidelines
-   - `.claude/rules/quarkus.md` → Framework-spezifisch
+   - `.claude/rules/java.md` → language-specific guidelines
+   - `.claude/rules/quarkus.md` → framework-specific
 
 3. **Agent Teams** (Level 3)
-   - Koordinierte Agents mit Kommunikation
-   - Shared Task-Lists
-   - Peer-to-Peer Feedback
+   - Coordinated agents with communication
+   - Shared task lists
+   - Peer-to-peer feedback
 
 4. **Plugins** (Level 4)
-   - Agents + Skills als installierbare Packages
-   - Sharing across Projekte/Teams
+   - Agents + skills as installable packages
+   - Sharing across projects/teams

@@ -1,106 +1,128 @@
-# KI-gestütztes Projekt-Scaffolding
+# AI-Powered Project Scaffolding
 
-Dieses Template ermöglicht das schnelle Aufsetzen neuer Java-Projekte mit vollständiger
-KI-Unterstützung durch Claude Code. Du beschreibst dein Vorhaben in natürlicher Sprache –
-Claude übernimmt Scaffolding, Spezifikation, Architektur und Code-Generierung.
+This template enables rapid setup of new Java projects with full
+AI support through Claude Code. You describe your project in natural language –
+Claude handles scaffolding, specification, architecture, and code generation.
 
 ## Features
 
-- **Spring Boot 4.x oder Quarkus 3.31+** – vollständig vorkonfiguriert, inklusive Health Checks
-- **PostgreSQL + RabbitMQ + Keycloak** – lokale Infrastruktur per `docker compose up -d` startklar
-- **BCE-Architektur** (Boundary / Control / Entity) mit automatischen Architekturtests via Taikai
-- **Spec Driven Development** – strukturiertes Feature-Interview erzeugt eine Spec-Datei, bevor Code entsteht
-- **Flyway** für Datenbankmigrationen – kein unsicheres `ddl-auto=create`
-- **MCP-Datenzugriff** – natürlichsprachliche Abfragen auf PostgreSQL direkt im Chat
-- **OpenAPI → Java** – REST-Endpunkte + DTOs aus einer OpenAPI 3.x Spec generieren (optional)
-- **Projekt-Dokumentation** – liest Quellcode und Konfiguration aus, erstellt `docs/<projekt>.md`
-- **Infografik-Skill** – KI-Bildgenerierung via Hugging Face FLUX.1 (optional)
-- **Review und Findings** – automatische Code-Reviews prüfen Templates und generierten Code gegen Projekt-Konventionen, Architektur-Regeln (BCE) und Best Practices; gefundene Fehler (falsche Imports, fehlende Dependencies, Inkonsistenzen) werden direkt behoben
+- **Spring Boot 4.x or Quarkus 3.31+** – fully preconfigured, including health checks
+- **PostgreSQL + RabbitMQ + Keycloak** – local infrastructure ready to go via `docker compose up -d`
+- **BCE Architecture** (Boundary / Control / Entity) with automatic architecture tests via Taikai
+- **Flyway** for database migrations – no unsafe `ddl-auto=create`
+- **MCP Data Access** – natural language queries on PostgreSQL directly in the chat
 
-## Schnellstart
+### Skills
 
-**1 – API Key setzen** (`~/.zshrc` oder `~/.bashrc` auf dem Host):
+Interactive, prompt-driven workflows that guide you through a task step by step.
+
+| Skill | Description |
+|-------|-------------|
+| **java-scaffold-skill** | Scaffolds new Java projects, entities, Dockerfiles, docker-compose, and AI services |
+| **spec-feature-skill** | Structured feature interview that produces a spec file before code is written |
+| **openapi-skill** | Create, extend, or generate Java code from an OpenAPI 3.x spec |
+| **review-skill** | Code review against project conventions, architecture rules (BCE), and best practices |
+| **doc-skill** | Reads source code and configuration, creates project documentation in `docs/` |
+| **blog-post-skill** | Creates technical blog posts with structured interviews and audience adaptation |
+| **frontend-skill** | Web UIs: Dashboards (TailAdmin), Landing Pages, and SPAs with Tailwind CSS |
+| **infografik-skill** | AI image generation via Hugging Face FLUX.1 |
+| **skill-creator** | Create new skills, optimize existing skills, and measure skill performance |
+
+### Agents
+
+Specialized sub-agents that run autonomously and can be executed in parallel for fast feedback.
+
+| Agent | Description |
+|-------|-------------|
+| **security-reviewer** | Security analysis – secrets, auth, input validation, OWASP Top 10 |
+| **architecture-reviewer** | BCE pattern compliance and Taikai architecture rule validation |
+| **performance-reviewer** | N+1 queries, blocking operations, memory leaks, reactive pattern violations |
+| **ai-service-generator** | LangChain4j AI service scaffolding with tools, RAG, and guardrails |
+
+## Quick Start
+
+**1 – Set API Key** (`~/.zshrc` or `~/.bashrc` on the host):
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
-**2 – In VS Code öffnen:**
+**2 – Open in VS Code:**
 
 ```bash
 git clone <repository-url>
-code <dein-repo>
-# → "Reopen in Container" wählen – fertig nach ~3–5 Min.
+code <your-repo>
+# → Select "Reopen in Container" – ready after ~3–5 min.
 ```
 
-**3 – Ersten Prompt eingeben:**
+**3 – Enter your first prompt:**
 
 ```
-Erstelle ein neues Spring Boot Projekt
+Create a new Spring Boot project
 ```
 
-Claude fragt nach `groupId`, `artifactId` und den benötigten Diensten – dann wird
-alles generiert: Projektstruktur, Konfiguration, Dockerfile, Architekturtests.
+Claude will ask for `groupId`, `artifactId`, and the required services – then
+everything is generated: project structure, configuration, Dockerfile, architecture tests.
 
-## Beispiel-Prompts
+## Example Prompts
 
 ```
-Erstelle ein neues Quarkus-Projekt
+Create a new Quarkus project
 ```
 ```
-Ich möchte ein neues Feature spezifizieren
+I want to specify a new feature
 ```
 ```
-Implementiere das Feature gemäß specs/order-creation.md
+Implement the feature according to specs/order-creation.md
 ```
 ```
-Generiere Code aus der OpenAPI Spec api/openapi.yaml
+Generate code from the OpenAPI spec api/openapi.yaml
 ```
 ```
-Dokumentiere das Projekt
+Document the project
 ```
 ```
-Zeige alle Produkte
+Show all products
 ```
 ```
-Erstelle eine Infografik zum Thema Microservice-Kommunikation
+Create an infographic about microservice communication
 ```
 
 ## Stack
 
-| Schicht           | Technologie                              |
+| Layer             | Technology                               |
 | ----------------- | ---------------------------------------- |
 | Java              | 25 (Microsoft OpenJDK)                   |
-| Frameworks        | Spring Boot 4.x oder Quarkus 3.31+       |
-| Datenbank         | PostgreSQL 17                            |
+| Frameworks        | Spring Boot 4.x or Quarkus 3.31+        |
+| Database          | PostgreSQL 17                            |
 | Messaging         | RabbitMQ 4 (SmallRye Reactive Messaging) |
 | Build             | Maven 3.9                                |
-| Architektur-Tests | Taikai (ArchUnit)                        |
+| Architecture Tests| Taikai (ArchUnit)                        |
 | Auth / IAM        | Keycloak 26.x                            |
-| KI                | Claude Code                              |
+| AI                | Claude Code                              |
 
-## Lokale Infrastruktur
+## Local Infrastructure
 
 ```bash
 docker compose up -d
 ```
 
-| Service              | Adresse                                          |
+| Service              | Address                                          |
 | -------------------- | ------------------------------------------------ |
 | PostgreSQL           | `localhost:5432`                                 |
 | RabbitMQ Management  | http://localhost:15672 (`app` / `app`)           |
 | Keycloak Admin       | http://localhost:8180 (`admin` / `admin`)        |
-| Anwendung (Spring)   | http://localhost:8080/actuator/health            |
-| Anwendung (Quarkus)  | http://localhost:8080/q/health                   |
+| Application (Spring) | http://localhost:8080/actuator/health            |
+| Application (Quarkus)| http://localhost:8080/q/health                   |
 
-## Weiterführende Dokumentation
+## Further Documentation
 
-| Thema | Dokument |
-|-------|---------|
-| Detailliertes Setup (Env Vars, Artifactory) | [docs/setup.md](docs/setup.md) |
-| Skills & Workflow-Übersicht | [docs/skills.md](docs/skills.md) |
-| MCP-Datenzugriff (PostgreSQL, RabbitMQ) | [docs/mcp.md](docs/mcp.md) |
-| Lokale Modelle (Ollama / LM Studio) | [docs/local-models.md](docs/local-models.md) |
-| **Sub-Agents Übersicht** | **[docs/sub-agents.md](docs/sub-agents.md)** |
-| Sub-Agents Quick-Start Guide | [docs/agents-quickstart.md](docs/agents-quickstart.md) |
-| Sub-Agents Architektur & Flows | [docs/agents-architecture.md](docs/agents-architecture.md) |
+| Topic | Document |
+|-------|----------|
+| Detailed setup (env vars, Artifactory) | [docs/setup.md](docs/setup.md) |
+| Skills & workflow overview | [docs/skills.md](docs/skills.md) |
+| MCP data access (PostgreSQL, RabbitMQ) | [docs/mcp.md](docs/mcp.md) |
+| Local models (Ollama / LM Studio) | [docs/local-models.md](docs/local-models.md) |
+| **Sub-Agents overview** | **[docs/sub-agents.md](docs/sub-agents.md)** |
+| Sub-Agents quick-start guide | [docs/agents-quickstart.md](docs/agents-quickstart.md) |
+| Sub-Agents architecture & flows | [docs/agents-architecture.md](docs/agents-architecture.md) |

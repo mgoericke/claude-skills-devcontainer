@@ -1,229 +1,229 @@
 # Sub-Agents Quick-Start Guide
 
-Schneller Einstieg in die 4 Sub-Agents dieses Projekts.
+Quick introduction to the 4 sub-agents in this project.
 
 ## Installation
 
-Die Agents sind bereits installiert in `.claude/agents/`:
-- ✅ `security-reviewer.md`
-- ✅ `architecture-reviewer.md`
-- ✅ `performance-reviewer.md`
-- ✅ `ai-service-generator.md`
+The agents are already installed in `.claude/agents/`:
+- `security-reviewer.md`
+- `architecture-reviewer.md`
+- `performance-reviewer.md`
+- `ai-service-generator.md`
 
-Verifizieren:
+Verify:
 ```bash
-claude agents  # Zeigt alle verfügbaren Agents
+claude agents  # Shows all available agents
 ```
 
 ---
 
-## Use Cases in 5 Minuten
+## Use Cases in 5 Minutes
 
-### Szenario 1: Neue Feature implementiert (5 Dateien geändert)
+### Scenario 1: New feature implemented (5 files changed)
 
 ```
-1. Feature fertig, Code committet
-2. Führe alle 3 Review-Agents aus:
+1. Feature done, code committed
+2. Run all 3 review agents:
 
 Use the security-reviewer, architecture-reviewer, and
 performance-reviewer to analyze my recent changes
 
-3. Warte auf Reports (~20-30 Sekunden)
-4. Lese Issues und fixe sie (falls vorhanden)
-5. Committe Fixes
+3. Wait for reports (~20-30 seconds)
+4. Read issues and fix them (if any)
+5. Commit fixes
 6. Ready for PR
 ```
 
-**Was passiert**:
-- Jeder Agent läuft isoliert in eigenem Context
-- Security prüft auf Secrets, Auth, Injection
-- Architecture prüft auf BCE-Violations
-- Performance prüft auf N+1, Blocking
-- Reports kommen parallel zurück
+**What happens**:
+- Each agent runs in isolation in its own context
+- Security checks for secrets, auth, injection
+- Architecture checks for BCE violations
+- Performance checks for N+1, blocking
+- Reports come back in parallel
 
 ---
 
-### Szenario 2: Neuer Chatbot-Service mit RAG
+### Scenario 2: New chatbot service with RAG
 
 ```
-1. Product-Owner sagt: "Wir brauchen einen Chatbot mit Document-Retrieval"
+1. Product owner says: "We need a chatbot with document retrieval"
 
-2. Starte AI-Service-Generator:
+2. Start the AI service generator:
 
 Use the ai-service-generator to create a new Chatbot service
 with Document Retrieval (RAG) and Tools integration
 
-3. Agent stellt Fragen ab:
-   - Service-Name? → Chatbot
-   - LLM-Provider? → Anthropic Claude
+3. Agent asks questions:
+   - Service name? → Chatbot
+   - LLM provider? → Anthropic Claude
    - Tools? → DocumentSearch, UserContext
-   - RAG? → Ja, mit PgVector
-   - Guardrails? → Ja, Rate-Limiting + Input-Validation
+   - RAG? → Yes, with PgVector
+   - Guardrails? → Yes, rate limiting + input validation
 
-4. Agent generiert ~15 Dateien:
-   ✅ REST-Endpoints
-   ✅ DTOs
-   ✅ Services + Tools
-   ✅ Entities
-   ✅ Flyway-Migration
-   ✅ Tests
-   ✅ application.properties
+4. Agent generates ~15 files:
+   REST endpoints
+   DTOs
+   Services + Tools
+   Entities
+   Flyway migration
+   Tests
+   application.properties
 
 5. Ready to test:
    docker compose up
    ./mvnw test
-   curl -X POST http://localhost:8080/api/chatbot -d '{"message":"Hallo"}'
+   curl -X POST http://localhost:8080/api/chatbot -d '{"message":"Hello"}'
 ```
 
-**Was passiert**:
-- Agent scaffoldet komplette, isolierte Package
-- Alle Best-Practices (BCE-Pattern, @Blocking, Tests) bereits enthalten
-- Code ist sofort produktionsreif
+**What happens**:
+- Agent scaffolds a complete, isolated package
+- All best practices (BCE pattern, @Blocking, tests) already included
+- Code is immediately production-ready
 
 ---
 
-### Szenario 3: Nach Git-Merge Konflikt (zur Sicherheit)
+### Scenario 3: After a git merge conflict (for safety)
 
 ```
-1. Merge durchgeführt, Konflikte gelöst
-2. Schneller Security-Check:
+1. Merge completed, conflicts resolved
+2. Quick security check:
 
 Use the security-reviewer to make sure we didn't accidentally
 introduce any secrets or authentication issues after the merge
 
-3. Bekomme sofortiges Feedback
+3. Get immediate feedback
 ```
 
 ---
 
-## Command-Referenz
+## Command Reference
 
-### Agents anzeigen
+### Show agents
 ```bash
 claude agents
-# Zeigt:
+# Shows:
 # - Built-in Agents (Explore, Plan, General-Purpose)
 # - Project Agents (.claude/agents/)
 # - User Agents (~/.claude/agents/)
 ```
 
-### Agent interaktiv verwalten
+### Manage agents interactively
 ```bash
-/agents  # Im Claude Code CLI
-# Optionen: Create, Edit, Delete, View
+/agents  # In the Claude Code CLI
+# Options: Create, Edit, Delete, View
 ```
 
-### Agent direkt triggern
+### Trigger an agent directly
 ```
-# Im Chat:
+# In chat:
 Use the [agent-name] to [task]
 
-# Beispiele:
+# Examples:
 Use the security-reviewer to analyze the code
 Use the architecture-reviewer to check the design
 Use the performance-reviewer to find bottlenecks
 Use the ai-service-generator to create a new service
 ```
 
-### Mehrere Agents parallel
+### Multiple agents in parallel
 ```
 Use the security-reviewer, architecture-reviewer, and
 performance-reviewer to analyze the changes
 
-# Alle 3 laufen gleichzeitig!
+# All 3 run simultaneously!
 ```
 
 ---
 
-## Output interpretieren
+## Interpreting Output
 
-### Security-Reviewer Output
+### Security Reviewer Output
 
 ```
-[KRITISCH] Hardcoded API Key detected
+[CRITICAL] Hardcoded API Key detected
   Location: src/main/java/.../ChatbotService.java:42
   Issue: private static final String ANTHROPIC_KEY = "sk-ant-..."
-  Risk: API-Key exposure in source code
+  Risk: API key exposure in source code
   Fix: Move to environment variable
 
-[WARNUNG] Missing input validation
+[WARNING] Missing input validation
   Location: src/main/java/.../ChatbotBoundary.java:28
-  Issue: Request.message() nicht validiert
+  Issue: Request.message() not validated
   Fix: Add @NotBlank on message field
 
 [INFO] Consider CORS configuration
   Location: n/a
-  Issue: CORS noch nicht konfiguriert
+  Issue: CORS not yet configured
   Recommendation: Add @CrossOrigin or configure in application.properties
 ```
 
-### Architecture-Reviewer Output
+### Architecture Reviewer Output
 
 ```
 [VIOLATION] Entity imported by Boundary
   File: boundary/ChatbotBoundary.java:15
-  Issue: import entity.ChatHistory (sollte nur DTOs sein)
-  Fix: Erstelle ChatHistoryResponse DTO, nutze das stattdessen
+  Issue: import entity.ChatHistory (should only be DTOs)
+  Fix: Create ChatHistoryResponse DTO, use that instead
 
 [DESIGN] Circular dependency detected
   Files: control/ChatbotService.java ↔ control/ChatbotTools.java
-  Issue: Service injiziert Tools, Tools injiziert Service
-  Fix: Refaktor: Service ruft Tools auf, nicht umgekehrt
+  Issue: Service injects Tools, Tools injects Service
+  Fix: Refactor: Service calls Tools, not the other way around
 
 [BEST PRACTICE] Taikai test coverage
-  Info: Neue Entities + Services hinzugefügt
-  Recommendation: Update ArchitectureTests.java mit neuen Regeln
+  Info: New entities + services added
+  Recommendation: Update ArchitectureTests.java with new rules
 ```
 
-### Performance-Reviewer Output
+### Performance Reviewer Output
 
 ```
 [ISSUE] N+1 Query detected
   Location: control/ChatbotService.java:85
   Code: for (ChatHistory h : histories) { ... h.getUser().getId() }
-  Impact: 100 histories = 101 queries statt 1
+  Impact: 100 histories = 101 queries instead of 1
   Fix: Use fetch join: SELECT h FROM ChatHistory h JOIN FETCH h.user
 
 [WARNING] Missing pagination
   Location: boundary/ChatbotBoundary.java:32
-  Issue: getAllMessages() lädt alle Messages
+  Issue: getAllMessages() loads all messages
   Recommendation: Add @QueryParam int page, int size
 
 [OPTIMIZATION] Caching opportunity
-  Info: DocumentSearch wird häufig mit gleichen Keywords aufgerufen
-  Suggestion: Cache SearchResults für 5 Minuten
+  Info: DocumentSearch is frequently called with the same keywords
+  Suggestion: Cache SearchResults for 5 minutes
 ```
 
-### AI-Service-Generator Output
+### AI Service Generator Output
 
 ```
 Phase 1: Planning
-  ✓ Service Name: Chatbot
-  ✓ LLM Provider: Anthropic Claude (claude-opus-4-6)
-  ✓ Tools: DocumentSearch, UserContext, SendNotification
-  ✓ RAG: Enabled (PgVector for embeddings)
-  ✓ Guardrails: Rate-Limiting (100 req/min), Input-Validation
+  Service Name: Chatbot
+  LLM Provider: Anthropic Claude (claude-opus-4-6)
+  Tools: DocumentSearch, UserContext, SendNotification
+  RAG: Enabled (PgVector for embeddings)
+  Guardrails: Rate limiting (100 req/min), input validation
 
 Phase 2: Code Generation
-  ✓ boundary/ai/ChatbotBoundary.java (REST-Endpoint)
-  ✓ boundary/ai/request/ChatRequest.java (Input-DTO)
-  ✓ boundary/ai/response/ChatResponse.java (Output-DTO)
-  ✓ control/ai/ChatbotService.java (Orchestration)
-  ✓ control/ai/ChatbotTools.java (LLM Tools)
-  ✓ control/ai/ChatbotRAGService.java (Vector-Search)
-  ✓ control/ai/ChatbotGuardrailService.java (Validation)
-  ✓ entity/ai/ChatHistory.java (JPA Entity)
-  ✓ entity/ai/ChatDocument.java (RAG Documents)
+  boundary/ai/ChatbotBoundary.java (REST endpoint)
+  boundary/ai/request/ChatRequest.java (input DTO)
+  boundary/ai/response/ChatResponse.java (output DTO)
+  control/ai/ChatbotService.java (orchestration)
+  control/ai/ChatbotTools.java (LLM tools)
+  control/ai/ChatbotRAGService.java (vector search)
+  control/ai/ChatbotGuardrailService.java (validation)
+  entity/ai/ChatHistory.java (JPA entity)
+  entity/ai/ChatDocument.java (RAG documents)
 
 Phase 3: Infrastructure
-  ✓ db/migration/V001__Create_chatbot_tables.sql
-  ✓ application.properties (LLM Config)
+  db/migration/V001__Create_chatbot_tables.sql
+  application.properties (LLM config)
 
 Phase 4: Tests
-  ✓ ChatbotBoundaryTest.java (REST Tests)
-  ✓ ChatbotServiceTest.java (Service Tests)
-  ✓ ChatbotToolsTest.java (Tool Tests)
-  ✓ ArchitectureTests updated
+  ChatbotBoundaryTest.java (REST tests)
+  ChatbotServiceTest.java (service tests)
+  ChatbotToolsTest.java (tool tests)
+  ArchitectureTests updated
 
 Ready to use:
   docker compose up
@@ -237,141 +237,141 @@ Ready to use:
 
 ## Best Practices
 
-### Review-Agents richtig nutzen
+### Using Review Agents Effectively
 
-✅ **Gut**:
+**Good**:
 ```
-# Groß genug für vollständigen Review
+# Large enough for a complete review
 Use the security-reviewer to analyze the new authentication module
 
-# Mehrere Agents parallel
+# Multiple agents in parallel
 Use all review agents to analyze my changes
 ```
 
-❌ **Nicht optimal**:
+**Not optimal**:
 ```
-# Zu klein (eine Zeile)
+# Too small (one line)
 Use the security-reviewer to review this change
 
-# Zu viel (ganze Codebase)
+# Too much (entire codebase)
 Use the security-reviewer to audit the entire project
 ```
 
-### AI-Service-Generator richtig nutzen
+### Using the AI Service Generator Effectively
 
-✅ **Gut**:
+**Good**:
 ```
-# Klar und konkret
+# Clear and concrete
 Use the ai-service-generator to create a DocumentAnalyzer service
 with RAG integration and Tool support for database queries
 
-# Mit Domain-Context
+# With domain context
 We need a RecommendationEngine that analyzes user behavior
 and suggests products. Use the ai-service-generator to scaffold it.
 ```
 
-❌ **Nicht optimal**:
+**Not optimal**:
 ```
-# Zu vage
+# Too vague
 Use the ai-service-generator to create something with AI
 
-# Unklare Anforderungen
-Create an AI service (was soll es tun?)
+# Unclear requirements
+Create an AI service (what should it do?)
 ```
 
 ---
 
-## Häufige Fragen
+## Frequently Asked Questions
 
-### F: Werden die Agents meinen Code ändern?
-**A**: Security, Architecture, Performance Agents sind **read-only**. Sie können nur lesen, nicht schreiben. Der AI-Service-Generator kann schreiben (neue Dateien generieren).
+### Q: Will the agents modify my code?
+**A**: Security, Architecture, and Performance agents are **read-only**. They can only read, not write. The AI Service Generator can write (generate new files).
 
-### F: Wie lange dauert ein Review?
+### Q: How long does a review take?
 **A**:
-- Security-Review: ~10-15 Sekunden
-- Architecture-Review: ~15-20 Sekunden
-- Performance-Review: ~15-20 Sekunden
-- Parallel: ~20-25 Sekunden (statt 45-55s Sequential)
+- Security review: ~10-15 seconds
+- Architecture review: ~15-20 seconds
+- Performance review: ~15-20 seconds
+- Parallel: ~20-25 seconds (instead of 45-55s sequential)
 
-### F: Kann ich die Agents selbst editieren?
-**A**: Ja! `.claude/agents/[name].md` ist eine normale Markdown-Datei. Du kannst die Prompts anpassen:
+### Q: Can I edit the agents myself?
+**A**: Yes! `.claude/agents/[name].md` is a regular Markdown file. You can customize the prompts:
 ```bash
-# Edit direkt
+# Edit directly
 vim .claude/agents/security-reviewer.md
 
-# Oder via CLI
+# Or via CLI
 /agents → Edit → security-reviewer
 ```
 
-### F: Was ist der Unterschied zu Manual Code Review?
+### Q: What is the difference from manual code review?
 **A**:
 | Aspect | Agent | Manual |
 |--------|-------|--------|
-| Geschwindigkeit | ~20s | 30min+ |
-| Konsistenz | 100% | ~70% (abhängig von Reviewer) |
-| Gründlichkeit | Comprehensive | Selective |
-| False Positives | ~5% | ~2% |
-| Kosten | 1-2¢ | $500+ (zeitaufwand) |
+| Speed | ~20s | 30min+ |
+| Consistency | 100% | ~70% (depends on reviewer) |
+| Thoroughness | Comprehensive | Selective |
+| False positives | ~5% | ~2% |
+| Cost | 1-2 cents | $500+ (time investment) |
 
-**Best**: Kombination aus Agent + Manual Spot-Check!
+**Best**: Combination of agent + manual spot check!
 
-### F: Kann ich Agents für andere Projekte nutzen?
-**A**: Ja! Verschiebe die `.md`-Dateien zu:
+### Q: Can I use agents for other projects?
+**A**: Yes! Move the `.md` files to:
 ```bash
-~/.claude/agents/  # User-Level (alle Projekte)
+~/.claude/agents/  # User level (all projects)
 ```
 
-Dann sind sie überall verfügbar.
+Then they are available everywhere.
 
 ---
 
 ## Troubleshooting
 
-### Agent wird nicht delegiert
+### Agent is not being delegated to
 
-**Problem**: Claude nutzt Agent nicht automatisch.
+**Problem**: Claude does not use the agent automatically.
 
-**Lösung**:
-1. Agent-Description präziser machen (`.claude/agents/[name].md`)
-2. Oder direkt triggern: `Use the [name] agent to ...`
+**Solution**:
+1. Make agent description more precise (`.claude/agents/[name].md`)
+2. Or trigger directly: `Use the [name] agent to ...`
 
-### Agent hat falsches Verhalten
+### Agent has incorrect behavior
 
-**Problem**: Agent-Antwort ist nicht hilfreich.
+**Problem**: Agent response is not helpful.
 
-**Lösung**:
-1. Öffne `.claude/agents/[name].md`
-2. Anpasse System-Prompt (Markdown-Teil nach YAML)
-3. Addiere spezifischere Anweisungen/Checklisten
-4. Speichere und versuche erneut
+**Solution**:
+1. Open `.claude/agents/[name].md`
+2. Adjust the system prompt (Markdown section after YAML)
+3. Add more specific instructions/checklists
+4. Save and try again
 
-### Agent braucht mehr Tools
+### Agent needs more tools
 
-**Problem**: Agent kann bestimmte Checks nicht machen (z.B. Tests laufen).
+**Problem**: Agent cannot perform certain checks (e.g., running tests).
 
-**Lösung**:
-1. Öffne `.claude/agents/[name].md`
-2. Ändere `tools:` Feld:
+**Solution**:
+1. Open `.claude/agents/[name].md`
+2. Change the `tools:` field:
    ```yaml
-   tools: Read, Grep, Glob, Bash  # Füge "Bash" hinzu für ./mvnw test
+   tools: Read, Grep, Glob, Bash  # Add "Bash" for ./mvnw test
    ```
 
 ---
 
-## Nächste Schritte
+## Next Steps
 
-1. **Ausprobieren**: Schreib Code → triggere Reviews
-2. **Feedback einbauen**: Issues aus Reviews fixen
-3. **Customize**: Anpasse Agent-Prompts nach deinen Bedürfnissen
-4. **Dokumentieren**: Speichere Learnings in `.claude/lessons-learned.md`
+1. **Try it out**: Write code → trigger reviews
+2. **Incorporate feedback**: Fix issues from reviews
+3. **Customize**: Adapt agent prompts to your needs
+4. **Document**: Save learnings in `.claude/lessons-learned.md`
 
-**Dann**: Hooks implementieren (Automatisierung) → Agent-Teams (massiv parallel)
+**Then**: Implement hooks (automation) → Agent teams (massively parallel)
 
 ---
 
 ## Support
 
-- **Agents-Doku**: [docs/sub-agents.md](sub-agents.md)
-- **Agents-Architektur**: [docs/agents-architecture.md](agents-architecture.md)
+- **Agents docs**: [docs/sub-agents.md](sub-agents.md)
+- **Agents architecture**: [docs/agents-architecture.md](agents-architecture.md)
 - **Claude Code Docs**: https://code.claude.com/docs/en/sub-agents
-- **Questions**: Frag einfach im Chat: "How do sub-agents work?"
+- **Questions**: Just ask in the chat: "How do sub-agents work?"

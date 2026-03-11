@@ -1,248 +1,248 @@
-# AI-gestütztes Scaffolding: Projekt-Setup in Minuten statt Stunden
+# AI-Powered Scaffolding: Project Setup in Minutes Instead of Hours
 
-**Wie DevContainer und Claude Code Skills das Java-Bootstrapping revolutionieren**
-
----
-
-Docker Compose aufsetzen, Maven konfigurieren, die richtige Java-Version installieren, Flyway einbinden, Health Checks nicht vergessen – war das jetzt `ddl-auto=validate` oder `ddl-auto=create`?
-
-Mit DevContainern und AI-gestützten Skills dauert das keine fünf Minuten. Egal ob produktives Microservice-Projekt oder schneller Prototyp.
+**How DevContainers and Claude Code Skills are revolutionizing Java bootstrapping**
 
 ---
 
-## Schnellstart: Einfach mal ausprobieren
+Setting up Docker Compose, configuring Maven, installing the right Java version, integrating Flyway, not forgetting health checks – was it `ddl-auto=validate` or `ddl-auto=create`?
 
-**API Key setzen** (optional – alternativ `claude login` im DevContainer):
+With DevContainers and AI-powered skills, this takes less than five minutes. Whether it's a productive microservice project or a quick prototype.
+
+---
+
+## Quick Start: Just Try It Out
+
+**Set API key** (optional – alternatively `claude login` in the DevContainer):
 
 ```bash
-# auf dem Host in ~/.zshrc oder ~/.bashrc
+# on the host in ~/.zshrc or ~/.bashrc
 export ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
-**Repo clonen und in VS Code öffnen:**
+**Clone the repo and open in VS Code:**
 
 ```bash
-git clone git@github.com:<deine-org>/claude-skills-devcontainer.git
+git clone git@github.com:<your-org>/claude-skills-devcontainer.git
 code claude-skills-devcontainer
-# → "Reopen in Container" wählen – fertig nach ~3–5 Min.
+# → Choose "Reopen in Container" – done after ~3–5 min.
 ```
 
-**Loslegen:**
+**Get started:**
 
 ```
-Erstelle ein neues Spring Boot Projekt
+Create a new Spring Boot project
 ```
 
-Claude fragt nach `groupId`, `artifactId` und den benötigten Diensten – dann wird alles generiert: Projektstruktur, Konfiguration, Dockerfile, Architekturtests.
+Claude asks for `groupId`, `artifactId`, and the required services – then everything is generated: project structure, configuration, Dockerfile, architecture tests.
 
-Das war's. Kein manuelles Setup. Keine vergessenen Konventionen.
+That's it. No manual setup. No forgotten conventions.
 
 ---
 
-## Was steckt dahinter?
+## What's Behind It?
 
-### Das Template: Technische Vorgaben und Konventionen in einem
+### The Template: Technical Specifications and Conventions in One
 
-Das Template ist kein leerer Startpunkt. Es definiert klare technische Vorgaben, wie Anwendungen generiert werden – und liefert nebenbei auch Unternehmenskonventionen mit:
+The template is not an empty starting point. It defines clear technical specifications for how applications are generated – and also delivers company conventions along the way:
 
-- **Base Image, Java-Version, Git** – festgelegt im `devcontainer.json`, nicht "installier mal Java 25"
-- **Docker-in-Docker** – Container bauen und `docker compose` direkt im DevContainer nutzen
-- **BOM und Dependency-Versionen** – der `java-scaffold-skill` fragt aktuelle Versionen live ab und generiert eine `pom.xml` mit `versions-maven-plugin` und `renovate.json`
-- **Architektur-Vorgaben** – BCE-Pattern, Taikai-Architekturtests, Flyway statt ddl-auto
-- **Infrastruktur** – PostgreSQL, RabbitMQ, Keycloak per `docker compose up -d` startklar
-- **Health Checks** – `/actuator/health` (Spring) oder `/q/health` (Quarkus) sind Pflicht
+- **Base image, Java version, Git** – defined in `devcontainer.json`, not "install Java 25 somehow"
+- **Docker-in-Docker** – build containers and use `docker compose` directly in the DevContainer
+- **BOM and dependency versions** – the `java-scaffold-skill` queries current versions live and generates a `pom.xml` with `versions-maven-plugin` and `renovate.json`
+- **Architecture specifications** – BCE pattern, Taikai architecture tests, Flyway instead of ddl-auto
+- **Infrastructure** – PostgreSQL, RabbitMQ, Keycloak ready to start via `docker compose up -d`
+- **Health checks** – `/actuator/health` (Spring) or `/q/health` (Quarkus) are mandatory
 
-Alles liegt unter Versionskontrolle. **Definiert, kontrollierbar, wiederholbar.** Änderungen sind im Git-Log nachvollziehbar.
+Everything is under version control. **Defined, controllable, repeatable.** Changes are traceable in the Git log.
 
-### Claude Code Skills: Team-Wissen kodifiziert
+### Claude Code Skills: Team Knowledge Codified
 
-Skills in `.claude/skills/` bringen Claude Code bei, wie das Team arbeitet. Keine vagen Prompts, sondern kodifiziertes Wissen:
+Skills in `.claude/skills/` teach Claude Code how the team works. Not vague prompts, but codified knowledge:
 
-| Skill | Was er tut |
-|-------|-----------|
-| `java-scaffold-skill` | Generiert Projekte, Entities, Dockerfiles, **AI Services** nach Team-Konventionen |
-| `spec-feature-skill` | Erfragt fachliche Requirements per Interview, erstellt Specs |
-| `openapi-skill` | Erstellt, erweitert oder implementiert OpenAPI Specs per Interview |
-| `review-skill` | Prüft Code gegen Architektur-Regeln und Best Practices |
-| `doc-skill` | Erstellt und aktualisiert Projektdokumentation |
-| `infografik-skill` | Generiert Infografiken per Hugging Face API |
-| `blog-post-skill` | Erstellt technische Blog Posts (wie diesen hier) |
-| `frontend-skill` | Baut Web-UIs: Dashboards (TailAdmin), Landing Pages (Tailwind CSS) |
+| Skill | What it does |
+|-------|-------------|
+| `java-scaffold-skill` | Generates projects, entities, Dockerfiles, **AI services** according to team conventions |
+| `spec-feature-skill` | Gathers business requirements via interview, creates specs |
+| `openapi-skill` | Creates, extends, or implements OpenAPI specs via interview |
+| `review-skill` | Checks code against architecture rules and best practices |
+| `doc-skill` | Creates and updates project documentation |
+| `infografik-skill` | Generates infographics via Hugging Face API |
+| `blog-post-skill` | Creates technical blog posts (like this one) |
+| `frontend-skill` | Builds web UIs: dashboards (TailAdmin), landing pages (Tailwind CSS) |
 
-Neben den Skills bringt das Template auch einen **MCP Server für PostgreSQL** mit. Damit lassen sich Datenbankinhalte direkt im Chat abfragen – in natürlicher Sprache, ohne SQL-Client zu öffnen.
+Besides skills, the template also includes an **MCP server for PostgreSQL**. This allows querying database contents directly in the chat – in natural language, without opening a SQL client.
 
-Die Skills sind nicht generisch. Sie kennen den Stack des Teams. Der `java-scaffold-skill` weiß, dass Flyway Pflicht ist, dass Health Checks dazugehören, dass Taikai-Architekturtests in jedes Projekt müssen.
+The skills are not generic. They know the team's stack. The `java-scaffold-skill` knows that Flyway is mandatory, that health checks are part of the deal, that Taikai architecture tests must be in every project.
 
-Die Konventionen stehen in der `CLAUDE.md` – für Mensch und Maschine lesbar:
+The conventions are in `CLAUDE.md` – readable by both humans and machines:
 
 ```markdown
-## Coding-Standards
-- **Architektur**: BCE-Pattern (Boundary / Control / Entity)
-- **Architekturtests**: Taikai – bei jedem neuen Projekt anlegen (PFLICHT)
-- **Health Checks**: Jede Anwendung muss /actuator/health bereitstellen (PFLICHT)
-- **Persistenz**: Flyway – kein ddl-auto=create
+## Coding Standards
+- **Architecture**: BCE pattern (Boundary / Control / Entity)
+- **Architecture tests**: Taikai – create for every new project (MANDATORY)
+- **Health checks**: Every application must provide /actuator/health (MANDATORY)
+- **Persistence**: Flyway – no ddl-auto=create
 ```
 
-### Der Tech Stack
+### The Tech Stack
 
-| Schicht | Technologie |
-|---------|-------------|
+| Layer | Technology |
+|-------|------------|
 | Java | 25 (Microsoft OpenJDK) |
-| Frameworks | Spring Boot 4.x oder Quarkus 3.31+ |
-| Datenbank | PostgreSQL 17 |
+| Frameworks | Spring Boot 4.x or Quarkus 3.31+ |
+| Database | PostgreSQL 17 |
 | Messaging | RabbitMQ 4 (Spring AMQP / SmallRye) |
 | Build | Maven 3.9 |
-| Architektur-Tests | Taikai (ArchUnit) |
+| Architecture Tests | Taikai (ArchUnit) |
 | Auth / IAM | Keycloak 26.x |
-| AI (Entwickler-Tool) | Claude Code |
-| AI (in der Anwendung) | Quarkus LangChain4j (OpenAI, Ollama, Anthropic) + PgVector |
+| AI (Developer Tool) | Claude Code |
+| AI (in the Application) | Quarkus LangChain4j (OpenAI, Ollama, Anthropic) + PgVector |
 
-### Lokale Modelle und Datensouveränität
+### Local Models and Data Sovereignty
 
-Ein wichtiger Punkt für viele Unternehmen: Bei der Nutzung der Anthropic Cloud API werden Prompts, Kontext und **Quellcode** an externe Server gesendet. Für sensible Projekte, interne Architekturen oder regulierte Umgebungen ist das keine Option.
+An important point for many companies: when using the Anthropic Cloud API, prompts, context, and **source code** are sent to external servers. For sensitive projects, internal architectures, or regulated environments, that's not an option.
 
-Das Template unterstützt deshalb auch lokale Modelle – etwa über **Ollama** oder **LM Studio**. Die Konfiguration erfolgt über zwei Umgebungsvariablen, kein Code-Umbau nötig:
+The template therefore also supports local models – for example via **Ollama** or **LM Studio**. Configuration is done via two environment variables, no code changes needed:
 
 ```bash
 export ANTHROPIC_BASE_URL="http://host.docker.internal:11434"
 export ANTHROPIC_AUTH_TOKEN="ollama"
 ```
 
-Der Code verlässt dann nie den Rechner. Auch Self-Hosted-Deployments im Unternehmensnetz sind möglich. Skills, `CLAUDE.md` und der gesamte Workflow funktionieren identisch – unabhängig davon, ob das Modell in der Cloud oder lokal läuft.
+The code then never leaves the machine. Self-hosted deployments within the corporate network are also possible. Skills, `CLAUDE.md`, and the entire workflow function identically – regardless of whether the model runs in the cloud or locally.
 
 ---
 
-## Was kann ich damit machen?
+## What Can I Do With This?
 
-### Neues Projekt aufsetzen
+### Set Up a New Project
 
 ```
-> Erstelle ein neues Spring Boot Projekt für einen Order-Service
+> Create a new Spring Boot project for an Order Service
 
-Claude: Bevor ich das Projekt generiere, brauche ich ein paar Angaben:
+Claude: Before I generate the project, I need a few details:
 
   groupId?        com.acme
   artifactId?     order-service
-  Dienste?        PostgreSQL, RabbitMQ
+  Services?       PostgreSQL, RabbitMQ
 
-Claude generiert das Projekt …
+Claude generates the project …
 
-✅ pom.xml             – Spring Boot 4.0.3, PostgreSQL-Driver, Spring AMQP
-✅ BCE-Paketstruktur   – boundary/, control/, entity/
-✅ Taikai-Tests        – Architekturregeln als Unit-Tests
-✅ Flyway              – db/migration/ mit initialer Migration
-✅ Health Check         – /actuator/health inkl. DB- und RabbitMQ-Indicator
-✅ Dockerfile          – Multi-Stage Build im Projekt-Root
-✅ docker-compose.yml  – PostgreSQL 17, RabbitMQ 4, Keycloak 26
-✅ renovate.json       – Automatische Dependency-Updates
-✅ application.yml     – Datasource, RabbitMQ-Connection, Flyway konfiguriert
+pom.xml             – Spring Boot 4.0.3, PostgreSQL Driver, Spring AMQP
+BCE package structure – boundary/, control/, entity/
+Taikai tests        – Architecture rules as unit tests
+Flyway              – db/migration/ with initial migration
+Health check        – /actuator/health incl. DB and RabbitMQ indicator
+Dockerfile          – Multi-stage build in project root
+docker-compose.yml  – PostgreSQL 17, RabbitMQ 4, Keycloak 26
+renovate.json       – Automatic dependency updates
+application.yml     – Datasource, RabbitMQ connection, Flyway configured
 
-Projekt order-service ist bereit. Starte mit:
+Project order-service is ready. Start with:
   docker compose up -d && ./mvnw spring-boot:run
 ```
 
-Claude fragt nur das Nötigste ab – alles andere kommt aus den Team-Konventionen im Template. Dependency-Versionen werden live abgefragt, nicht aus dem Gedächtnis.
+Claude only asks for the essentials – everything else comes from the team conventions in the template. Dependency versions are queried live, not from memory.
 
-### Prototypen in Minuten
+### Prototypes in Minutes
 
-Gerade für Prototypen und Proof of Concepts Gold wert. Statt einen halben Tag in Setup zu investieren, steht die lauffähige Basis in Minuten – mit einer Architektur, die auch trägt, wenn aus dem Prototyp ein produktives System wird.
+Especially valuable for prototypes and proofs of concept. Instead of investing half a day in setup, the runnable foundation is ready in minutes – with an architecture that also holds up when the prototype becomes a production system.
 
-### Features spezifizieren
-
-```
-Feature spezifizieren: Bestellungen per Event an RabbitMQ senden
-```
-
-Der `spec-feature-skill` führt ein strukturiertes Interview und erstellt eine Spezifikation in `specs/`. Erst danach wird Code geschrieben – auf Basis der Spec, nicht auf Basis von Annahmen.
-
-### API designen
+### Specify Features
 
 ```
-Erstelle eine neue API Spec für den Order-Service
+Specify feature: Send orders via event to RabbitMQ
 ```
 
-Der `openapi-skill` führt durch ein Interview: Datenmodelle, Endpunkte, Auth-Schema. Am Ende steht eine valide OpenAPI 3.x Spec in `api/`. Bestehende Entities im Projekt werden erkannt und zur Übernahme angeboten. Aus der fertigen Spec kann direkt Java-Code generiert werden – DTOs, Controller, Service-Stubs.
+The `spec-feature-skill` conducts a structured interview and creates a specification in `specs/`. Only then is code written – based on the spec, not on assumptions.
 
-### AI-Fachanwendungen mit LangChain4j
-
-Seit dem letzten Update kann der `java-scaffold-skill` auch **AI-gestützte Fachanwendungen** generieren. Statt nur CRUD-Services zu bauen, lassen sich jetzt komplette LLM-Integrationen scaffolden:
+### Design APIs
 
 ```
-> Erstelle ein neues Quarkus Projekt mit AI-Support (LangChain4j)
-
-Claude: Welche AI-Features brauchst du?
-
-  LLM-Provider?        OpenAI
-  AI-Features?         Chat + Tools + RAG
-  Vektorspeicher?      PgVector
-  Fault Tolerance?     Ja
-
-Claude generiert das AI-Projekt …
-
-✅ pom.xml              – Quarkus 3.31+, LangChain4j BOM, PgVector, Fault Tolerance
-✅ AI Service            – @RegisterAiService mit SystemMessage und ToolBox
-✅ AI Tools              – @Tool-Klassen fuer Function Calling (DB-Zugriff)
-✅ RAG Pipeline          – Document-Ingestion + RetrievalAugmentor mit PgVector
-✅ Guardrails            – Input-Validierung gegen Prompt Injection
-✅ REST-Endpunkt         – /ai/chat als JSON-API
-✅ Fault Tolerance       – @Timeout, @Retry, @Fallback fuer Produktion
-✅ docker-compose-ai.yml – pgvector/pgvector:pg17 + optionales Ollama
-✅ Architekturtests      – AI Services in boundary/ai/, Tools in control/ai/
+Create a new API spec for the Order Service
 ```
 
-**7 AI-Profile** stehen zur Verfügung – von einem einfachen Chatbot bis hin zu agentic Workflows mit autonomen Agents:
+The `openapi-skill` guides through an interview: data models, endpoints, auth schema. The result is a valid OpenAPI 3.x spec in `api/`. Existing entities in the project are detected and offered for adoption. From the finished spec, Java code can be generated directly – DTOs, controllers, service stubs.
 
-| Profil | Beschreibung |
-|--------|-------------|
-| **Chat** | Einfacher AI Service mit System-/User-Prompt |
-| **Chat + Tools** | Function Calling – das LLM greift auf Datenbank und REST-APIs zu |
-| **Chat + RAG** | Dokumentensuche über PgVector (Retrieval Augmented Generation) |
-| **Chat + Guardrails** | Ein-/Ausgabevalidierung gegen Prompt Injection |
-| **Agentic** | Autonome Agents mit Workflow-Orchestrierung (Sequence, Parallel, Loop, Supervisor) |
-| **Fault Tolerant** | Produktionsreifes Setup mit Retry, Timeout und Fallback |
-| **Vollständig** | Alle Features kombiniert |
+### AI Business Applications with LangChain4j
 
-Die AI-Komponenten folgen dem gleichen BCE-Pattern wie der Rest der Anwendung:
-- **AI Services** (`@RegisterAiService`) liegen in `boundary/ai/`
-- **Tools, RAG, Guardrails** liegen in `control/ai/`
-- **REST-Endpunkte** für den AI Service in `boundary/rest/`
+Since the last update, the `java-scaffold-skill` can also generate **AI-powered business applications**. Instead of just building CRUD services, complete LLM integrations can now be scaffolded:
 
-Die Architekturtests erzwingen diese Struktur automatisch – ein `@Tool` in `boundary/rest/` lässt den Build fehlschlagen.
+```
+> Create a new Quarkus project with AI support (LangChain4j)
 
-**Drei LLM-Provider** werden unterstützt:
-- **OpenAI** (oder kompatible APIs wie vLLM, LM Studio)
-- **Ollama** (lokal, ohne API-Key – perfekt für datensensible Projekte)
+Claude: What AI features do you need?
+
+  LLM provider?        OpenAI
+  AI features?         Chat + Tools + RAG
+  Vector store?        PgVector
+  Fault tolerance?     Yes
+
+Claude generates the AI project …
+
+pom.xml              – Quarkus 3.31+, LangChain4j BOM, PgVector, Fault Tolerance
+AI Service           – @RegisterAiService with SystemMessage and ToolBox
+AI Tools             – @Tool classes for function calling (DB access)
+RAG Pipeline         – Document ingestion + RetrievalAugmentor with PgVector
+Guardrails           – Input validation against prompt injection
+REST endpoint        – /ai/chat as JSON API
+Fault Tolerance      – @Timeout, @Retry, @Fallback for production
+docker-compose-ai.yml – pgvector/pgvector:pg17 + optional Ollama
+Architecture tests   – AI services in boundary/ai/, tools in control/ai/
+```
+
+**7 AI profiles** are available – from a simple chatbot to agentic workflows with autonomous agents:
+
+| Profile | Description |
+|---------|-------------|
+| **Chat** | Simple AI service with system/user prompt |
+| **Chat + Tools** | Function calling – the LLM accesses databases and REST APIs |
+| **Chat + RAG** | Document search via PgVector (Retrieval Augmented Generation) |
+| **Chat + Guardrails** | Input/output validation against prompt injection |
+| **Agentic** | Autonomous agents with workflow orchestration (Sequence, Parallel, Loop, Supervisor) |
+| **Fault Tolerant** | Production-ready setup with retry, timeout, and fallback |
+| **Complete** | All features combined |
+
+The AI components follow the same BCE pattern as the rest of the application:
+- **AI Services** (`@RegisterAiService`) are located in `boundary/ai/`
+- **Tools, RAG, Guardrails** are located in `control/ai/`
+- **REST endpoints** for the AI service in `boundary/rest/`
+
+The architecture tests enforce this structure automatically – a `@Tool` in `boundary/rest/` will fail the build.
+
+**Three LLM providers** are supported:
+- **OpenAI** (or compatible APIs like vLLM, LM Studio)
+- **Ollama** (local, without API key – perfect for data-sensitive projects)
 - **Anthropic** (Claude)
 
-### Weitere Prompts zum Ausprobieren
+### More Prompts to Try
 
 ```
-Erstelle eine Fachanwendung mit Chatbot und RAG (Dokumentensuche)
+Create a business application with chatbot and RAG (document search)
 ```
 ```
-Generiere einen AI Service mit Tool-Integration fuer mein Quarkus-Projekt
+Generate an AI service with tool integration for my Quarkus project
 ```
 ```
-Erweitere die API in api/orders.yaml um einen Product-Endpunkt
+Extend the API in api/orders.yaml with a product endpoint
 ```
 ```
-Generiere Code aus der OpenAPI Spec api/openapi.yaml
+Generate code from the OpenAPI spec api/openapi.yaml
 ```
 ```
-Dokumentiere das Projekt
+Document the project
 ```
 ```
-Erstelle eine Infografik zum Thema Microservice-Kommunikation
+Create an infographic about microservice communication
 ```
-
----
-
-## Fazit
-
-DevContainer machen die Umgebung reproduzierbar. Claude Code Skills machen die **Entscheidungen** reproduzierbar. Das Template liefert beides zusammen – technische Vorgaben und Konventionen, die nicht in einer Dokumentation verstauben, sondern im Repository leben: als `CLAUDE.md`, als Skills, als `lessons-learned.md`. Versioniert, reviewbar, und von einem AI-Assistenten ausführbar.
-
-**Jedes neue Projekt im Team startet konventionskonform – nicht weil jemand daran gedacht hat, sondern weil es gar nicht anders geht.**
 
 ---
 
-*Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via blog-post-skill*
+## Conclusion
+
+DevContainers make the environment reproducible. Claude Code Skills make the **decisions** reproducible. The template delivers both together – technical specifications and conventions that don't gather dust in documentation, but live in the repository: as `CLAUDE.md`, as skills, as `lessons-learned.md`. Versioned, reviewable, and executable by an AI assistant.
+
+**Every new project on the team starts convention-compliant – not because someone remembered, but because there's no other way.**
+
+---
+
+*Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via blog-post-skill*

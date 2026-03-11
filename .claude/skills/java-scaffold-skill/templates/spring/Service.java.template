@@ -1,12 +1,12 @@
 /**
- * Service für {{ENTITY_NAME}}-Geschäftslogik.
+ * Service for {{ENTITY_NAME}} business logic.
  *
- * <p>BCE-Architektur: Control-Schicht<br>
- * Transaktionsgrenzen werden hier definiert. Lese-Operationen sind
- * als {@code readOnly} markiert für bessere Performance.
+ * <p>BCE architecture: Control layer<br>
+ * Transaction boundaries are defined here. Read operations are
+ * marked as {@code readOnly} for better performance.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.control;
 
@@ -46,7 +46,7 @@ public class {{ENTITY_NAME}}Service {
     public Optional<{{ENTITY_NAME}}> update(UUID id, {{ENTITY_NAME}} updated) {
         return {{ENTITY_NAME_LOWER}}Repository.findById(id)
                 .map(existing -> {
-                    // TODO: Felder von 'updated' auf 'existing' übertragen
+                    // TODO: Transfer fields from 'updated' to 'existing'
                     return {{ENTITY_NAME_LOWER}}Repository.save(existing);
                 });
     }

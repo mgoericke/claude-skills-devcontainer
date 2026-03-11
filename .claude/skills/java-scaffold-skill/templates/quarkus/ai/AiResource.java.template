@@ -1,13 +1,13 @@
 /**
- * REST-Endpunkt fuer den AI Service.
+ * REST endpoint for the AI Service.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / REST)
+ * <p>Created with Quarkus 3.x · BCE architecture (Boundary layer / REST)
  *
- * <p>Stellt den AI Service als REST-API bereit. Fuer Chat-Anwendungen
- * kann alternativ ein WebSocket-Endpunkt verwendet werden.
+ * <p>Exposes the AI Service as a REST API. For chat applications,
+ * a WebSocket endpoint can be used as an alternative.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.boundary.rest;
 

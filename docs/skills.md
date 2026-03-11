@@ -1,29 +1,29 @@
 # Skills
 
-Alle Skills liegen in `.claude/skills/` und werden von Claude Code automatisch geladen.
-Sie steuern, wie Claude bei typischen Aufgaben vorgeht – als eingebettete Anweisungen,
-nicht als externe Tools.
+All skills are located in `.claude/skills/` and are automatically loaded by Claude Code.
+They control how Claude approaches typical tasks – as embedded instructions,
+not as external tools.
 
 ---
 
-## Workflow-Übersicht
+## Workflow Overview
 
 ```mermaid
 graph TD
-    A[Idee / Anforderung] --> B[coworker-skill]
-    B -->|oder einzelne Skills direkt nutzen| C[spec-feature-skill]
+    A[Idea / Requirement] --> B[coworker-skill]
+    B -->|or use individual skills directly| C[spec-feature-skill]
     C --> D[openapi-skill]
     D --> E[java-scaffold-skill]
     E --> F[doc-skill]
 
-    B -.-|"Orchestriert alle Phasen<br>mit Review dazwischen"| B
+    B -.-|"Orchestrates all phases<br>with review in between"| B
 
     C -.-|"Interview → specs/feature.md"| C
-    D -.-|"api/name.yaml ODER<br>boundary/rest/ + entity/dto/"| D
-    E -.-|"pom.xml, docker-compose,<br>Flyway, Dockerfile,<br>ArchitekturTest, renovate.json,<br>AI Services (LangChain4j)"| E
+    D -.-|"api/name.yaml OR<br>boundary/rest/ + entity/dto/"| D
+    E -.-|"pom.xml, docker-compose,<br>Flyway, Dockerfile,<br>ArchitectureTest, renovate.json,<br>AI Services (LangChain4j)"| E
     F -.-|"docs/artifactId.md"| F
 
-    G[Jederzeit parallel nutzbar]
+    G[Usable in parallel at any time]
     G --- H[review-skill]
     G --- I[blog-post-skill]
     G --- J[frontend-skill]
@@ -38,355 +38,355 @@ graph TD
 
 ## coworker-skill
 
-**Zweck:** Phasen-basierter Coworker fuer das End-to-End Setup neuer Projekte.
-Orchestriert die bestehenden Skills in der richtigen Reihenfolge – mit Review
-und Feedback-Moeglichkeit nach jeder Phase.
+**Purpose:** Phase-based coworker for end-to-end setup of new projects.
+Orchestrates existing skills in the correct order – with review
+and feedback opportunity after each phase.
 
-**Trigger:** `Starte den Coworker` · `Neues Projekt aufsetzen end-to-end` · `Coworker`
+**Trigger:** `Start the Coworker` · `Set up a new project end-to-end` · `Coworker`
 
-**Phasen:**
+**Phases:**
 
-| Phase | Was passiert | Ergebnis |
-|-------|-------------|----------|
-| 1 – Projekt-Kontext | Framework, Dienste, Projektname | Grundlegende Entscheidungen |
-| 2 – Feature spezifizieren | Delegiert an `spec-feature-skill` | `specs/<feature>.md` |
-| 3 – API designen | Delegiert an `openapi-skill` (Modus A) | `api/<service>.yaml` |
-| 4 – Code generieren | `java-scaffold-skill` + `openapi-skill` (Modus C) | Lauffaehiges Projekt |
-| 5 – Zusammenfassung | Ueberblick + naechste Schritte | Empfehlungen |
+| Phase | What happens | Result |
+|-------|-------------|--------|
+| 1 – Project Context | Framework, services, project name | Fundamental decisions |
+| 2 – Specify Feature | Delegates to `spec-feature-skill` | `specs/<feature>.md` |
+| 3 – Design API | Delegates to `openapi-skill` (Mode A) | `api/<service>.yaml` |
+| 4 – Generate Code | `java-scaffold-skill` + `openapi-skill` (Mode C) | Runnable project |
+| 5 – Summary | Overview + next steps | Recommendations |
 
-**Flexibilitaet:**
-- Jede Phase einzeln bestaetigbar – Review vor dem Weitermachen
-- Phasen ueberspringbar, wenn Artefakte bereits existieren
-- Jederzeit stoppbar – beim naechsten Aufruf erkennt der Coworker den Stand
+**Flexibility:**
+- Each phase can be confirmed individually – review before proceeding
+- Phases can be skipped if artifacts already exist
+- Can be stopped at any time – on the next call, the coworker recognizes the current state
 
 ---
 
 ## spec-feature-skill
 
-**Zweck:** Strukturiertes Feature-Interview vor der Implementierung – erzeugt eine
-Spec-Datei als gemeinsame Sprache zwischen Fachlichkeit und Code.
+**Purpose:** Structured feature interview before implementation – produces a
+spec file as a shared language between business requirements and code.
 
-**Trigger:** `Ich möchte ein neues Feature spezifizieren`
+**Trigger:** `I want to specify a new feature`
 
-**Ablauf:**
+**Process:**
 
-1. Interview in 4 Gruppen: Kontext → Verhalten → Technische Hinweise → Qualität
-2. Zusammenfassung und Bestätigung
-3. Ausgabe: `specs/<feature-name>.md`
+1. Interview in 4 groups: Context → Behavior → Technical Hints → Quality
+2. Summary and confirmation
+3. Output: `specs/<feature-name>.md`
 
-**Output-Pfad:** `specs/<feature-name-kebab-case>.md`
+**Output path:** `specs/<feature-name-kebab-case>.md`
 
 ---
 
 ## openapi-skill
 
-**Zweck:** Erstellt, erweitert und implementiert OpenAPI 3.x Spezifikationen.
-Unterstuetzt drei Modi: Spec erstellen, Spec erweitern und Code generieren.
+**Purpose:** Creates, extends, and implements OpenAPI 3.x specifications.
+Supports three modes: create spec, extend spec, and generate code.
 
-**Trigger:** `Erstelle eine API Spec` · `Erweitere die API` · `Generiere Code aus der OpenAPI Spec`
+**Trigger:** `Create an API spec` · `Extend the API` · `Generate code from the OpenAPI spec`
 
-**Modi:**
+**Modes:**
 
-| Modus | Beschreibung | Ergebnis |
-|-------|-------------|----------|
-| A – Neue Spec erstellen | Interview: Datenmodelle, Endpunkte, Auth | `api/<name>.yaml` |
-| B – Spec erweitern | Bestehende Spec einlesen, neue Paths/Schemas hinzufuegen | Erweiterte YAML |
-| C – Code generieren | DTOs, Controller, Service-Stubs aus Spec | Java-Klassen im BCE-Pattern |
+| Mode | Description | Result |
+|------|-------------|--------|
+| A – Create new spec | Interview: data models, endpoints, auth | `api/<name>.yaml` |
+| B – Extend spec | Read existing spec, add new paths/schemas | Extended YAML |
+| C – Generate code | DTOs, controllers, service stubs from spec | Java classes in BCE pattern |
 
-**Modus A/B – Spec erstellen/erweitern:**
-- Bestehende Entities im Projekt werden erkannt und zur Uebernahme angeboten
-- CRUD-Sets oder individuelle Endpunkte pro Ressource waehlbar
-- Auth-Schema: Bearer JWT, API Key, OAuth2 oder keine
+**Mode A/B – Create/extend spec:**
+- Existing entities in the project are detected and offered for adoption
+- CRUD sets or individual endpoints per resource are selectable
+- Auth schema: Bearer JWT, API Key, OAuth2, or none
 
-**Modus C – Code generieren:**
-| Artefakt | Pfad | Beschreibung |
+**Mode C – Generate code:**
+| Artifact | Path | Description |
 |----------|------|-------------|
-| Controller / Resource | `boundary/rest/` | Ein File pro OpenAPI-Tag |
-| DTOs | `entity/dto/` | Java Records mit Validation-Annotationen aus der Spec |
-| Service-Stubs | `control/` | Leere Serviceklassen mit korrekten Methodensignaturen |
+| Controller / Resource | `boundary/rest/` | One file per OpenAPI tag |
+| DTOs | `entity/dto/` | Java Records with validation annotations from the spec |
+| Service stubs | `control/` | Empty service classes with correct method signatures |
 
-**Hinweis:** Wenn dieser Skill Code generiert hat, generiert `java-scaffold-skill`
-`boundary/rest/` und `entity/dto/` **nicht** nochmal.
+**Note:** If this skill has generated code, `java-scaffold-skill`
+will **not** generate `boundary/rest/` and `entity/dto/` again.
 
 ---
 
 ## java-scaffold-skill
 
-**Zweck:** Erstellt den vollständigen Projekt-Rahmen für eine neue Java-Anwendung –
-inklusive Build-Konfiguration, Infrastruktur, Architekturtests und optional AI-Integration
+**Purpose:** Creates the complete project framework for a new Java application –
+including build configuration, infrastructure, architecture tests, and optionally AI integration
 via LangChain4j.
 
-**Trigger:** `Erstelle ein neues Quarkus-Projekt` · `AI Service` · `Chatbot` · `RAG` · `LangChain4j`
+**Trigger:** `Create a new Quarkus project` · `AI Service` · `Chatbot` · `RAG` · `LangChain4j`
 
-**Pflichtabfragen:** groupId · artifactId · Framework · benötigte Dienste (DB / Messaging / Keycloak) · AI-Support (optional)
+**Required queries:** groupId · artifactId · Framework · required services (DB / Messaging / Keycloak) · AI support (optional)
 
-**Generiert:**
-| Artefakt | Beschreibung |
+**Generates:**
+| Artifact | Description |
 |----------|-------------|
-| `pom.xml` | Mit aktuellen Versionen (immer aus dem Internet abgefragt) |
-| `docker-compose.yml` | Nur mit bestätigten Diensten |
-| `application.properties` | Framework-spezifisch vorkonfiguriert |
-| `Dockerfile` | Spring: Projekt-Root · Quarkus: `src/main/docker/` |
-| `ArchitectureTest.java` | Taikai-basierte BCE-Regel-Prüfung (inkl. AI-Schicht-Regeln) |
-| `renovate.json` | Automatische Dependency-Update-PRs |
+| `pom.xml` | With current versions (always queried from the internet) |
+| `docker-compose.yml` | Only with confirmed services |
+| `application.properties` | Framework-specific preconfigured |
+| `Dockerfile` | Spring: project root · Quarkus: `src/main/docker/` |
+| `ArchitectureTest.java` | Taikai-based BCE rule validation (incl. AI layer rules) |
+| `renovate.json` | Automatic dependency update PRs |
 
-**AI-Support (optional, Quarkus + LangChain4j):**
-| Artefakt | Beschreibung |
+**AI Support (optional, Quarkus + LangChain4j):**
+| Artifact | Description |
 |----------|-------------|
-| AI Service (`boundary/ai/`) | `@RegisterAiService` Interface mit System-/User-Prompt |
-| AI Tools (`control/ai/`) | `@Tool`-Klassen für Function Calling |
-| RAG Pipeline (`control/ai/`) | Document-Ingestion + RetrievalAugmentor mit PgVector |
-| Guardrails (`control/ai/`) | Input-/Output-Validierung |
-| Agents (`boundary/ai/`) | Autonome Agents mit Workflow-Patterns |
-| Fault Tolerance | `@Timeout`, `@Retry`, `@Fallback` für Produktion |
-| `docker-compose-ai.yml` | PgVector + optionales Ollama |
+| AI Service (`boundary/ai/`) | `@RegisterAiService` interface with system/user prompt |
+| AI Tools (`control/ai/`) | `@Tool` classes for function calling |
+| RAG Pipeline (`control/ai/`) | Document ingestion + RetrievalAugmentor with PgVector |
+| Guardrails (`control/ai/`) | Input/output validation |
+| Agents (`boundary/ai/`) | Autonomous agents with workflow patterns |
+| Fault Tolerance | `@Timeout`, `@Retry`, `@Fallback` for production |
+| `docker-compose-ai.yml` | PgVector + optional Ollama |
 
-**AI-Profile:** Chat · Chat + Tools · Chat + RAG · Chat + Guardrails · Agentic · Fault Tolerant · Vollständig
+**AI Profiles:** Chat · Chat + Tools · Chat + RAG · Chat + Guardrails · Agentic · Fault Tolerant · Complete
 
-**Versions-Pflicht:** Vor jeder Generierung werden aktuelle Versionen im Internet
-abgefragt – niemals aus dem Gedächtnis.
+**Version requirement:** Before each generation, current versions are queried
+from the internet – never from memory.
 
 ---
 
 ## doc-skill
 
-**Zweck:** Erstellt oder aktualisiert `docs/<artifactId>.md` auf Basis des bestehenden
-Projekts – liest Quellcode und Konfiguration automatisch aus, bevor Fragen gestellt werden.
+**Purpose:** Creates or updates `docs/<artifactId>.md` based on the existing
+project – automatically reads source code and configuration before asking questions.
 
-**Trigger:** `Dokumentiere das Projekt` · `Aktualisiere die Projektdokumentation`
+**Trigger:** `Document the project` · `Update the project documentation`
 
-**Automatisch analysiert:** `pom.xml` · `application.properties` · `docker-compose.yml` ·
-REST-Endpunkte · Entities · Flyway-Migrationen · vorhandene Specs
+**Automatically analyzed:** `pom.xml` · `application.properties` · `docker-compose.yml` ·
+REST endpoints · Entities · Flyway migrations · existing specs
 
-**Verhalten bei vorhandener Datei:** Nur leere oder veraltete Abschnitte werden
-aktualisiert – manuelle Ergänzungen bleiben erhalten.
+**Behavior with existing file:** Only empty or outdated sections are
+updated – manual additions are preserved.
 
-**Adaptive Abschnitte:** API-Referenz, Messaging, Keycloak/Auth erscheinen nur,
-wenn die jeweiligen Dependencies in der `pom.xml` aktiv sind.
+**Adaptive sections:** API reference, messaging, Keycloak/Auth appear only
+when the respective dependencies are active in the `pom.xml`.
 
 ---
 
 ## infografik-skill
 
-**Zweck:** Generiert professionelle Infografiken als PNG-Datei über die
-Hugging Face Inference API (FLUX.1, kostenlos mit `HF_TOKEN`).
+**Purpose:** Generates professional infographics as PNG files via the
+Hugging Face Inference API (FLUX.1, free with `HF_TOKEN`).
 
-**Trigger:** `Erstelle eine Infografik zu ...` · `Visualisiere das` · `Mach das übersichtlich`
+**Trigger:** `Create an infographic about ...` · `Visualize this` · `Make this clear and visual`
 
-**Voraussetzung:** `HF_TOKEN` als Umgebungsvariable auf dem Host gesetzt
-(einmalige Einrichtung unter https://huggingface.co/settings/tokens)
+**Prerequisite:** `HF_TOKEN` set as environment variable on the host
+(one-time setup at https://huggingface.co/settings/tokens)
 
 ---
 
 ## review-skill
 
-**Zweck:** Systematisches Code-Review gegen Projekt-Konventionen, Architektur-Regeln
-und Best Practices – mit automatischer Git-Status-Erkennung.
+**Purpose:** Systematic code review against project conventions, architecture rules,
+and best practices – with automatic Git status detection.
 
-**Trigger:** `Prüfe den Code` · `Review die Änderungen` · `/review-skill src/main/java/`
+**Trigger:** `Check the code` · `Review the changes` · `/review-skill src/main/java/`
 
-**Dynamischer Kontext:** Beim Aufruf werden automatisch Staged Changes, Unstaged Changes,
-Untracked Files und der aktuelle Branch injiziert – kein manuelles `git diff` nötig.
+**Dynamic context:** On invocation, staged changes, unstaged changes,
+untracked files, and the current branch are automatically injected – no manual `git diff` needed.
 
-**Report-Kategorien:**
-| Kategorie | Bedeutung |
-|-----------|-----------|
-| Kritisch | Sicherheitslücke, Datenverlust, Architektur-Verletzung |
-| Warnung | Konventions-Verletzung, fehlender Test |
-| Hinweis | Verbesserungsvorschlag, Stil |
+**Report categories:**
+| Category | Meaning |
+|----------|---------|
+| Critical | Security vulnerability, data loss, architecture violation |
+| Warning | Convention violation, missing test |
+| Note | Improvement suggestion, style |
 
-**Prüfkatalog:** Detaillierte Regeln in [references/review-checklist.md](../. claude/skills/review-skill/references/review-checklist.md)
+**Review catalog:** Detailed rules in [references/review-checklist.md](../. claude/skills/review-skill/references/review-checklist.md)
 
 ---
 
 ## blog-post-skill
 
-**Zweck:** Erstellt technische Blog Posts als Markdown-Datei – basierend auf einem
-strukturierten Interview mit Zielgruppen-Anpassung (Developer / BA / PM).
+**Purpose:** Creates technical blog posts as Markdown files – based on a
+structured interview with audience adaptation (Developer / BA / PM).
 
-**Trigger:** `/blog-post-skill Quarkus und LangChain4j` · `Schreib einen Blog Post`
+**Trigger:** `/blog-post-skill Quarkus and LangChain4j` · `Write a blog post`
 
-**Ablauf:**
+**Process:**
 
-1. Sprache wählen (Deutsch / Englisch)
-2. Zielgruppe wählen (Developer / Business Analysts / Projekt Manager)
-3. Themen-Interview (9 Fragen in 3 Gruppen)
-4. Gliederung bestätigen
-5. Blog Post generieren
-6. Optional: Hero Image via Hugging Face FLUX
+1. Choose language (German / English)
+2. Choose audience (Developer / Business Analysts / Project Manager)
+3. Topic interview (9 questions in 3 groups)
+4. Confirm outline
+5. Generate blog post
+6. Optional: Hero image via Hugging Face FLUX
 
-**Output-Pfad:** `docs/blog-<thema-kebab-case>.md`
+**Output path:** `docs/blog-<topic-kebab-case>.md`
 
-**Hinweis:** `disable-model-invocation: true` – nur per `/blog-post-skill` aufrufbar,
-Claude triggert ihn nicht automatisch.
+**Note:** `disable-model-invocation: true` – only callable via `/blog-post-skill`,
+Claude does not trigger it automatically.
 
 ---
 
 ## frontend-skill
 
-**Zweck:** Erstellt moderne Web-UIs mit **Tailwind CSS**. Zwei Modi: Dashboards/Admin-Panels
-mit TailAdmin (Alpine.js + ApexCharts) und Websites/Landing Pages mit Tailwind CSS CDN.
+**Purpose:** Creates modern web UIs with **Tailwind CSS**. Two modes: Dashboards/Admin panels
+with TailAdmin (Alpine.js + ApexCharts) and Websites/Landing Pages with Tailwind CSS CDN.
 
-**Trigger:** `Erstelle ein Dashboard` · `Landing Page` · `Admin-UI` · `Frontend`
+**Trigger:** `Create a dashboard` · `Landing page` · `Admin UI` · `Frontend`
 
-**Modi:**
-| Modus | Stack | Beschreibung |
-|-------|-------|-------------|
-| Dashboard / Admin-Panel | TailAdmin + Alpine.js + ApexCharts | Datengetriebene UIs mit Charts, Tabellen, Formularen |
-| Website / Landing Page | Tailwind CSS CDN | Responsive Seiten ohne Build-Tool |
+**Modes:**
+| Mode | Stack | Description |
+|------|-------|-------------|
+| Dashboard / Admin Panel | TailAdmin + Alpine.js + ApexCharts | Data-driven UIs with charts, tables, forms |
+| Website / Landing Page | Tailwind CSS CDN | Responsive pages without build tools |
 
 **Features:**
 
-- Tailwind CSS (CDN oder TailAdmin)
-- Mobile-first, responsive mit Breakpoints
-- Semantisches HTML (`<header>`, `<main>`, `<footer>`)
-- Barrierefreiheit (alt-Attribute, aria-labels)
+- Tailwind CSS (CDN or TailAdmin)
+- Mobile-first, responsive with breakpoints
+- Semantic HTML (`<header>`, `<main>`, `<footer>`)
+- Accessibility (alt attributes, aria-labels)
 
-**Speicherort je Kontext:**
-| Kontext | Pfad |
+**Storage location by context:**
+| Context | Path |
 |---------|------|
-| Standalone | Projekt-Root |
+| Standalone | Project root |
 | Spring Boot | `src/main/resources/static/` |
 | Quarkus | `src/main/resources/META-INF/resources/` |
 
 ---
 
-## Eigenen Skill erstellen
+## Creating Your Own Skill
 
-Skills folgen dem [Agent Skills](https://agentskills.io) Open Standard und der
-[offiziellen Claude Code Dokumentation](https://code.claude.com/docs/en/skills).
+Skills follow the [Agent Skills](https://agentskills.io) Open Standard and the
+[official Claude Code documentation](https://code.claude.com/docs/en/skills).
 
-### Schnellstart
+### Quick Start
 
-1. **Verzeichnis anlegen:**
+1. **Create directory:**
 
 ```bash
-mkdir -p .claude/skills/mein-skill
+mkdir -p .claude/skills/my-skill
 ```
 
-2. **`SKILL.md` erstellen** – die einzige Pflichtdatei:
+2. **Create `SKILL.md`** – the only required file:
 
 ```yaml
 ---
-name: mein-skill
-description: Was der Skill tut und wann er verwendet wird. Claude nutzt diese Beschreibung um zu entscheiden, ob der Skill relevant ist.
+name: my-skill
+description: What the skill does and when it is used. Claude uses this description to decide whether the skill is relevant.
 argument-hint: "[parameter]"
 ---
-# Mein Skill
+# My Skill
 
-Anweisungen, die Claude befolgt wenn der Skill aktiv ist.
+Instructions that Claude follows when the skill is active.
 ## Instructions
 
-### Schritt 1 – ...
+### Step 1 – ...
 
-### Schritt 2 – ...
+### Step 2 – ...
 ```
 
-3. **Testen** – zwei Wege:
+3. **Test** – two ways:
 
 ```
-# Claude entscheidet automatisch (wenn description passt)
-Mach das, was mein Skill beschreibt
+# Claude decides automatically (if description matches)
+Do what my skill describes
 
-# Direkt aufrufen
-/mein-skill optionale-argumente
+# Call directly
+/my-skill optional-arguments
 ```
 
-### Verzeichnisstruktur
+### Directory Structure
 
 ```
-mein-skill/
-├── SKILL.md              # Hauptanweisungen (Pflicht, max. 500 Zeilen)
-├── templates/            # Templates zum Befüllen
+my-skill/
+├── SKILL.md              # Main instructions (required, max 500 lines)
+├── templates/            # Templates to fill in
 │   └── output.md.template
-├── references/           # Referenzmaterial (nur bei Bedarf geladen)
+├── references/           # Reference material (loaded only when needed)
 │   └── checklist.md
-├── examples/             # Beispiel-Ausgaben
+├── examples/             # Example outputs
 │   └── sample.md
-└── scripts/              # Ausführbare Skripte
+└── scripts/              # Executable scripts
     └── helper.sh
 ```
 
-Supporting Files werden aus `SKILL.md` heraus **mit relativen Links** referenziert:
+Supporting files are referenced from `SKILL.md` **with relative links**:
 
 ```markdown
 ## Additional resources
 
-- Für das Ausgabe-Template, siehe [templates/output.md.template](templates/output.md.template)
-- Für die Prüfregeln, siehe [references/checklist.md](references/checklist.md)
+- For the output template, see [templates/output.md.template](templates/output.md.template)
+- For the review rules, see [references/checklist.md](references/checklist.md)
 ```
 
-### Frontmatter-Referenz
+### Frontmatter Reference
 
-Alle Felder sind optional. Nur `description` wird empfohlen.
+All fields are optional. Only `description` is recommended.
 
-| Feld                       | Beschreibung                                                                                   |
+| Field                      | Description                                                                                    |
 | -------------------------- | ---------------------------------------------------------------------------------------------- |
-| `name`                     | Skill-Name, wird zum `/slash-command`. Kleinbuchstaben, Zahlen, Bindestriche (max 64 Zeichen). |
-| `description`              | Was der Skill tut + wann er verwendet wird. Claude nutzt dies zur Entscheidung.                |
-| `argument-hint`            | Autocomplete-Hinweis, z.B. `[datei]` oder `[framework] [name]`                                 |
-| `disable-model-invocation` | `true` → nur per `/name` aufrufbar, Claude triggert nicht automatisch                          |
-| `user-invocable`           | `false` → nicht im `/`-Menü sichtbar, nur als Hintergrundwissen für Claude                     |
-| `allowed-tools`            | Tools die Claude ohne Rückfrage nutzen darf, z.B. `Read, Grep, Glob`                           |
-| `model`                    | Modell das bei diesem Skill verwendet wird                                                     |
-| `context`                  | `fork` → läuft in isoliertem Subagent (ohne Gesprächskontext)                                  |
-| `agent`                    | Subagent-Typ bei `context: fork`, z.B. `Explore`, `Plan`, `general-purpose`                    |
+| `name`                     | Skill name, becomes the `/slash-command`. Lowercase, numbers, hyphens (max 64 characters).     |
+| `description`              | What the skill does + when it is used. Claude uses this for decision-making.                   |
+| `argument-hint`            | Autocomplete hint, e.g. `[file]` or `[framework] [name]`                                      |
+| `disable-model-invocation` | `true` → only callable via `/name`, Claude does not trigger automatically                      |
+| `user-invocable`           | `false` → not visible in the `/` menu, only as background knowledge for Claude                 |
+| `allowed-tools`            | Tools that Claude may use without confirmation, e.g. `Read, Grep, Glob`                        |
+| `model`                    | Model used for this skill                                                                      |
+| `context`                  | `fork` → runs in isolated sub-agent (without conversation context)                             |
+| `agent`                    | Sub-agent type for `context: fork`, e.g. `Explore`, `Plan`, `general-purpose`                  |
 
-### String-Substitutionen
+### String Substitutions
 
-| Variable               | Beschreibung                                               |
+| Variable               | Description                                                |
 | ---------------------- | ---------------------------------------------------------- |
-| `$ARGUMENTS`           | Alle übergebenen Argumente (`/skill-name diese argumente`) |
-| `$ARGUMENTS[N]`        | N-tes Argument (0-basiert), z.B. `$ARGUMENTS[0]`           |
-| `$N`                   | Kurzform für `$ARGUMENTS[N]`, z.B. `$0`, `$1`              |
-| `${CLAUDE_SESSION_ID}` | Aktuelle Session-ID                                        |
+| `$ARGUMENTS`           | All passed arguments (`/skill-name these arguments`)       |
+| `$ARGUMENTS[N]`        | N-th argument (0-based), e.g. `$ARGUMENTS[0]`              |
+| `$N`                   | Short form for `$ARGUMENTS[N]`, e.g. `$0`, `$1`            |
+| `${CLAUDE_SESSION_ID}` | Current session ID                                         |
 
 ### Dynamic Context Injection
 
-Shell-Befehle werden **vor** dem Skill ausgeführt und deren Ausgabe eingesetzt:
+Shell commands are executed **before** the skill and their output is substituted:
 
 ```markdown
-## Aktueller Status
+## Current Status
 
 - Branch: !`git branch --show-current`
-- Änderungen: !`git diff --name-only`
+- Changes: !`git diff --name-only`
 ```
 
-Claude sieht nur das Ergebnis, nicht den Befehl.
+Claude only sees the result, not the command.
 
-### Wer darf was?
+### Who Can Do What?
 
-| Frontmatter                      | User kann aufrufen | Claude kann aufrufen |
-| -------------------------------- | ------------------ | -------------------- |
-| _(Standard)_                     | Ja                 | Ja                   |
-| `disable-model-invocation: true` | Ja                 | Nein                 |
-| `user-invocable: false`          | Nein               | Ja                   |
+| Frontmatter                      | User can invoke | Claude can invoke |
+| -------------------------------- | --------------- | ----------------- |
+| _(Default)_                      | Yes             | Yes               |
+| `disable-model-invocation: true` | Yes             | No                |
+| `user-invocable: false`          | No              | Yes               |
 
-### Projekt-Template verwenden
+### Using the Project Template
 
-Das Template `.claude/skills/SKILL.md.template` enthält die Grundstruktur für neue Skills
-mit allen Konventionen dieses Projekts:
+The template `.claude/skills/SKILL.md.template` contains the basic structure for new skills
+with all conventions of this project:
 
 ```bash
-cp .claude/skills/SKILL.md.template .claude/skills/mein-skill/SKILL.md
+cp .claude/skills/SKILL.md.template .claude/skills/my-skill/SKILL.md
 ```
 
-Dann die Platzhalter (`{{...}}`) ersetzen und anpassen.
+Then replace and adapt the placeholders (`{{...}}`).
 
-### Skill in CLAUDE.md registrieren
+### Register Skill in CLAUDE.md
 
-Neuen Skill in der Skill-Tabelle in `CLAUDE.md` eintragen:
+Add the new skill to the skill table in `CLAUDE.md`:
 
 ```markdown
-| `mein-skill` | Kurzbeschreibung wann der Skill verwendet wird |
+| `my-skill` | Brief description of when the skill is used |
 ```
 
-### Checkliste für neue Skills
+### Checklist for New Skills
 
-- [ ] `SKILL.md` mit einzeiliger `description` im Frontmatter
-- [ ] `argument-hint` wenn der Skill Parameter akzeptiert
-- [ ] `disable-model-invocation: true` wenn der Skill Seiteneffekte hat
-- [ ] Supporting Files mit relativen Links referenziert
-- [ ] SKILL.md unter 500 Zeilen (Details in separate Dateien auslagern)
-- [ ] In `CLAUDE.md` Skill-Tabelle eingetragen
-- [ ] Getestet: `/mein-skill` und automatische Erkennung
+- [ ] `SKILL.md` with one-line `description` in frontmatter
+- [ ] `argument-hint` if the skill accepts parameters
+- [ ] `disable-model-invocation: true` if the skill has side effects
+- [ ] Supporting files referenced with relative links
+- [ ] SKILL.md under 500 lines (move details to separate files)
+- [ ] Added to `CLAUDE.md` skill table
+- [ ] Tested: `/my-skill` and automatic recognition

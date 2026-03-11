@@ -4,17 +4,17 @@ import {{GROUP_ID}}.entity.dto.*;
 // {{FRAMEWORK_ANNOTATION_IMPORT}}
 
 /**
- * Service-Stub für {{TAG}}-Geschäftslogik.
+ * Service stub for {{TAG}} business logic.
  *
- * <p>Generiert aus OpenAPI-Spec: {{SPEC_FILE}}<br>
- * Methodensignaturen entsprechen der Spec – Implementierung ausstehend.
+ * <p>Generated from OpenAPI spec: {{SPEC_FILE}}<br>
+ * Method signatures match the spec – implementation pending.
  *
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via openapi-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via openapi-skill
  */
 // {{FRAMEWORK_ANNOTATION}}   (Spring: @Service | Quarkus: @ApplicationScoped)
 public class {{TAG}}Service {
 
-    // ── Methoden (abgeleitet aus OpenAPI Spec) ───────────────────────────────────
+    // ── Methods (derived from OpenAPI Spec) ───────────────────────────────────
 
     {{METHODS}}
 }

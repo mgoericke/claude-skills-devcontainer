@@ -1,10 +1,10 @@
 /**
- * Panache-Entity für {{ENTITY_NAME}}.
+ * Panache entity for {{ENTITY_NAME}}.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Entity-Schicht)
+ * <p>Created with Quarkus 3.x · BCE architecture (Entity layer)
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.entity;
 
@@ -26,7 +26,7 @@ public class {{ENTITY_NAME}} extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.UUID)
     public UUID id;
 
-    // TODO: Felder ergänzen
+    // TODO: Add fields
 
     @Column(nullable = false, updatable = false)
     public LocalDateTime createdAt;

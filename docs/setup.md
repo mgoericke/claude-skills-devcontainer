@@ -1,32 +1,32 @@
 # Setup
 
-## Voraussetzungen (Host-System)
+## Prerequisites (Host System)
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [VS Code](https://code.visualstudio.com/) + [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 ---
 
-## 1 – Repository klonen
+## 1 – Clone the Repository
 
 ```bash
 git clone <repository-url>
-cd <dein-repo>
+cd <your-repo>
 ```
 
 ---
 
-## 2 – Umgebungsvariablen setzen
+## 2 – Set Environment Variables
 
-Alle Variablen werden auf dem **Host-System** gesetzt und beim Container-Start automatisch
-übernommen. Tokens nie direkt in Konfigurationsdateien eintragen.
+All variables are set on the **host system** and automatically passed through on container start.
+Never enter tokens directly in configuration files.
 
 ```bash
-# macOS/Linux (~/.zshrc oder ~/.bashrc)
-export ANTHROPIC_API_KEY="sk-ant-..."        # oder: claude login im Container
-export HF_TOKEN="hf_..."                     # Hugging Face – für Infografik-Skill (kostenlos)
+# macOS/Linux (~/.zshrc or ~/.bashrc)
+export ANTHROPIC_API_KEY="sk-ant-..."        # or: claude login in the container
+export HF_TOKEN="hf_..."                     # Hugging Face – for infografik-skill (free)
 
-# Optional – nur bei Bedarf
+# Optional – only when needed
 export ARTIFACTORY_URL="https://company.jfrog.io/artifactory"
 export ARTIFACTORY_USER="your.name@example.com"
 export ARTIFACTORY_TOKEN="your-token"
@@ -41,27 +41,27 @@ $env:HF_TOKEN          = "hf_..."
 $env:GIT_TOKEN         = "..."
 ```
 
-> **Hinweis:** Nach dem Setzen einer neuen Variable muss der Container neu gebaut werden:
+> **Note:** After setting a new variable, the container must be rebuilt:
 > `Cmd+Shift+P` → `Dev Containers: Rebuild Container`
 
-### Claude Code authentifizieren
+### Authenticate Claude Code
 
-**Option A – API Key** (empfohlen, s. o.): Variable `ANTHROPIC_API_KEY` auf dem Host setzen.
+**Option A – API Key** (recommended, see above): Set the `ANTHROPIC_API_KEY` variable on the host.
 
-**Option B – Login im Container:**
+**Option B – Login in the container:**
 ```bash
 claude login
 ```
 
 ### Hugging Face Token (`HF_TOKEN`)
 
-Benötigt für den **Infografik-Skill**. Einmalige Einrichtung:
+Required for the **infografik-skill**. One-time setup:
 
-1. Token erstellen unter https://huggingface.co/settings/tokens (**Token type:** `Read`)
-2. Als `HF_TOKEN` auf dem Host setzen (s. o.)
-3. DevContainer neu bauen
+1. Create a token at https://huggingface.co/settings/tokens (**Token type:** `Read`)
+2. Set as `HF_TOKEN` on the host (see above)
+3. Rebuild the DevContainer
 
-### Maven – Artifactory (`~/.m2/settings.xml` im Container)
+### Maven – Artifactory (`~/.m2/settings.xml` in the container)
 
 ```xml
 <settings>
@@ -84,12 +84,12 @@ Benötigt für den **Infografik-Skill**. Einmalige Einrichtung:
 
 ---
 
-## 3 – Container starten
+## 3 – Start the Container
 
 ```bash
 code .
-# → "Reopen in Container" wählen
+# → Choose "Reopen in Container"
 ```
 
-Beim ersten Start ~3–5 Min. Alle Tools (Java 25, Maven, Docker-in-Docker, Claude Code)
-werden automatisch installiert.
+On first start ~3–5 min. All tools (Java 25, Maven, Docker-in-Docker, Claude Code)
+are installed automatically.

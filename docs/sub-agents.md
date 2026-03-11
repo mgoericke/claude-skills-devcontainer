@@ -1,329 +1,329 @@
-# Sub-Agents für Claude Code
+# Sub-Agents for Claude Code
 
-Dieses Projekt nutzt spezialisierte Sub-Agents für **parallele Code-Reviews**, **Architektur-Validierung** und **AI-Service-Generierung**.
+This project uses specialized sub-agents for **parallel code reviews**, **architecture validation**, and **AI service generation**.
 
-## Überblick
+## Overview
 
-| Agent | Typ | Tools | Modell | Einsatz |
-|-------|-----|-------|--------|---------|
-| **security-reviewer** | Review (read-only) | Read, Grep, Glob, Bash | Sonnet | Nach Code-Änderungen |
-| **architecture-reviewer** | Review (read-only) | Read, Grep, Glob, Bash | Sonnet | Nach Code-Änderungen |
-| **performance-reviewer** | Review (read-only) | Read, Grep, Glob, Bash | Sonnet | Nach Code-Änderungen |
-| **ai-service-generator** | Generator (full tools) | Read, Write, Edit, Bash, Glob, Grep | Sonnet | Neue AI-Services |
+| Agent | Type | Tools | Model | Usage |
+|-------|------|-------|-------|-------|
+| **security-reviewer** | Review (read-only) | Read, Grep, Glob, Bash | Sonnet | After code changes |
+| **architecture-reviewer** | Review (read-only) | Read, Grep, Glob, Bash | Sonnet | After code changes |
+| **performance-reviewer** | Review (read-only) | Read, Grep, Glob, Bash | Sonnet | After code changes |
+| **ai-service-generator** | Generator (full tools) | Read, Write, Edit, Bash, Glob, Grep | Sonnet | New AI services |
 
-## Detaillierte Beschreibung
+## Detailed Description
 
 ### 1. Security Reviewer
 
-**Zweck**: Sicherheits-Analyse von Code-Änderungen
+**Purpose**: Security analysis of code changes
 
-**Fokus**:
-- Hardcodierte Secrets (API-Keys, Passwords, Tokens)
-- Authentication & Authorization (Keycloak, JWT, RBAC)
-- Input Validation & SQL-Injection Prävention
-- API Security (CORS, CSP, Rate Limiting)
-- Datenbank-Sicherheit (Encryption, SSL/TLS)
-- Dependency Vulnerabilities (CVE-Check)
-- LangChain4j & AI Security (Prompt Injection Prevention)
+**Focus**:
+- Hardcoded secrets (API keys, passwords, tokens)
+- Authentication & authorization (Keycloak, JWT, RBAC)
+- Input validation & SQL injection prevention
+- API security (CORS, CSP, rate limiting)
+- Database security (encryption, SSL/TLS)
+- Dependency vulnerabilities (CVE check)
+- LangChain4j & AI security (prompt injection prevention)
 
-**Triggern**:
+**Triggering**:
 ```bash
-# Manuell
-/agents  # Wähle "security-reviewer" → "Use now"
+# Manually
+/agents  # Choose "security-reviewer" → "Use now"
 
-# Oder direkt
+# Or directly
 Use the security-reviewer to analyze the recent changes
 ```
 
-**Output**: Strukturierte Sicherheits-Issues nach Severität (Kritisch → Warnung → Info)
+**Output**: Structured security issues by severity (Critical → Warning → Info)
 
 ---
 
 ### 2. Architecture Reviewer
 
-**Zweck**: Architektur- und Design-Pattern-Validierung
+**Purpose**: Architecture and design pattern validation
 
-**Fokus**:
-- BCE-Pattern Einhaltung (Boundary/Control/Entity Separation)
-- Paket-Struktur Validierung
-- Taikai Architecture Tests
-- AI-Service Architektur (boundary/ai, control/ai)
-- Dependency-Richtung (keine Circular Dependencies)
-- Transaktionale Grenzen (`@Transactional`, `@Blocking`)
-- Exception-Handling Patterns
+**Focus**:
+- BCE pattern compliance (Boundary/Control/Entity separation)
+- Package structure validation
+- Taikai architecture tests
+- AI service architecture (boundary/ai, control/ai)
+- Dependency direction (no circular dependencies)
+- Transactional boundaries (`@Transactional`, `@Blocking`)
+- Exception handling patterns
 
-**Triggern**:
+**Triggering**:
 ```bash
-# Manuell
+# Manually
 Use the architecture-reviewer to check the design
 
-# Mit spezifischem Fokus
+# With specific focus
 Use the architecture-reviewer to validate the new AI service structure
 ```
 
-**Output**: Architektur-Violations mit genauen Datei-Lokationen und Fix-Vorschlägen
+**Output**: Architecture violations with exact file locations and fix suggestions
 
 ---
 
 ### 3. Performance Reviewer
 
-**Zweck**: Performance-Analyse und Optimierungspotenziale
+**Purpose**: Performance analysis and optimization potential
 
-**Fokus**:
-- N+1 Query Probleme
-- Ineffiziente Datenbankqueries (SELECT *, fehlende Indizes, große Result-Sets)
-- Blocking Operations in Reactive Context
-- Memory Leaks & Ressourcenmanagement
-- Reactive Pattern Violations (Uni/Multi, Backpressure)
-- Collection & Loop Performance
-- Caching Strategien
-- HTTP & REST Performance
-- LangChain4j & AI Performance
+**Focus**:
+- N+1 query problems
+- Inefficient database queries (SELECT *, missing indexes, large result sets)
+- Blocking operations in reactive context
+- Memory leaks & resource management
+- Reactive pattern violations (Uni/Multi, backpressure)
+- Collection & loop performance
+- Caching strategies
+- HTTP & REST performance
+- LangChain4j & AI performance
 
-**Triggern**:
+**Triggering**:
 ```bash
-# Manuell
+# Manually
 Use the performance-reviewer to find bottlenecks
 
-# Mit Fokus
+# With focus
 Use the performance-reviewer to check for N+1 queries and blocking operations
 ```
 
-**Output**: Performance-Issues mit Impact-Analyse (z.B. "100 extra queries statt 1")
+**Output**: Performance issues with impact analysis (e.g., "100 extra queries instead of 1")
 
 ---
 
 ### 4. AI Service Generator
 
-**Zweck**: Vollständige LangChain4j AI-Service-Generierung
+**Purpose**: Complete LangChain4j AI service generation
 
-**Leistungen**:
-- Anforderungen klären (Service-Name, Funktionalität, LLM-Provider, Tools, RAG, Guardrails)
-- Komplette Package-Struktur nach BCE-Pattern
-- Boundary Layer (REST-Endpoint, DTOs, Input-Validierung)
-- Control Layer (Service, Tools mit `@Tool`, RAG, Guardrails)
-- Entity Layer (JPA-Entities, Repositories)
-- Konfiguration (application.properties mit LLM-Config)
-- Flyway-Migration für DB-Tabellen
-- Umfassende Tests (Boundary, Service, Tools, Architecture)
-- Taikai-Integration
+**Capabilities**:
+- Clarify requirements (service name, functionality, LLM provider, tools, RAG, guardrails)
+- Complete package structure following BCE pattern
+- Boundary layer (REST endpoint, DTOs, input validation)
+- Control layer (service, tools with `@Tool`, RAG, guardrails)
+- Entity layer (JPA entities, repositories)
+- Configuration (application.properties with LLM config)
+- Flyway migration for DB tables
+- Comprehensive tests (boundary, service, tools, architecture)
+- Taikai integration
 
-**Triggern**:
+**Triggering**:
 ```bash
-# Interaktiv (empfohlen)
+# Interactive (recommended)
 Use the ai-service-generator to create a new AI service
 
-# Mit spezifischen Details
+# With specific details
 Use the ai-service-generator to create a DocumentAnalyzer AI service with RAG and Tools
 ```
 
-**Output**: Kompletter, produktionsreifer AI-Service mit Tests und Migration
+**Output**: Complete, production-ready AI service with tests and migration
 
 ---
 
-## Parallele Code-Review Workflow
+## Parallel Code Review Workflow
 
-### Szenario: Nach größeren Code-Änderungen
+### Scenario: After major code changes
 
 ```
-1. Code geschrieben/committet
-2. Starte alle 3 Review-Agents parallel:
+1. Code written/committed
+2. Start all 3 review agents in parallel:
 
    Use the security-reviewer, architecture-reviewer, and
    performance-reviewer to analyze the recent changes
 
-3. Jeder Agent arbeitet isoliert (eigener Context)
-4. Alle 3 Reports kommen zurück
-5. Issues priorisieren und fixen
+3. Each agent works in isolation (own context)
+4. All 3 reports come back
+5. Prioritize and fix issues
 ```
 
-### Performance-Vorteile
+### Performance Benefits
 
-- **Security Review**: ~10-20s (Grep-basiert)
-- **Architecture Review**: ~15-25s (AST-basiert)
-- **Performance Review**: ~15-25s (Query-Pattern-Suche)
-- **Parallel statt Sequential**: 15-25s statt 40-70s ✅
+- **Security Review**: ~10-20s (Grep-based)
+- **Architecture Review**: ~15-25s (AST-based)
+- **Performance Review**: ~15-25s (query pattern search)
+- **Parallel instead of sequential**: 15-25s instead of 40-70s
 
 ---
 
-## AI-Service Generierung Workflow
+## AI Service Generation Workflow
 
-### Szenario: Neuer Chatbot-Service mit RAG
+### Scenario: New chatbot service with RAG
 
 ```
-1. Anforderung: "Erstelle einen Chatbot mit Document-Retrieval"
+1. Requirement: "Create a chatbot with document retrieval"
 
-2. Agent klärt ab:
-   - Service-Name: Chatbot
-   - LLM-Provider: Anthropic (Claude)
+2. Agent clarifies:
+   - Service name: Chatbot
+   - LLM provider: Anthropic (Claude)
    - Tools: DocumentSearch, UserContext
-   - RAG: Ja (PgVector für Embeddings)
-   - Guardrails: Rate-Limiting, Input-Validation
+   - RAG: Yes (PgVector for embeddings)
+   - Guardrails: Rate limiting, input validation
 
-3. Agent generiert:
-   ✅ boundary/ai/ChatbotBoundary.java
-   ✅ boundary/ai/request/ChatRequest.java
-   ✅ boundary/ai/response/ChatResponse.java
-   ✅ control/ai/ChatbotService.java
-   ✅ control/ai/ChatbotTools.java
-   ✅ control/ai/ChatbotRAGService.java
-   ✅ control/ai/ChatbotGuardrailService.java
-   ✅ entity/ai/ChatHistory.java
-   ✅ entity/ai/ChatDocument.java
-   ✅ db/migration/V001__Create_chatbot_tables.sql
-   ✅ Tests (BoundaryTest, ServiceTest, ToolsTest)
-   ✅ application.properties mit LLM-Config
-   ✅ ArchitectureTests Updates
+3. Agent generates:
+   boundary/ai/ChatbotBoundary.java
+   boundary/ai/request/ChatRequest.java
+   boundary/ai/response/ChatResponse.java
+   control/ai/ChatbotService.java
+   control/ai/ChatbotTools.java
+   control/ai/ChatbotRAGService.java
+   control/ai/ChatbotGuardrailService.java
+   entity/ai/ChatHistory.java
+   entity/ai/ChatDocument.java
+   db/migration/V001__Create_chatbot_tables.sql
+   Tests (BoundaryTest, ServiceTest, ToolsTest)
+   application.properties with LLM config
+   ArchitectureTests updates
 
 4. Ready for local testing:
    docker compose up
    ./mvnw test
-   # Service verfügbar auf /api/chatbot
+   # Service available at /api/chatbot
 ```
 
 ---
 
 ## Best Practices
 
-### Review-Agents Nutzen
+### Using Review Agents
 
-✅ **Do**:
-- Nach größeren Code-Änderungen (5+ Dateien) parallel reviewen
-- Reviews vor PR-Creation durchführen
-- Issues ernst nehmen und fixen, bevor ihr pusht
-- Review-Output speichern (für Lessons-Learned)
+**Do**:
+- Review in parallel after major code changes (5+ files)
+- Run reviews before PR creation
+- Take issues seriously and fix them before pushing
+- Save review output (for lessons learned)
 
-❌ **Don't**:
-- Reviews nur oberflächlich lesen
-- Issues ignorieren und trotzdem pushen
-- Zu häufig reviewen (nur bei signifikanten Änderungen)
+**Don't**:
+- Only skim reviews superficially
+- Ignore issues and push anyway
+- Review too frequently (only for significant changes)
 
-### AI-Service-Generator Nutzen
+### Using the AI Service Generator
 
-✅ **Do**:
-- Anforderungen klar formulieren (Intent, Provider, Features)
-- Generated Code durchgehen und anpassen
-- Tests schreiben/erweitern
-- Mit generierten Entities arbeiten (nicht manuell ändern)
+**Do**:
+- Formulate requirements clearly (intent, provider, features)
+- Review and adapt generated code
+- Write/extend tests
+- Work with generated entities (don't modify manually)
 
-❌ **Don't**:
-- Generator für kleine Features nutzen (overkill)
-- Generated Code blindlings akzeptieren
-- Manuelle Änderungen vor nächstem Generate durchführen
+**Don't**:
+- Use the generator for small features (overkill)
+- Accept generated code blindly
+- Make manual changes before the next generation
 
 ---
 
-## Konfiguration
+## Configuration
 
-### Agents laden
+### Loading Agents
 
-Die Agents sind bereits in `.claude/agents/` definiert und werden automatisch geladen:
+The agents are already defined in `.claude/agents/` and are loaded automatically:
 
 ```bash
-claude agents  # Zeige alle verfügbaren Agents
+claude agents  # Show all available agents
 ```
 
-### Custom Agent erstellen
+### Creating a Custom Agent
 
 ```bash
-/agents  # Interaktives Menu
+/agents  # Interactive menu
 # → "Create new agent"
-# → "Project-level" (speichert in .claude/agents/)
-# → Details eingeben
+# → "Project-level" (saves in .claude/agents/)
+# → Enter details
 ```
 
-### Agent-Konfiguration anpassen
+### Customizing Agent Configuration
 
-Jeder Agent ist eine Markdown-Datei mit YAML-Frontmatter:
+Each agent is a Markdown file with YAML frontmatter:
 
 ```yaml
 ---
-name: security-reviewer              # Eindeutiger Name
-description: Security specialist ... # Claude nutzt das zum Delegieren
-tools: Read, Grep, Glob, Bash        # Verfügbare Tools
-model: sonnet                         # Claude-Modell
-permissionMode: default               # Permission-Handling
+name: security-reviewer              # Unique name
+description: Security specialist ... # Claude uses this for delegation
+tools: Read, Grep, Glob, Bash        # Available tools
+model: sonnet                         # Claude model
+permissionMode: default               # Permission handling
 ---
 
-# Dann kommt der System-Prompt (Markdown)
+# Then comes the system prompt (Markdown)
 ```
 
 ---
 
 ## Troubleshooting
 
-### "Agent wird nicht delegiert"
+### "Agent is not being delegated to"
 
-**Grund**: Description ist zu vague oder Agent-Name ist nicht eindeutig.
+**Reason**: Description is too vague or agent name is not unique.
 
 **Fix**:
 ```bash
 /agents  # Edit Agent
-# Description spezifischer schreiben: z.B. statt "Code review" →
+# Make description more specific: e.g., instead of "Code review" →
 # "Security specialist for code review. Analyzes for vulnerabilities..."
 ```
 
-### "Agent hat nicht die richtige Antwort gegeben"
+### "Agent did not give the right answer"
 
-**Grund**: System-Prompt könnte präziser sein.
+**Reason**: System prompt could be more precise.
 
 **Fix**:
 ```bash
-.claude/agents/[agent-name].md  # Öffne direkt
-# Erweitere Checklist oder gib mehr Context
-# Beispiel: "Bei Review folgende Punkte prüfen: [Liste]"
+.claude/agents/[agent-name].md  # Open directly
+# Extend checklist or provide more context
+# Example: "When reviewing, check the following points: [list]"
 ```
 
-### "Agent braucht mehr Tools"
+### "Agent needs more tools"
 
-**Grund**: `tools` Feld ist zu restriktiv.
+**Reason**: `tools` field is too restrictive.
 
 **Fix**:
 ```yaml
-tools: Read, Grep, Glob, Bash, Write  # Beispiel für Generator
+tools: Read, Grep, Glob, Bash, Write  # Example for generator
 ```
 
 ---
 
 ## Memory & Lessons Learned
 
-Nach jeder Session mit Agents sollten Erkenntnisse dokumentiert werden:
+After every session with agents, findings should be documented:
 
-**Speichern in**: `.claude/lessons-learned.md`
+**Save in**: `.claude/lessons-learned.md`
 
-**Beispiel**:
+**Example**:
 ```markdown
 ## Sub-Agent Patterns
 
-### Security-Reviewer erfolgreich eingesetzt für:
-- JWT-Validierung Checks
-- Secret-Detection
-- CORS-Configuration Review
+### Security Reviewer successfully used for:
+- JWT validation checks
+- Secret detection
+- CORS configuration review
 
-### Performance-Reviewer Issue:
-- Findet N+1 Queries mit Grep gut
-- Könnte bessere Context geben für DB-Indexes
+### Performance Reviewer issue:
+- Finds N+1 queries well with Grep
+- Could provide better context for DB indexes
 
-### AI-Service-Generator Learnings:
-- Funktioniert gut für Standalone Services
-- Braucht manuelle Anpassung für Entity-Relationships
+### AI Service Generator learnings:
+- Works well for standalone services
+- Needs manual adjustment for entity relationships
 ```
 
 ---
 
-## Weitere Schritte
+## Next Steps
 
-Nach Sub-Agents Implementierung:
+After sub-agents implementation:
 
-1. **Hooks implementieren** (post-edit pom.xml, pre-prompt-submit)
-2. **Agent-Teams einführen** (für massiv parallele Reviews)
-3. **Memory-Persistierung** für Agents (`memory: user` oder `memory: project`)
-4. **CI/CD Integration** (Tests + Reviews automatisiert)
+1. **Implement hooks** (post-edit pom.xml, pre-prompt-submit)
+2. **Introduce agent teams** (for massively parallel reviews)
+3. **Memory persistence** for agents (`memory: user` or `memory: project`)
+4. **CI/CD integration** (tests + reviews automated)
 
 ---
 
 ## Links
 
-- Agents Definitionsort: `.claude/agents/`
-- Dokumentation: `code.claude.com/docs/en/sub-agents`
-- Tutorial: Starte mit `/agents` → "Create new agent" → "Generate with Claude"
+- Agents definition location: `.claude/agents/`
+- Documentation: `code.claude.com/docs/en/sub-agents`
+- Tutorial: Start with `/agents` → "Create new agent" → "Generate with Claude"

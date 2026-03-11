@@ -26,20 +26,20 @@
     }
   },
 
-  // NET_RAW: Pflicht für iptables im Sandbox-Firewall-Script
+  // NET_RAW: Required for iptables in the sandbox firewall script
   "runArgs": ["--cap-add=NET_RAW"],
 
-  // ── Umgebungsvariablen ──────────────────────────────────────────────────────
-  // Pflicht: ANTHROPIC_API_KEY auf dem Host setzen (macOS/Linux: ~/.zshrc, Windows: $env:)
-  // Optional: Weitere Tokens für Artifactory, GitHub Packages, NPM Registry usw.
+  // ── Environment Variables ─────────────────────────────────────────────────────
+  // Required: Set ANTHROPIC_API_KEY on the host (macOS/Linux: ~/.zshrc, Windows: $env:)
+  // Optional: Additional tokens for Artifactory, GitHub Packages, NPM Registry, etc.
   //
-  // Alle Variablen werden vom Host durchgereicht – nie Tokens direkt hier eintragen!
-  // Nicht gesetzte Variablen werden als leerer String übergeben (kein Fehler).
+  // All variables are passed through from the host – never enter tokens directly here!
+  // Unset variables are passed as empty strings (no error).
   "containerEnv": {
-    // Pflicht
+    // Required
     "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
 
-    // Optional – Artifactory / interne Maven Registry
+    // Optional – Artifactory / internal Maven registry
     "ARTIFACTORY_URL":      "${localEnv:ARTIFACTORY_URL}",
     "ARTIFACTORY_USER":     "${localEnv:ARTIFACTORY_USER}",
     "ARTIFACTORY_TOKEN":    "${localEnv:ARTIFACTORY_TOKEN}",
@@ -47,18 +47,18 @@
     // Optional – GitHub Packages
     "GITHUB_TOKEN":         "${localEnv:GITHUB_TOKEN}",
 
-    // Optional – NPM Registry (z.B. private Scope)
+    // Optional – NPM Registry (e.g., private scope)
     "NPM_TOKEN":            "${localEnv:NPM_TOKEN}",
 
-    // Optional – Hugging Face (Infografik-Skill: KI-Bildgenerierung)
+    // Optional – Hugging Face (infografik-skill: AI image generation)
     "HF_TOKEN":             "${localEnv:HF_TOKEN}",
 
-    // Optional – Lokale KI-Modelle für Datensouveränität (Ollama / LM Studio)
-    // Beide Variablen gesetzt → Claude Code nutzt das lokale Modell statt der Cloud API.
-    // Nicht gesetzt → Standard: Anthropic Cloud API (ANTHROPIC_API_KEY wird genutzt).
+    // Optional – Local AI models for data sovereignty (Ollama / LM Studio)
+    // Both variables set → Claude Code uses the local model instead of the cloud API.
+    // Not set → Default: Anthropic Cloud API (ANTHROPIC_API_KEY is used).
     //
-    // WICHTIG für DevContainer: Statt "localhost" immer "host.docker.internal" verwenden,
-    // da "localhost" im Container auf den Container selbst zeigt, nicht auf den Host!
+    // IMPORTANT for DevContainer: Use "host.docker.internal" instead of "localhost",
+    // because "localhost" inside the container points to the container itself, not the host!
     //
     // Ollama:    ANTHROPIC_BASE_URL=http://host.docker.internal:11434
     //            ANTHROPIC_AUTH_TOKEN=ollama
@@ -67,7 +67,7 @@
     "ANTHROPIC_BASE_URL":   "${localEnv:ANTHROPIC_BASE_URL}",
     "ANTHROPIC_AUTH_TOKEN": "${localEnv:ANTHROPIC_AUTH_TOKEN}",
 
-    // Optional – weitere Custom-Variablen hier ergänzen
+    // Optional – add more custom variables here
     "CUSTOM_REGISTRY_URL":  "${localEnv:CUSTOM_REGISTRY_URL}"
   },
 
@@ -94,10 +94,10 @@
     }
   },
 
-  // ── Port-Forwarding ─────────────────────────────────────────────────────────
-  // Port 8080: Anwendungsport (Spring Boot / Quarkus)
-  // Port 8180: Keycloak Admin Console + OIDC Endpunkte
-  // onAutoForward: "notify" zeigt eine Benachrichtigung wenn der Port aktiv wird
+  // ── Port Forwarding ───────────────────────────────────────────────────────────
+  // Port 8080: Application port (Spring Boot / Quarkus)
+  // Port 8180: Keycloak Admin Console + OIDC endpoints
+  // onAutoForward: "notify" shows a notification when the port becomes active
   "forwardPorts": [8080, 8180],
   "portsAttributes": {
     "8080": {
@@ -115,10 +115,10 @@
     "source=claude-code-m2-${devcontainerId},target=/root/.m2,type=volume"
   ],
 
-  // ── Lifecycle Hooks ─────────────────────────────────────────────────────────
-  // postCreateCommand: einmalig beim ersten Container-Build
-  // postStartCommand:  bei jedem Start – Firewall muss nach jedem Restart neu gesetzt werden,
-  //                    da iptables-Regeln nicht persistent sind!
+  // ── Lifecycle Hooks ───────────────────────────────────────────────────────────
+  // postCreateCommand: runs once on first container build
+  // postStartCommand:  runs on every start – firewall must be re-applied after each restart,
+  //                    because iptables rules are not persistent!
   "postCreateCommand": "chmod +x .devcontainer/init-firewall.sh && echo '✅ Setup complete'",
   "postStartCommand": "bash .devcontainer/init-firewall.sh",
 

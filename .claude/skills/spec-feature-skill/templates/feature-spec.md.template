@@ -1,14 +1,14 @@
 # {{FEATURE_NAME}}
 
-> **Status:** Entwurf | **Erstellt:** {{DATE}} | **Feature-ID:** {{FEATURE_ID}}
+> **Status:** Draft | **Created:** {{DATE}} | **Feature-ID:** {{FEATURE_ID}}
 
-## Kontext
+## Context
 
-**Ziel:** {{GOAL}}
+**Goal:** {{GOAL}}
 
-**Akteure:** {{ACTORS}}
+**Actors:** {{ACTORS}}
 
-**Abgrenzung (nicht im Scope):** {{OUT_OF_SCOPE}}
+**Out of Scope:** {{OUT_OF_SCOPE}}
 
 ---
 
@@ -18,7 +18,7 @@
 
 ---
 
-## Akzeptanzkriterien
+## Acceptance Criteria
 
 ```gherkin
 {{GHERKIN_SCENARIOS}}
@@ -26,13 +26,13 @@
 
 ---
 
-## API-Kontrakt
+## API Contract
 
 {{API_CONTRACT}}
 
 ---
 
-## Datenmodell
+## Data Model
 
 {{DATA_MODEL}}
 
@@ -44,30 +44,30 @@
 
 ---
 
-## Abhängigkeiten
+## Dependencies
 
 {{DEPENDENCIES}}
 
 ---
 
-## Nicht-funktionale Anforderungen
+## Non-Functional Requirements
 
 {{NON_FUNCTIONAL}}
 
 ---
 
-## Offene Fragen / Annahmen
+## Open Questions / Assumptions
 
 {{OPEN_QUESTIONS}}
 
 ---
 
-## Implementierungshinweise (BCE)
+## Implementation Hints (BCE)
 
-> Wird vom `java-scaffold-skill` als Input verwendet.
+> Used as input by the `java-scaffold-skill`.
 
-| Schicht | Artefakt | Beschreibung |
-|---------|----------|-------------|
+| Layer | Artifact | Description |
+|-------|----------|-------------|
 | Boundary | {{BOUNDARY_ARTIFACTS}} | |
 | Control | {{CONTROL_ARTIFACTS}} | |
 | Entity | {{ENTITY_ARTIFACTS}} | |

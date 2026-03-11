@@ -1,85 +1,85 @@
 ---
 name: frontend-skill
-description: Erstellt moderne Web-UIs mit Tailwind CSS. Zwei Modi – Dashboards/Admin-Panels mit TailAdmin (Alpine.js + ApexCharts) und Websites/Landing Pages mit Tailwind CSS CDN. Verwende diesen Skill bei "erstelle ein Dashboard", "Landing Page", "Admin-UI", "Frontend", "Webseite", "UI bauen", "Portfolio-Seite" oder wenn eine responsive HTML-Seite mit Tailwind CSS gebraucht wird. Nicht verwenden fuer komplexe SPAs mit React/Vue/Angular.
-argument-hint: "[beschreibung]"
+description: Creates modern web UIs with Tailwind CSS. Two modes – Dashboards/Admin Panels with TailAdmin (Alpine.js + ApexCharts) and Websites/Landing Pages with Tailwind CSS CDN. Use this skill for "create a dashboard", "landing page", "admin UI", "frontend", "website", "build a UI", "portfolio page" or when a responsive HTML page with Tailwind CSS is needed. Do not use for complex SPAs with React/Vue/Angular.
+argument-hint: "[description]"
 ---
 
 # Frontend Skill
 
-Erstellt moderne, responsive Web-UIs mit **Tailwind CSS**.
+Creates modern, responsive web UIs with **Tailwind CSS**.
 
-> **Philosophie:** Zwei Modi für unterschiedliche Anforderungen:
+> **Philosophy:** Two modes for different requirements:
 > **Dashboard** → TailAdmin (HTML + Tailwind CSS + Alpine.js)
-> **Website** → Tailwind CSS CDN (kein Build-Tool)
+> **Website** → Tailwind CSS CDN (no build tool)
 
 ---
 
 ## What This Skill Does
 
-1. **Fragt den Modus ab** – Dashboard/Admin-UI oder Website/Landing Page
-2. **Generiert HTML** – Responsive, semantisch korrekt, mit Tailwind CSS gestylt
-3. **Fügt Interaktivität hinzu** – Alpine.js für Dashboards, optional für Websites
-4. **Speichert die Dateien** – Im Projekt oder an einem gewünschten Pfad
+1. **Asks for the mode** – Dashboard/Admin UI or Website/Landing Page
+2. **Generates HTML** – Responsive, semantically correct, styled with Tailwind CSS
+3. **Adds interactivity** – Alpine.js for dashboards, optional for websites
+4. **Saves the files** – In the project or at a desired path
 
 ## How to Use
 
 ```
-Erstelle ein Dashboard für Bestellungsübersicht
+Create a dashboard for order overview
 ```
 
 ```
-/frontend-skill Admin-Panel mit KPI-Karten und Tabelle
+/frontend-skill Admin panel with KPI cards and table
 ```
 
 ```
-Erstelle eine Landing Page für mein SaaS-Produkt
+Create a landing page for my SaaS product
 ```
 
 ```
-Baue mir eine Portfolio-Seite
+Build me a portfolio page
 ```
 
 ---
 
 ## Instructions
 
-### Schritt 1 – Modus abfragen
+### Step 1 – Ask for mode
 
-Dashboard und Website verwenden unterschiedliche Technologie-Stacks und Layouts. Den Modus vorher klaeren, um den richtigen Stack einzusetzen:
+Dashboard and website use different technology stacks and layouts. Clarify the mode beforehand to use the right stack:
 
-| Modus | Wann verwenden | Technologie |
-|-------|---------------|-------------|
-| **Dashboard** | Admin-Panels, Dashboards, datenreiche UIs, Tabellen, Charts | TailAdmin + Alpine.js + ApexCharts |
-| **Website** | Landing Pages, SPAs, Marketing-Seiten, Portfolios | Tailwind CSS CDN |
+| Mode | When to use | Technology |
+|------|-------------|------------|
+| **Dashboard** | Admin panels, dashboards, data-rich UIs, tables, charts | TailAdmin + Alpine.js + ApexCharts |
+| **Website** | Landing pages, SPAs, marketing pages, portfolios | Tailwind CSS CDN |
 
-Wenn `$ARGUMENTS` den Modus eindeutig erkennen lassen (z.B. "Dashboard", "Admin"), direkt starten.
-Sonst nachfragen.
+If `$ARGUMENTS` clearly indicate the mode (e.g. "Dashboard", "Admin"), start directly.
+Otherwise ask.
 
 ---
 
-## Dashboard-Modus (TailAdmin)
+## Dashboard Mode (TailAdmin)
 
-### Referenz
+### Reference
 
 - **Demo:** https://demo.tailadmin.com/
-- **Lizenz:** MIT (Open Source, Free Edition)
-- **Technologie:** HTML + Tailwind CSS + Alpine.js + ApexCharts
+- **License:** MIT (Open Source, Free Edition)
+- **Technology:** HTML + Tailwind CSS + Alpine.js + ApexCharts
 
-### Verfügbare Dashboard-Varianten
+### Available Dashboard Variants
 
-| Variante | URL | Einsatz |
-|----------|-----|---------|
-| eCommerce | https://demo.tailadmin.com/ | Shop-Übersicht, Umsatz, Bestellungen |
-| Analytics | https://demo.tailadmin.com/analytics | Traffic, Conversions, Metriken |
-| Marketing | https://demo.tailadmin.com/marketing | Kampagnen, Reichweite, ROI |
-| CRM | https://demo.tailadmin.com/crm | Kontakte, Deals, Pipeline |
-| Stocks | https://demo.tailadmin.com/stocks | Finanzdaten, Kurse, Portfolio |
+| Variant | URL | Use Case |
+|---------|-----|----------|
+| eCommerce | https://demo.tailadmin.com/ | Shop overview, revenue, orders |
+| Analytics | https://demo.tailadmin.com/analytics | Traffic, conversions, metrics |
+| Marketing | https://demo.tailadmin.com/marketing | Campaigns, reach, ROI |
+| CRM | https://demo.tailadmin.com/crm | Contacts, deals, pipeline |
+| Stocks | https://demo.tailadmin.com/stocks | Financial data, prices, portfolio |
 
-### Dashboard-Grundgerüst
+### Dashboard Skeleton
 
 ```html
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,7 +89,7 @@ Sonst nachfragen.
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body class="bg-gray-100 text-gray-900" x-data="dashboardData()">
-    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via frontend-skill -->
+    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend-skill -->
 
     <!-- Sidebar -->
     <aside class="fixed left-0 top-0 z-50 flex h-screen w-64 flex-col bg-white shadow-lg">
@@ -116,23 +116,23 @@ Sonst nachfragen.
 </html>
 ```
 
-### Dashboard-Komponenten
+### Dashboard Components
 
-Detaillierte Patterns → [references/dashboard-patterns.md](references/dashboard-patterns.md)
+Detailed patterns → [references/dashboard-patterns.md](references/dashboard-patterns.md)
 
-| Komponente | Beschreibung |
+| Component | Description |
 |-----------|-------------|
-| **KPI-Karten** | Metrik + Trend-Indikator (↑/↓) + Sparkline |
+| **KPI Cards** | Metric + trend indicator (↑/↓) + sparkline |
 | **Charts** | Line, Bar, Area, Donut via ApexCharts |
-| **Sidebar** | Feste Navigation links, collapsible, mit Icons |
-| **Tabellen** | Sortierbar, mit Pagination und Suchfeld |
-| **Formulare** | Input-Gruppen, Selects, Toggles, Date Picker |
-| **Modals** | Overlay-Dialoge für Details/Bearbeitung |
-| **Alerts** | Toast-Benachrichtigungen, Status-Banner |
+| **Sidebar** | Fixed navigation on left, collapsible, with icons |
+| **Tables** | Sortable, with pagination and search field |
+| **Forms** | Input groups, selects, toggles, date picker |
+| **Modals** | Overlay dialogs for details/editing |
+| **Alerts** | Toast notifications, status banners |
 
-### Alpine.js Interaktionen
+### Alpine.js Interactions
 
-Alpine.js wird für alle interaktiven Elemente verwendet:
+Alpine.js is used for all interactive elements:
 
 ```html
 <!-- Toggle Sidebar -->
@@ -140,41 +140,41 @@ Alpine.js wird für alle interaktiven Elemente verwendet:
 
 <!-- Tabs -->
 <div x-data="{ activeTab: 'overview' }">
-    <button @click="activeTab = 'overview'" :class="activeTab === 'overview' ? 'border-blue-500' : ''">Übersicht</button>
+    <button @click="activeTab = 'overview'" :class="activeTab === 'overview' ? 'border-blue-500' : ''">Overview</button>
     <div x-show="activeTab === 'overview'">...</div>
 </div>
 
 <!-- Dropdown -->
 <div x-data="{ open: false }">
-    <button @click="open = !open">Optionen</button>
+    <button @click="open = !open">Options</button>
     <div x-show="open" @click.away="open = false">...</div>
 </div>
 ```
 
 ---
 
-## Website-Modus (Tailwind CSS)
+## Website Mode (Tailwind CSS)
 
-### Referenz
+### Reference
 
 - **Showcase:** https://tailwindcss.com/showcase
-- **Technologie:** HTML + Tailwind CSS CDN (kein Build-Tool, kein npm)
+- **Technology:** HTML + Tailwind CSS CDN (no build tool, no npm)
 
-### Bewährte Patterns (inspiriert von Tailwind Showcase)
+### Proven Patterns (inspired by Tailwind Showcase)
 
-| Pattern | Inspiriert von | Einsatz |
-|---------|---------------|---------|
-| **SaaS Landing Page** | Salient | Software-Produkte, B2B |
-| **Portfolio** | Spotlight | Persönliche Seiten, Freelancer |
-| **Konferenz/Event** | Keynote | Veranstaltungen, Meetups |
-| **Podcast/Media** | Transmit | Audio, Video, Content |
-| **Mobile App Promo** | Pocket | App-Download-Seiten |
+| Pattern | Inspired by | Use Case |
+|---------|-------------|----------|
+| **SaaS Landing Page** | Salient | Software products, B2B |
+| **Portfolio** | Spotlight | Personal pages, freelancers |
+| **Conference/Event** | Keynote | Events, meetups |
+| **Podcast/Media** | Transmit | Audio, video, content |
+| **Mobile App Promo** | Pocket | App download pages |
 
-### Website-Grundgerüst
+### Website Skeleton
 
 ```html
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -182,7 +182,7 @@ Alpine.js wird für alle interaktiven Elemente verwendet:
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-900">
-    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via frontend-skill -->
+    <!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend-skill -->
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md shadow-sm z-50">
@@ -190,8 +190,8 @@ Alpine.js wird für alle interaktiven Elemente verwendet:
             <a href="#" class="text-xl font-bold">Logo</a>
             <div class="hidden md:flex space-x-8">
                 <a href="#features" class="text-gray-600 hover:text-gray-900">Features</a>
-                <a href="#pricing" class="text-gray-600 hover:text-gray-900">Preise</a>
-                <a href="#contact" class="text-gray-600 hover:text-gray-900">Kontakt</a>
+                <a href="#pricing" class="text-gray-600 hover:text-gray-900">Pricing</a>
+                <a href="#contact" class="text-gray-600 hover:text-gray-900">Contact</a>
             </div>
         </div>
     </nav>
@@ -211,50 +211,50 @@ Alpine.js wird für alle interaktiven Elemente verwendet:
 </html>
 ```
 
-### Verfügbare Sektionen
+### Available Sections
 
-Detaillierte Patterns → [references/website-patterns.md](references/website-patterns.md)
+Detailed patterns → [references/website-patterns.md](references/website-patterns.md)
 
-| Sektion | Beschreibung |
+| Section | Description |
 |---------|-------------|
-| **Hero** | Großer Titel + Subtitle + CTA-Button, optional mit Bild/Video |
-| **Features-Grid** | 3-4 Spalten mit Icons und Beschreibungen |
-| **Testimonials** | Kundenzitate mit Avatar und Name |
-| **Pricing** | Preistabellen mit Highlight für empfohlenen Plan |
-| **CTA** | Call-to-Action Banner mit Button |
-| **FAQ** | Accordion mit häufigen Fragen |
-| **Team** | Teamvorstellung mit Fotos und Rollen |
-| **Stats** | Kennzahlen in großer Schrift (z.B. "10.000+ Kunden") |
-| **Footer** | Links, Social Media, Copyright |
+| **Hero** | Large title + subtitle + CTA button, optionally with image/video |
+| **Features Grid** | 3-4 columns with icons and descriptions |
+| **Testimonials** | Customer quotes with avatar and name |
+| **Pricing** | Pricing tables with highlight for recommended plan |
+| **CTA** | Call-to-action banner with button |
+| **FAQ** | Accordion with frequently asked questions |
+| **Team** | Team introduction with photos and roles |
+| **Stats** | Key figures in large font (e.g. "10,000+ Customers") |
+| **Footer** | Links, social media, copyright |
 
 ---
 
-## Gemeinsame Konventionen
+## Common Conventions
 
-### Stilregeln
+### Style Rules
 
-- **Responsive** – Mobile-first mit `sm:`, `md:`, `lg:` Breakpoints
-- **Semantisches HTML** – `<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`
-- **Barrierefreiheit** – `alt`-Attribute, `aria-label` wo sinnvoll, ausreichender Kontrast
-- **Dark Mode** – Optional via `class="dark"` und `dark:` Prefix (nur auf Wunsch)
-- **Kein eigenes CSS** – Ausschließlich Tailwind Utility-Klassen
+- **Responsive** – Mobile-first with `sm:`, `md:`, `lg:` breakpoints
+- **Semantic HTML** – `<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`
+- **Accessibility** – `alt` attributes, `aria-label` where meaningful, sufficient contrast
+- **Dark Mode** – Optional via `class="dark"` and `dark:` prefix (only on request)
+- **No custom CSS** – Exclusively Tailwind utility classes
 
-### Tailwind-Klassen-Richtlinien
+### Tailwind Class Guidelines
 
-| Element | Klassen |
+| Element | Classes |
 |---------|---------|
 | Container | `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` |
-| Karten | `bg-white rounded-xl shadow-md p-6` |
+| Cards | `bg-white rounded-xl shadow-md p-6` |
 | Buttons (primary) | `bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg transition` |
 | Buttons (secondary) | `border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-2.5 px-5 rounded-lg transition` |
 | Inputs | `border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full` |
-| Tabellen | `w-full border-collapse divide-y divide-gray-200` |
+| Tables | `w-full border-collapse divide-y divide-gray-200` |
 | H1 | `text-4xl sm:text-5xl font-bold tracking-tight` |
 | H2 | `text-2xl sm:text-3xl font-semibold` |
 
-### Speicherort
+### Storage Location
 
-Dateiname aus dem Seitenzweck ableiten (kebab-case):
+Derive filename from the page purpose (kebab-case):
 
 ```
 dashboard.html
@@ -263,20 +263,20 @@ admin-panel.html
 portfolio.html
 ```
 
-Speicherort je nach Kontext:
-- **Standalone**: Projekt-Root
+Storage location depending on context:
+- **Standalone**: Project root
 - **Spring Boot**: `src/main/resources/static/`
 - **Quarkus**: `src/main/resources/META-INF/resources/`
 
-### Bilder
+### Images
 
-- Platzhalter mit `https://placehold.co/` oder inline SVG-Icons
-- Für Icons: Heroicons als inline SVG (https://heroicons.com)
+- Placeholders with `https://placehold.co/` or inline SVG icons
+- For icons: Heroicons as inline SVG (https://heroicons.com)
 
 ### Co-Author
 
 ```html
-<!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via frontend-skill -->
+<!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via frontend-skill -->
 ```
 
 ---

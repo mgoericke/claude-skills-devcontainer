@@ -63,8 +63,8 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.5.3
-    # start-dev (dev-file): H2-Datei-Datenbank im Container – nur für Entwicklung!
-    # Produktion: KC_DB=postgres + eigene Keycloak-Datenbank konfigurieren
+    # start-dev (dev-file): H2 file database in the container – for development only!
+    # Production: KC_DB=postgres + configure a dedicated Keycloak database
     command: start-dev
     environment:
       KEYCLOAK_ADMIN: admin

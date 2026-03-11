@@ -1,143 +1,143 @@
 ---
 name: openapi-skill
-description: Erstellt, erweitert und implementiert OpenAPI 3.x Spezifikationen. Drei Modi – Spec erstellen (from scratch), Spec erweitern (bestehende Spec ergaenzen) und Code generieren (Java-Klassen im BCE-Pattern). Verwende diesen Skill bei "erstelle eine API Spec", "definiere die API", "erweitere die API", "generiere Code aus der OpenAPI Spec", "neue OpenAPI Spec" oder wenn eine REST-API designed werden soll.
-argument-hint: "[api-name oder spec-pfad]"
+description: Creates, extends, and implements OpenAPI 3.x specifications. Three modes – create spec (from scratch), extend spec (add to existing spec), and generate code (Java classes in BCE pattern). Use this skill for "create an API spec", "define the API", "extend the API", "generate code from the OpenAPI spec", "new OpenAPI spec" or when a REST API needs to be designed.
+argument-hint: "[api-name or spec-path]"
 ---
 
 # OpenAPI Skill
 
-Erstellt, erweitert und implementiert OpenAPI 3.x Spezifikationen.
-Unterstützt drei Modi: Spec **erstellen** (from scratch), Spec **erweitern** (bestehende Spec ergänzen)
-und **Code generieren** (Java-Klassen im BCE-Pattern aus einer Spec).
+Creates, extends, and implements OpenAPI 3.x specifications.
+Supports three modes: **create** spec (from scratch), **extend** spec (add to existing spec),
+and **generate code** (Java classes in BCE pattern from a spec).
 
-> **Philosophie:** Die OpenAPI Spec ist der Vertrag. Ob sie erstellt, erweitert oder
-> implementiert wird – der Vertrag steht im Mittelpunkt. Erst designen, dann bauen.
+> **Philosophy:** The OpenAPI spec is the contract. Whether it's being created, extended, or
+> implemented – the contract is at the center. Design first, then build.
 
 ---
 
 ## What This Skill Does
 
-1. **Erkennt den Modus** – Spec erstellen, Spec erweitern oder Code generieren
-2. **Erstellt OpenAPI Specs** – Per strukturiertem Interview: Datenmodelle, Endpunkte, Auth
-3. **Erweitert bestehende Specs** – Liest vorhandene Spec ein, fügt neue Paths/Schemas hinzu
-4. **Generiert Code aus Specs** – DTOs, REST-Endpunkte und Service-Stubs im BCE-Pattern
+1. **Detects the mode** – Create spec, extend spec, or generate code
+2. **Creates OpenAPI specs** – Via structured interview: data models, endpoints, auth
+3. **Extends existing specs** – Reads existing spec, adds new paths/schemas
+4. **Generates code from specs** – DTOs, REST endpoints, and service stubs in BCE pattern
 
 ## How to Use
 
 ```
-Erstelle eine neue API Spec für einen Order-Service
+Create a new API spec for an order service
 ```
 
 ```
-Erweitere die API in api/orders.yaml um einen Product-Endpunkt
+Extend the API in api/orders.yaml with a product endpoint
 ```
 
 ```
-Generiere Code aus der OpenAPI Spec in api/openapi.yaml
+Generate code from the OpenAPI spec in api/openapi.yaml
 ```
 
 ```
-Definiere eine REST-API für Bestellungen und Produkte
+Define a REST API for orders and products
 ```
 
 ---
 
 ## Instructions
 
-> **Vor jeder Ausführung**:
-> 1. `.claude/lessons-learned.md` prüfen
+> **Before every execution**:
+> 1. Check `.claude/lessons-learned.md`
 
-### Schritt 0 – Modus erkennen
+### Step 0 – Detect Mode
 
-Die drei Modi (erstellen, erweitern, Code generieren) fuehren zu komplett unterschiedlichen Workflows. Den Modus zuerst mit `AskUserQuestion` klaeren, damit keine unnoetige Arbeit entsteht.
+The three modes (create, extend, generate code) lead to completely different workflows. Clarify the mode first with `AskUserQuestion` so no unnecessary work is done.
 
 ```
-Was möchtest du tun?
+What would you like to do?
 ```
 
-Optionen:
-- **Neue Spec erstellen** – Eine neue OpenAPI Spec from scratch designen
-- **Bestehende Spec erweitern** – Neue Endpunkte oder Schemas zu einer vorhandenen Spec hinzufügen
-- **Code aus Spec generieren** – Java-Code (DTOs, Controller, Services) aus einer bestehenden Spec erzeugen
+Options:
+- **Create new spec** – Design a new OpenAPI spec from scratch
+- **Extend existing spec** – Add new endpoints or schemas to an existing spec
+- **Generate code from spec** – Generate Java code (DTOs, controllers, services) from an existing spec
 
-Je nach Modus zu den entsprechenden Schritten springen:
-- **Neue Spec erstellen** → Schritt A1–A4
-- **Bestehende Spec erweitern** → Schritt B1–B4
-- **Code aus Spec generieren** → Schritt 1–4 (bestehendes Verhalten)
+Jump to the corresponding steps based on mode:
+- **Create new spec** → Steps A1–A4
+- **Extend existing spec** → Steps B1–B4
+- **Generate code from spec** → Steps 1–4 (existing behavior)
 
 ---
 
-### Modus A: Neue Spec erstellen
+### Mode A: Create New Spec
 
-#### Schritt A1 – Grundlagen
+#### Step A1 – Basics
 
-**Mit `AskUserQuestion` abfragen:**
+**Ask with `AskUserQuestion`:**
 
-| # | Frage | Hinweis |
-|---|-------|---------|
-| 1 | **API-Name** | Kurzer Name, wird zum Dateinamen: `api/<name>.yaml` |
-| 2 | **Beschreibung** | Ein Satz: Was macht diese API? |
-| 3 | **Base Path** | z.B. `/api/v1` – Default: `/api/v1` |
+| # | Question | Hint |
+|---|----------|------|
+| 1 | **API name** | Short name, becomes filename: `api/<name>.yaml` |
+| 2 | **Description** | One sentence: What does this API do? |
+| 3 | **Base path** | e.g. `/api/v1` – Default: `/api/v1` |
 
-**Zweite Frage per `AskUserQuestion`:**
-
-```
-Welches Auth-Schema soll die API verwenden?
-```
-
-Optionen:
-- **Bearer JWT (Empfohlen)** – Standard für Keycloak / OAuth2-basierte Systeme
-- **API Key** – Einfach, für interne Services
-- **OAuth2** – Vollständiger OAuth2-Flow mit Scopes
-- **Keine Authentifizierung** – Öffentliche API
-
-#### Schritt A2 – Datenmodelle
-
-**Zuerst:** Bestehende Entities im Projekt scannen (Verzeichnisse `entity/`, `entity/model/`, `entity/dto/`).
-
-Falls Entities gefunden werden, per `AskUserQuestion` (multiSelect) anbieten:
+**Second question via `AskUserQuestion`:**
 
 ```
-Im Projekt wurden folgende Entities gefunden. Welche sollen in die API übernommen werden?
+What auth scheme should the API use?
 ```
 
-Optionen: gefundene Entity-Klassen auflisten (max. 4, Rest per "Other").
+Options:
+- **Bearer JWT (Recommended)** – Standard for Keycloak / OAuth2-based systems
+- **API Key** – Simple, for internal services
+- **OAuth2** – Full OAuth2 flow with scopes
+- **No authentication** – Public API
 
-**Dann:** Für jedes neue Datenmodell interaktiv abfragen:
+#### Step A2 – Data Models
 
-| # | Frage | Hinweis |
-|---|-------|---------|
-| 1 | **Schema-Name** | PascalCase, z.B. `Order`, `Product`, `OrderItem` |
-| 2 | **Felder** | Name, Typ (`string`, `integer`, `number`, `boolean`, `array`, `$ref`), required? |
-| 3 | **Beziehungen** | Referenzen auf andere Schemas (`$ref: '#/components/schemas/...'`) |
+**First:** Scan existing entities in the project (directories `entity/`, `entity/model/`, `entity/dto/`).
 
-Wiederhole die Abfrage bis der Benutzer signalisiert, dass alle Modelle definiert sind.
-
-**Request/Response-Varianten:** Für jedes Schema prüfen, ob separate Request- und Response-Varianten nötig sind (z.B. `CreateOrderRequest` ohne `id`, `OrderResponse` mit `id` und Timestamps).
-
-#### Schritt A3 – Endpunkte
-
-Pro Datenmodell per `AskUserQuestion` abfragen:
+If entities are found, offer via `AskUserQuestion` (multiSelect):
 
 ```
-Welche Operationen soll die Ressource [SchemaName] unterstützen?
+The following entities were found in the project. Which should be adopted into the API?
 ```
 
-Optionen (multiSelect):
-- **CRUD-Set (Empfohlen)** – GET (Liste + Detail), POST, PUT, DELETE
-- **Nur Lesen** – GET (Liste + Detail)
-- **Erstellen + Lesen** – POST + GET
-- **Individuell definieren** – Eigene Endpunkte angeben
+Options: list found entity classes (max 4, rest via "Other").
 
-Für jeden Endpunkt definieren:
-- HTTP-Methode + Pfad (aus Ressource ableiten: `/orders`, `/orders/{id}`)
-- Request Body (Verweis auf Schema aus A2)
-- Response Body + Status Codes (200, 201, 204, 400, 404)
-- Query-Parameter (Pagination: `page`, `size`, Filterung)
+**Then:** For each new data model, ask interactively:
 
-#### Schritt A4 – Bestätigung und Generierung
+| # | Question | Hint |
+|---|----------|------|
+| 1 | **Schema name** | PascalCase, e.g. `Order`, `Product`, `OrderItem` |
+| 2 | **Fields** | Name, type (`string`, `integer`, `number`, `boolean`, `array`, `$ref`), required? |
+| 3 | **Relationships** | References to other schemas (`$ref: '#/components/schemas/...'`) |
 
-Kompakte Zusammenfassung ausgeben:
+Repeat the query until the user signals that all models are defined.
+
+**Request/Response variants:** For each schema, check if separate request and response variants are needed (e.g. `CreateOrderRequest` without `id`, `OrderResponse` with `id` and timestamps).
+
+#### Step A3 – Endpoints
+
+Per data model, ask via `AskUserQuestion`:
+
+```
+What operations should the resource [SchemaName] support?
+```
+
+Options (multiSelect):
+- **CRUD Set (Recommended)** – GET (list + detail), POST, PUT, DELETE
+- **Read Only** – GET (list + detail)
+- **Create + Read** – POST + GET
+- **Define individually** – Specify custom endpoints
+
+For each endpoint, define:
+- HTTP method + path (derive from resource: `/orders`, `/orders/{id}`)
+- Request body (reference to schema from A2)
+- Response body + status codes (200, 201, 204, 400, 404)
+- Query parameters (pagination: `page`, `size`, filtering)
+
+#### Step A4 – Confirmation and Generation
+
+Output compact summary:
 
 ```
 API: Order Service (v1.0.0)
@@ -147,170 +147,170 @@ Base: /api/v1
 Schemas (4):
   CreateOrderRequest, OrderResponse, ProductResponse, ErrorResponse
 
-Endpunkte (5):
+Endpoints (5):
   GET    /api/v1/orders          → OrderResponse[]
   POST   /api/v1/orders          → OrderResponse
   GET    /api/v1/orders/{id}     → OrderResponse
   GET    /api/v1/products        → ProductResponse[]
   GET    /api/v1/products/{id}   → ProductResponse
 
-Datei: api/order-service.yaml
+File: api/order-service.yaml
 
-Generieren?
+Generate?
 ```
 
-**Erst nach Bestätigung** die YAML-Datei generieren. Template: `templates/openapi-spec.yaml.template`.
+**Only after confirmation** generate the YAML file. Template: `templates/openapi-spec.yaml.template`.
 
-Nach der Generierung fragen:
+After generation, ask:
 
 ```
-Soll direkt Code aus der neuen Spec generiert werden?
+Should code be generated directly from the new spec?
 ```
 
-Falls ja → weiter mit Schritt 1–4 (Code generieren).
+If yes → continue with Steps 1–4 (generate code).
 
 ---
 
-### Modus B: Bestehende Spec erweitern
+### Mode B: Extend Existing Spec
 
-#### Schritt B1 – Spec einlesen
+#### Step B1 – Read Spec
 
-Pfad zur bestehenden Spec abfragen (falls nicht als Argument übergeben).
-Spec einlesen und analysieren:
+Ask for path to existing spec (if not passed as argument).
+Read and analyze spec:
 
 ```
-Bestehende Spec: api/orders.yaml (v1.0.0)
+Existing spec: api/orders.yaml (v1.0.0)
 
-Vorhandene Schemas (3):
+Existing schemas (3):
   CreateOrderRequest, OrderResponse, ErrorResponse
 
-Vorhandene Endpunkte (3):
+Existing endpoints (3):
   GET    /api/v1/orders
   POST   /api/v1/orders
   GET    /api/v1/orders/{id}
 ```
 
-#### Schritt B2 – Neue Datenmodelle
+#### Step B2 – New Data Models
 
-Wie Schritt A2, aber zusätzlich bestehende Schemas als Referenz anzeigen.
-Bestehende Schemas können in `$ref`-Verweisen der neuen Schemas genutzt werden.
+Like Step A2, but additionally show existing schemas as reference.
+Existing schemas can be used in `$ref` references of new schemas.
 
-#### Schritt B3 – Neue Endpunkte
+#### Step B3 – New Endpoints
 
-Wie Schritt A3, aber nur für neue Ressourcen oder zusätzliche Operationen auf bestehenden Ressourcen.
+Like Step A3, but only for new resources or additional operations on existing resources.
 
-#### Schritt B4 – Bestätigung und Merge
+#### Step B4 – Confirmation and Merge
 
-Zusammenfassung zeigt nur die **neuen** Elemente:
+Summary shows only the **new** elements:
 
 ```
-Neue Schemas (2):
+New schemas (2):
   ProductResponse, CreateProductRequest
 
-Neue Endpunkte (2):
+New endpoints (2):
   GET    /api/v1/products        → ProductResponse[]
   POST   /api/v1/products        → ProductResponse
 
-Bestehende Spec wird erweitert: api/orders.yaml
+Existing spec will be extended: api/orders.yaml
 
-Fortfahren?
+Proceed?
 ```
 
-Bestehende YAML einlesen, neue Paths und Schemas hinzufügen, Datei überschreiben.
-Bestehende Pfade und Schemas bleiben unverändert.
+Read existing YAML, add new paths and schemas, overwrite file.
+Existing paths and schemas remain unchanged.
 
 ---
 
-### Modus C: Code aus Spec generieren
+### Mode C: Generate Code from Spec
 
-### Schritt 1 – Pflichtabfrage
+### Step 1 – Required Query
 
-Vor der Generierung – sofern nicht bereits bekannt:
+Before generation – if not already known:
 
-Wenn der Skill mit Argumenten aufgerufen wird (`/openapi-skill api/openapi.yaml`), wird `$ARGUMENTS` als Spec-Pfad verwendet.
+If the skill is called with arguments (`/openapi-skill api/openapi.yaml`), `$ARGUMENTS` is used as the spec path.
 
-| # | Frage | Hinweis |
-|---|-------|---------|
-| 1 | **Pfad zur OpenAPI Spec** | `.yaml`, `.yml` oder `.json`; relativ zum Projekt-Root. Entfällt wenn als `$ARGUMENTS` übergeben. |
-| 2 | **Framework** | `Spring Boot` oder `Quarkus` |
-| 3 | **groupId / Paket** | z.B. `com.example.orders` |
-| 4 | **DTO-Stil** | `Java Record` (Standard) oder `Klasse mit Lombok` |
-| 5 | **Security-Annotationen einbauen?** | Ja → `@RolesAllowed` / `@PreAuthorize` aus Spec-Security-Section |
+| # | Question | Hint |
+|---|----------|------|
+| 1 | **Path to OpenAPI spec** | `.yaml`, `.yml` or `.json`; relative to project root. Omitted if passed as `$ARGUMENTS`. |
+| 2 | **Framework** | `Spring Boot` or `Quarkus` |
+| 3 | **groupId / package** | e.g. `com.example.orders` |
+| 4 | **DTO style** | `Java Record` (default) or `Class with Lombok` |
+| 5 | **Include security annotations?** | Yes → `@RolesAllowed` / `@PreAuthorize` from spec security section |
 
-### Schritt 2 – Spec lesen und analysieren
+### Step 2 – Read and Analyze Spec
 
-Die OpenAPI Spec einlesen und folgendes extrahieren:
+Read the OpenAPI spec and extract the following:
 
-| Was | Woher |
-|-----|-------|
-| Alle Pfade + Methoden (GET, POST, PUT, DELETE, PATCH) | `paths` |
-| Request-Bodies (Schema-Referenzen) | `requestBody.content.*.schema` |
-| Response-Schemas (alle Status-Codes) | `responses.*.content.*.schema` |
-| Path- und Query-Parameter | `parameters` |
-| Schema-Definitionen | `components/schemas` |
-| Security-Definitionen | `components/securitySchemes` + `security` je Operation |
-| Tags | `tags` – werden zur Gruppenbildung genutzt |
+| What | From |
+|------|------|
+| All paths + methods (GET, POST, PUT, DELETE, PATCH) | `paths` |
+| Request bodies (schema references) | `requestBody.content.*.schema` |
+| Response schemas (all status codes) | `responses.*.content.*.schema` |
+| Path and query parameters | `parameters` |
+| Schema definitions | `components/schemas` |
+| Security definitions | `components/securitySchemes` + `security` per operation |
+| Tags | `tags` – used for grouping |
 
-### Schritt 3 – Zusammenfassung ausgeben
+### Step 3 – Output Summary
 
-Vor der Code-Generierung eine kurze Übersicht ausgeben und bestätigen lassen:
+Before code generation, output a brief overview and get confirmation:
 
 ```
-Gefundene Endpunkte: 5
-Gefundene Schemas (DTOs): 4
+Found endpoints: 5
+Found schemas (DTOs): 4
 Framework: Quarkus
-Paket: com.example.orders
+Package: com.example.orders
 
-Geplante Dateien:
-  boundary/rest/OrderResource.java      (3 Endpunkte: GET /orders, POST /orders, GET /orders/{id})
-  boundary/rest/ProductResource.java    (2 Endpunkte: GET /products, GET /products/{id})
+Planned files:
+  boundary/rest/OrderResource.java      (3 endpoints: GET /orders, POST /orders, GET /orders/{id})
+  boundary/rest/ProductResource.java    (2 endpoints: GET /products, GET /products/{id})
   entity/dto/OrderRequest.java          (Record)
   entity/dto/OrderResponse.java         (Record)
   entity/dto/ProductResponse.java       (Record)
   entity/dto/ErrorResponse.java         (Record)
 
-Fortfahren?
+Proceed?
 ```
 
-### Schritt 4 – Code generieren
+### Step 4 – Generate Code
 
-Reihenfolge: DTOs zuerst, dann Endpunkte, dann Service-Stubs.
+Order: DTOs first, then endpoints, then service stubs.
 
 #### DTOs (entity/dto/)
 
-- **Standard: Java Record** – immutabel, kein Boilerplate
-- Lombok-Variante nur auf explizite Anfrage
-- Feldnamen 1:1 aus der Spec übernehmen (camelCase)
-- Nullable Felder: `@Nullable` (JSpecify) + `Optional<T>` nur bei explizitem Bedarf
-- Validierungs-Annotationen aus Spec übernehmen:
+- **Default: Java Record** – immutable, no boilerplate
+- Lombok variant only on explicit request
+- Field names 1:1 from the spec (camelCase)
+- Nullable fields: `@Nullable` (JSpecify) + `Optional<T>` only when explicitly needed
+- Validation annotations from spec:
   - `minLength` / `maxLength` → `@Size`
   - `minimum` / `maximum` → `@Min` / `@Max`
   - `required` → `@NotNull` / `@NotBlank`
   - `pattern` → `@Pattern`
-- Enum-Werte aus der Spec als eigene `enum`-Typen im selben Paket
+- Enum values from spec as separate `enum` types in the same package
 
-**Namenskonvention:**
+**Naming convention:**
 
-| Spec-Schema | Java-Klasse |
-|-------------|-------------|
+| Spec Schema | Java Class |
+|-------------|------------|
 | `OrderRequest` | `OrderRequest.java` (Record) |
 | `OrderResponse` | `OrderResponse.java` (Record) |
 | `CreateOrderRequest` | `CreateOrderRequest.java` (Record) |
-| Anonymes Inline-Schema | Eigener, sprechender Name ableiten |
+| Anonymous inline schema | Derive a descriptive name |
 
-#### REST-Endpunkte (boundary/rest/)
+#### REST Endpoints (boundary/rest/)
 
-Gruppierung nach **OpenAPI-Tag**: Ein Tag → eine Klasse.
-Kein Tag → Klasse nach erstem Pfadsegment benennen (`/orders/*` → `OrderResource`).
+Grouping by **OpenAPI tag**: One tag → one class.
+No tag → name class after first path segment (`/orders/*` → `OrderResource`).
 
 **Spring Boot Controller:**
 ```java
 @RestController
-@RequestMapping("/pfad")
+@RequestMapping("/path")
 @Validated
 public class {{TAG}}Controller {
     private final {{TAG}}Service {{tag}}Service;
-    // Konstruktor-Injection
+    // Constructor injection
     @GetMapping("/{id}")
     public ResponseEntity<{{ResponseDTO}}> findById(@PathVariable Long id) {
         throw new UnsupportedOperationException("Not implemented yet");
@@ -320,7 +320,7 @@ public class {{TAG}}Controller {
 
 **Quarkus Resource:**
 ```java
-@Path("/pfad")
+@Path("/path")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class {{TAG}}Resource {
@@ -334,9 +334,9 @@ public class {{TAG}}Resource {
 }
 ```
 
-#### Service-Stub (control/)
+#### Service Stub (control/)
 
-Für jeden Controller/Resource wird ein passender **leerer Service-Stub** angelegt:
+For each controller/resource, a matching **empty service stub** is created:
 
 ```java
 @ApplicationScoped  // Quarkus
@@ -352,57 +352,57 @@ public class {{TAG}}Service {
 
 ## References
 
-| Datei | Beschreibung |
-|-------|-------------|
-| `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen |
-| [templates/openapi-spec.yaml.template](templates/openapi-spec.yaml.template) | OpenAPI Spec Template (Modus A/B) |
-| [templates/spring/Controller.java.template](templates/spring/Controller.java.template) | Spring Boot Controller-Template (Modus C) |
-| [templates/quarkus/Resource.java.template](templates/quarkus/Resource.java.template) | Quarkus Resource-Template (Modus C) |
-| [templates/Dto.java.template](templates/Dto.java.template) | DTO-Template (Java Record, Modus C) |
-| [templates/Service.java.template](templates/Service.java.template) | Service-Stub-Template (Modus C) |
+| File | Description |
+|------|-------------|
+| `.claude/lessons-learned.md` | Findings and corrections |
+| [templates/openapi-spec.yaml.template](templates/openapi-spec.yaml.template) | OpenAPI spec template (Mode A/B) |
+| [templates/spring/Controller.java.template](templates/spring/Controller.java.template) | Spring Boot controller template (Mode C) |
+| [templates/quarkus/Resource.java.template](templates/quarkus/Resource.java.template) | Quarkus resource template (Mode C) |
+| [templates/Dto.java.template](templates/Dto.java.template) | DTO template (Java Record, Mode C) |
+| [templates/Service.java.template](templates/Service.java.template) | Service stub template (Mode C) |
 
-### Unterstützte OpenAPI Features
+### Supported OpenAPI Features
 
-| Feature | Unterstützt | Hinweis |
-|---------|-------------|---------|
-| OpenAPI 3.0.x / 3.1.x | ✅ | |
-| `$ref` auf `components/schemas` | ✅ | Wird aufgelöst |
-| Inline-Schemas | ✅ | Name wird abgeleitet |
-| `oneOf` / `anyOf` / `allOf` | ⚠️ | Vereinfacht zu Interface oder gemeinsamer Basisklasse |
-| Path-Parameter | ✅ | |
-| Query-Parameter | ✅ | |
-| Header-Parameter | ✅ | |
-| Request Body | ✅ | |
-| Response Body | ✅ | Nur 2xx-Responses |
-| Security (`bearer`, `oauth2`) | ✅ | → `@RolesAllowed` / `@PreAuthorize` wenn aktiviert |
-| Multipart / File Upload | ⚠️ | `MultipartFormDataInput` (Quarkus) / `MultipartFile` (Spring) |
-| Webhooks | ❌ | Nicht unterstützt |
+| Feature | Supported | Note |
+|---------|-----------|------|
+| OpenAPI 3.0.x / 3.1.x | Yes | |
+| `$ref` to `components/schemas` | Yes | Resolved |
+| Inline schemas | Yes | Name is derived |
+| `oneOf` / `anyOf` / `allOf` | Partial | Simplified to interface or common base class |
+| Path parameters | Yes | |
+| Query parameters | Yes | |
+| Header parameters | Yes | |
+| Request body | Yes | |
+| Response body | Yes | Only 2xx responses |
+| Security (`bearer`, `oauth2`) | Yes | → `@RolesAllowed` / `@PreAuthorize` when enabled |
+| Multipart / file upload | Partial | `MultipartFormDataInput` (Quarkus) / `MultipartFile` (Spring) |
+| Webhooks | No | Not supported |
 
 ---
 
 ## Conventions
 
-- **Sprache:** Englisch im Code, Deutsch in Javadoc-Kommentaren
-- **Packages:** `{{GROUP_ID}}.boundary.rest` (Endpunkte), `{{GROUP_ID}}.entity.dto` (DTOs), `{{GROUP_ID}}.control` (Service-Stubs)
-- Kein Hibernate / JPA in DTOs – das sind reine Transfer-Objekte
-- Keine Business-Logik im Controller/Resource – nur Delegation an Service
-- `UnsupportedOperationException` als Placeholder – signalisiert "noch nicht implementiert"
-- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via openapi-skill`
+- **Language:** English in code and Javadoc comments
+- **Packages:** `{{GROUP_ID}}.boundary.rest` (endpoints), `{{GROUP_ID}}.entity.dto` (DTOs), `{{GROUP_ID}}.control` (service stubs)
+- No Hibernate / JPA in DTOs – these are pure transfer objects
+- No business logic in controller/resource – only delegation to service
+- `UnsupportedOperationException` as placeholder – signals "not yet implemented"
+- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via openapi-skill`
 
-### Position im Workflow
+### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – fachliche Anforderungen
-        ↓
-[openapi-skill]           ◀ Spec erstellen ODER erweitern ODER Code generieren
-        ↓
-[java-scaffold-skill]     Rahmen: DB, Messaging, Infra – REST/DTOs NICHT nochmal generieren
-        ↓
-[review-skill]            Code-Review
-        ↓
-[doc-skill]               Projektdokumentation
+[spec-feature-skill]      optional – business requirements
+        |
+[openapi-skill]           <-- create spec OR extend OR generate code
+        |
+[java-scaffold-skill]     framework: DB, messaging, infra – do NOT regenerate REST/DTOs
+        |
+[review-skill]            code review
+        |
+[doc-skill]               project documentation
 ```
 
-**Wichtig für java-scaffold-skill:** Wenn openapi-skill bereits Code generiert hat, die
-`boundary/rest/` und `entity/dto/` Klassen **nicht** erneut generieren – nur den Rest
-des Projektrahmens (pom.xml, docker-compose, application.properties, Flyway, Architekturtest).
+**Important for java-scaffold-skill:** If openapi-skill has already generated code,
+**do not** regenerate `boundary/rest/` and `entity/dto/` classes – only generate the rest
+of the project framework (pom.xml, docker-compose, application.properties, Flyway, architecture test).

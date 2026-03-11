@@ -1,16 +1,16 @@
 /**
- * AI Service mit Fault Tolerance fuer Produktionsbetrieb.
+ * AI Service with fault tolerance for production use.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Boundary layer / AI)
  *
- * <p>LLM-Aufrufe koennen fehlschlagen (Timeout, Rate Limit, Service-Ausfall).
- * MicroProfile Fault Tolerance bietet {@code @Timeout}, {@code @Retry} und
- * {@code @Fallback} fuer robuste Produktionsanwendungen.
+ * <p>LLM calls can fail (timeout, rate limit, service outage).
+ * MicroProfile Fault Tolerance provides {@code @Timeout}, {@code @Retry} and
+ * {@code @Fallback} for robust production applications.
  *
  * <p><b>Dependency:</b> {@code io.quarkus:quarkus-smallrye-fault-tolerance}
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.boundary.ai;
 
@@ -29,8 +29,8 @@ import {{GROUP_ID}}.control.ai.{{AI_SERVICE_NAME}}Fallback;
 public interface {{AI_SERVICE_NAME}} {
 
     @SystemMessage("""
-            Du bist ein hilfreicher Assistent fuer {{DOMAIN_DESCRIPTION}}.
-            Antworte praezise und fachlich korrekt.
+            You are a helpful assistant for {{DOMAIN_DESCRIPTION}}.
+            Answer precisely and with technical accuracy.
             """)
     @Timeout(5000)
     @Retry(maxRetries = 3, delay = 100)

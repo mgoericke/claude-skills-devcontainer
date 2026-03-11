@@ -1,123 +1,122 @@
 ---
 name: spec-feature-skill
-description: Spec Driven Development – erfragt fachliche Features per strukturierter Interview-Sequenz (Kontext, Verhalten, Technik, Qualitaet) und erstellt daraus eine Spezifikationsdatei in specs/. Verwende diesen Skill bei "Feature spezifizieren", "erstelle eine Spec", "beschreibe das Feature", "was soll das System tun?" oder wenn Anforderungen strukturiert erfasst werden sollen bevor Code geschrieben wird.
+description: Spec Driven Development – gathers business features through a structured interview sequence (context, behavior, technical hints, quality) and creates a specification file in specs/. Use this skill for "specify a feature", "create a spec", "describe the feature", "what should the system do?" or when requirements should be captured in a structured way before code is written.
 argument-hint: "[feature-name]"
 ---
 
 # Spec Feature Skill
 
-Strukturiertes Interview zur Erfassung fachlicher Anforderungen.
-Das Ergebnis ist eine Spec-Datei in `specs/`, die als Grundlage für Implementierung,
-Tests und Dokumentation dient.
+Structured interview for capturing business requirements.
+The result is a spec file in `specs/` that serves as the foundation for implementation,
+tests, and documentation.
 
-> **Philosophie:** Erst verstehen, dann bauen. Die Spec ist die gemeinsame Sprache
-> zwischen Fachlichkeit und Code.
+> **Philosophy:** First understand, then build. The spec is the shared language
+> between business requirements and code.
 
 ---
 
 ## What This Skill Does
 
-1. **Führt strukturiertes Interview** – 4 Fragegruppen (Kontext, Verhalten, Technik, Qualität) sequenziell abfragen
-2. **Fasst Antworten zusammen** – Kompakte Zusammenfassung zur Bestätigung
-3. **Erstellt Spec-Datei** – `specs/<feature-name-kebab-case>.md` aus Template
+1. **Conducts structured interview** – 4 question groups (Context, Behavior, Technical Hints, Quality) asked sequentially
+2. **Summarizes answers** – Compact summary for confirmation
+3. **Creates spec file** – `specs/<feature-name-kebab-case>.md` from template
 
 ## How to Use
 
 ```
-Ich möchte ein neues Feature spezifizieren
+I want to specify a new feature
 ```
 
 ```
-Erstelle eine Spec für die Auftragserfassung
+Create a spec for order processing
 ```
 
 ```
-Beschreibe das Feature Benutzerregistrierung bevor wir implementieren
+Describe the feature user registration before we implement
 ```
 
 ---
 
 ## Instructions
 
-### Schritt 1 – Interview
+### Step 1 – Interview
 
-Das Interview ist die inhaltliche Grundlage fuer die gesamte Spec. Fragen sequenziell stellen – eine Gruppe nach der anderen, damit der Nutzer fokussiert antworten kann. Antworten sammeln und am Ende der Phase zusammenfassen.
+The interview is the content foundation for the entire spec. Ask questions sequentially – one group at a time, so the user can answer with focus. Collect answers and summarize at the end of each phase.
 
-#### Gruppe 1 – Kontext
+#### Group 1 – Context
 
-1. **Wie heißt das Feature?** _(kurzer, fachlicher Name – wird Dateiname)_
-2. **Was ist das Ziel?** _(1–3 Sätze: welches Problem wird gelöst?)_
-3. **Wer nutzt es?** _(Rolle / Akteur, z.B. "Sachbearbeiter", "externer API-Client")_
+1. **What is the feature called?** _(short, business-oriented name – becomes the filename)_
+2. **What is the goal?** _(1–3 sentences: what problem is being solved?)_
+3. **Who uses it?** _(role / actor, e.g. "case worker", "external API client")_
 
-#### Gruppe 2 – Verhalten
+#### Group 2 – Behavior
 
-4. **Was soll das System tun?** _(Hauptablauf in einfachen Sätzen)_
-5. **Welche Varianten / Sonderfälle gibt es?** _(alternative Abläufe, Fehlerfälle)_
-6. **Was soll das System explizit NICHT tun?** _(Abgrenzung – verhindert Scope-Creep)_
+4. **What should the system do?** _(main flow in simple sentences)_
+5. **What variants / edge cases exist?** _(alternative flows, error cases)_
+6. **What should the system explicitly NOT do?** _(boundaries – prevents scope creep)_
 
-#### Gruppe 3 – Technische Hinweise
+#### Group 3 – Technical Hints
 
-7. **Gibt es API-Endpunkte?** _(Methode + Pfad, z.B. `POST /orders`)_
-8. **Welche Daten sind beteiligt?** _(Felder, Typen – grob reicht)_
-9. **Gibt es Messaging-Events?** _(publiziert / konsumiert, Channel-Namen)_
-10. **Gibt es Abhängigkeiten zu anderen Features / Services?**
+7. **Are there API endpoints?** _(method + path, e.g. `POST /orders`)_
+8. **What data is involved?** _(fields, types – rough is fine)_
+9. **Are there messaging events?** _(published / consumed, channel names)_
+10. **Are there dependencies on other features / services?**
 
-#### Gruppe 4 – Qualität
+#### Group 4 – Quality
 
-11. **Welche Akzeptanzkriterien müssen erfüllt sein?** _(messbar, testbar)_
-12. **Gibt es nicht-funktionale Anforderungen?** _(Performance, Sicherheit, Verfügbarkeit)_
-13. **Welche offenen Fragen / Annahmen gibt es noch?**
+11. **What acceptance criteria must be met?** _(measurable, testable)_
+12. **Are there non-functional requirements?** _(performance, security, availability)_
+13. **Are there any open questions / assumptions?**
 
-### Schritt 2 – Zusammenfassung
+### Step 2 – Summary
 
-Nach dem Interview: alle Antworten kompakt zusammenfassen und bestätigen lassen.
-Erst nach Bestätigung die Spec-Datei schreiben.
+After the interview: summarize all answers compactly and get confirmation.
+Only write the spec file after confirmation.
 
-### Schritt 3 – Spec-Datei erzeugen
+### Step 3 – Create Spec File
 
-Dateiname: `specs/<feature-name-kebab-case>.md`
-Template: siehe `templates/feature-spec.md.template`
+Filename: `specs/<feature-name-kebab-case>.md`
+Template: see `templates/feature-spec.md.template`
 
 ---
 
 ## References
 
-| Datei | Beschreibung |
-|-------|-------------|
-| [templates/feature-spec.md.template](templates/feature-spec.md.template) | Template für die Spec-Datei |
+| File | Description |
+|------|-------------|
+| [templates/feature-spec.md.template](templates/feature-spec.md.template) | Template for the spec file |
 
 ---
 
 ## Conventions
 
-- **Dateiname:** kebab-case, Englisch (`order-creation.md`)
-- **Feature-Name (Heading):** Titel-Case, Deutsch (`Auftragserfassung`)
-- **Gherkin-Szenarien:** Deutsch (`Gegeben`, `Wenn`, `Dann`)
-- **Code-Artefakte im Vorschlag:** Englisch (`OrderService`, `createOrder`)
+- **Filename:** kebab-case, English (`order-creation.md`)
+- **Feature name (heading):** Title case, English (`Order Creation`)
+- **Code artifacts in the proposal:** English (`OrderService`, `createOrder`)
 
-### Integration mit java-scaffold-skill
+### Integration with java-scaffold-skill
 
-Nach der Spec-Erstellung kann der `java-scaffold-skill` die Spec als Input verwenden:
-
-```
-Implementiere das Feature gemäß specs/order-creation.md
-```
-
-Der Scaffold-Skill liest die Spec und leitet daraus ab:
-- Boundary: REST-Endpunkte und/oder Messaging-Consumer
-- Control: Service-Klassen für die Geschäftslogik
-- Entity: JPA-Entities, Flyway-Migration, Repositories
-
-### Position im Workflow
+After spec creation, the `java-scaffold-skill` can use the spec as input:
 
 ```
-[spec-feature-skill]      ◀ fachliche Anforderungen erfassen
-        ↓
-[openapi-skill]           wenn OpenAPI Spec vorhanden
-        ↓
-[java-scaffold-skill]     Rahmen: DB, Messaging, Infra
-        ↓
-[review-skill]            Code-Review
-        ↓
-[doc-skill]               Projektdokumentation
+Implement the feature according to specs/order-creation.md
+```
+
+The scaffold skill reads the spec and derives:
+- Boundary: REST endpoints and/or messaging consumers
+- Control: Service classes for business logic
+- Entity: JPA entities, Flyway migration, repositories
+
+### Position in Workflow
+
+```
+[spec-feature-skill]      <-- capture business requirements
+        |
+[openapi-skill]           if OpenAPI spec needed
+        |
+[java-scaffold-skill]     framework: DB, messaging, infra
+        |
+[review-skill]            code review
+        |
+[doc-skill]               project documentation
 ```

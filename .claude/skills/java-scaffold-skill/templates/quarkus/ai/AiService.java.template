@@ -1,13 +1,13 @@
 /**
- * Deklarativer AI Service – LangChain4j Integration.
+ * Declarative AI Service – LangChain4j integration.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Boundary layer / AI)
  *
- * <p>Der AI Service wird von Quarkus LangChain4j zur Build-Zeit implementiert.
- * {@code @RegisterAiService} erzeugt automatisch einen CDI-Bean.
+ * <p>The AI Service is implemented by Quarkus LangChain4j at build time.
+ * {@code @RegisterAiService} automatically creates a CDI bean.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  * @see <a href="https://docs.quarkiverse.io/quarkus-langchain4j/dev/ai-services.html">AI Services Docs</a>
  */
 package {{GROUP_ID}}.boundary.ai;
@@ -22,9 +22,9 @@ import jakarta.enterprise.context.SessionScoped;
 public interface {{AI_SERVICE_NAME}} {
 
     @SystemMessage("""
-            Du bist ein hilfreicher Assistent fuer {{DOMAIN_DESCRIPTION}}.
-            Antworte praezise und fachlich korrekt.
-            Wenn du etwas nicht weisst, sage es ehrlich.
+            You are a helpful assistant for {{DOMAIN_DESCRIPTION}}.
+            Answer precisely and with technical accuracy.
+            If you do not know something, say so honestly.
             """)
     String chat(@UserMessage String userMessage);
 }

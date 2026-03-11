@@ -1,16 +1,16 @@
 /**
- * AI Tool – wird vom LLM ueber Function Calling aufgerufen.
+ * AI Tool – called by the LLM via Function Calling.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Control-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Control layer / AI)
  *
- * <p>Tools sind CDI-Beans mit {@code @Tool}-annotierten Methoden.
- * Das LLM entscheidet anhand der Beschreibung, wann ein Tool aufgerufen wird.
+ * <p>Tools are CDI beans with {@code @Tool}-annotated methods.
+ * The LLM decides based on the description when to call a tool.
  *
- * <p><b>Wichtig:</b> Bei Datenbankzugriffen innerhalb eines Tools immer
- * {@code @Blocking} und {@code @Transactional} verwenden.
+ * <p><b>Important:</b> When accessing the database within a tool, always
+ * use {@code @Blocking} and {@code @Transactional}.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  * @see <a href="https://docs.quarkiverse.io/quarkus-langchain4j/dev/function-calling.html">Function Calling Docs</a>
  */
 package {{GROUP_ID}}.control.ai;
@@ -24,15 +24,15 @@ import jakarta.transaction.Transactional;
 @ApplicationScoped
 public class {{TOOL_CLASS_NAME}} {
 
-    // TODO: Services oder Repositories injizieren
+    // TODO: Inject services or repositories
     // @Inject
     // {{ENTITY_NAME}}Repository repository;
 
-    @Tool("Beschreibung der Funktion fuer das LLM – so praezise wie moeglich")
+    @Tool("Description of the function for the LLM – be as precise as possible")
     @Blocking
     @Transactional
     public String {{TOOL_METHOD_NAME}}(String parameter) {
-        // TODO: Implementierung
-        return "Ergebnis";
+        // TODO: Implementation
+        return "Result";
     }
 }

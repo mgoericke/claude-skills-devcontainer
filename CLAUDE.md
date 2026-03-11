@@ -1,98 +1,98 @@
-# Projektkontext für Claude Code
+# Project Context for Claude Code
 
-DevContainer-Template für Java-Projekte mit Spring Boot oder Quarkus.
+DevContainer template for Java projects with Spring Boot or Quarkus.
 
 ## Stack
 
-| Schicht | Technologie |
-|---------|-------------|
-| Backend | Java 25 + **Spring Boot 4.x** oder **Quarkus 3.31+** |
-| Datenbank | PostgreSQL 17 |
+| Layer | Technology |
+|-------|------------|
+| Backend | Java 25 + **Spring Boot 4.x** or **Quarkus 3.31+** |
+| Database | PostgreSQL 17 |
 | Messaging | RabbitMQ 4 (SmallRye Reactive Messaging) |
 | Build | Maven 3.9.x |
-| Architektur | Taikai (basiert auf ArchUnit) |
+| Architecture | Taikai (based on ArchUnit) |
 | Auth / IAM | Keycloak 26.x |
 | AI | Quarkus LangChain4j (OpenAI, Ollama, Anthropic) + PgVector |
-| Infrastruktur | Docker + Docker Compose |
+| Infrastructure | Docker + Docker Compose |
 
-## Skills & Wissensmanagement
+## Skills & Knowledge Management
 
-Skills: `.claude/skills/` – automatisch geladen.
-Erkenntnisse und Korrekturen: **immer** in `.claude/lessons-learned.md` festhalten.
-Vor jeder Generierung `lessons-learned.md` prüfen.
+Skills: `.claude/skills/` – loaded automatically.
+Findings and corrections: **always** record in `.claude/lessons-learned.md`.
+Check `lessons-learned.md` before every generation.
 
 | Skill | Trigger |
 |-------|---------|
-| `coworker-skill` | End-to-End Projekt-Setup, phasen-basiert mit Review |
-| `java-scaffold-skill` | Neues Projekt, neue Entity, Dockerfile, docker-compose, AI Service, LangChain4j |
-| `spec-feature-skill` | Feature spezifizieren, bevor Code entsteht |
-| `openapi-skill` | OpenAPI Spec erstellen, erweitern oder Code daraus generieren |
-| `review-skill` | Code-Review, Qualitätsprüfung, geänderten Code prüfen |
-| `doc-skill` | Projektdokumentation erstellen oder aktualisieren |
-| `infografik-skill` | Infografik, Visualisierung, Diagramm |
-| `blog-post-skill` | Blog Post, Artikel, technischer Beitrag erstellen |
-| `frontend-skill` | Web-UIs: Dashboards (TailAdmin), Landing Pages, SPAs (Tailwind CSS) |
-| `skill-creator` | Neue Skills erstellen, bestehende Skills optimieren, Skill-Performance messen |
+| `coworker-skill` | End-to-end project setup, phase-based with review |
+| `java-scaffold-skill` | New project, new entity, Dockerfile, docker-compose, AI Service, LangChain4j |
+| `spec-feature-skill` | Specify a feature before code is written |
+| `openapi-skill` | Create, extend, or generate code from an OpenAPI spec |
+| `review-skill` | Code review, quality check, review changed code |
+| `doc-skill` | Create or update project documentation |
+| `infografik-skill` | Infographic, visualization, diagram |
+| `blog-post-skill` | Blog post, article, technical contribution |
+| `frontend-skill` | Web UIs: Dashboards (TailAdmin), Landing Pages, SPAs (Tailwind CSS) |
+| `skill-creator` | Create new skills, optimize existing skills, measure skill performance |
 
-## Versionsstrategie (PFLICHT)
+## Version Strategy (MANDATORY)
 
-**Vor jeder Code-Generierung** müssen Dependency-Versionen im Internet abgefragt werden.
-Versionen aus dem Gedächtnis sind verboten – sie können veraltet sein.
+**Before every code generation**, dependency versions must be looked up on the internet.
+Versions from memory are forbidden – they may be outdated.
 
-Pflicht-URLs:
+Mandatory URLs:
 - Spring Boot: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent
 - Quarkus: https://mvnrepository.com/artifact/io.quarkus.platform/quarkus-bom
 - Taikai: https://central.sonatype.com/artifact/com.enofex/taikai
-- LangChain4j (bei AI-Projekten): https://mvnrepository.com/artifact/io.quarkiverse.langchain4j/quarkus-langchain4j-bom
+- LangChain4j (for AI projects): https://mvnrepository.com/artifact/io.quarkiverse.langchain4j/quarkus-langchain4j-bom
 
-Jede generierte `pom.xml` enthält:
-- `versions-maven-plugin` (lokale Versionsabfrage via `./mvnw versions:display-dependency-updates`)
-- `renovate.json` im Projekt-Root (automatische Update-PRs via Renovate Bot)
+Every generated `pom.xml` must contain:
+- `versions-maven-plugin` (local version check via `./mvnw versions:display-dependency-updates`)
+- `renovate.json` in the project root (automatic update PRs via Renovate Bot)
 
-## Coding-Standards
+## Coding Standards
 
-- **Architektur**: BCE-Pattern (Boundary / Control / Entity)
-- **Architekturtests**: Taikai – bei jedem neuen Projekt anlegen (PFLICHT)
-- **Health Checks**: Jede Anwendung muss `/actuator/health` (Spring) oder `/q/health` (Quarkus) bereitstellen (PFLICHT)
-- **Persistenz**: Flyway – kein `ddl-auto=create`
-- **Messaging (Quarkus)**: SmallRye `mp.messaging.*` Keys – Details in `lessons-learned.md`
-- **Quarkus `@Blocking`**: Bei DB-Zugriffen im `@Incoming`-Consumer und `@Tool`-Methoden immer `@Blocking @Transactional`
-- **AI-Architektur**: AI Services in `boundary/ai/`, Tools + RAG + Guardrails in `control/ai/`
-- **Branches**: Neue Features IMMER in einem separaten Branch umsetzen – niemals direkt auf `main`
+- **Architecture**: BCE pattern (Boundary / Control / Entity)
+- **Architecture Tests**: Taikai – create for every new project (MANDATORY)
+- **Health Checks**: Every application must expose `/actuator/health` (Spring) or `/q/health` (Quarkus) (MANDATORY)
+- **Persistence**: Flyway – no `ddl-auto=create`
+- **Messaging (Quarkus)**: SmallRye `mp.messaging.*` keys – details in `lessons-learned.md`
+- **Quarkus `@Blocking`**: For DB access in `@Incoming` consumers and `@Tool` methods, always use `@Blocking @Transactional`
+- **AI Architecture**: AI Services in `boundary/ai/`, Tools + RAG + Guardrails in `control/ai/`
+- **Branches**: New features ALWAYS in a separate branch – never directly on `main`
 - **Commits**: Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
-- **Sprache**: Deutsch in Kommentaren/Doku, Englisch im Code
-- **Beispiele**: Fachlich neutral (`order`, `product`, `event`, `item`) – keine Domänennamen
+- **Language**: English in comments/docs and code
+- **Examples**: Domain-neutral (`order`, `product`, `event`, `item`) – no domain-specific names
 
 ## Javadoc Co-Author
 
-Jede generierte Java-Datei enthält:
+Every generated Java file must contain:
 ```
-@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
 ```
-Properties/YAML-Dateien als Kommentar: `# Co-Author: Claude (claude-sonnet-4-6, Anthropic)`
+Properties/YAML files as comment: `# Co-Author: Claude (claude-sonnet-4-6, Anthropic)`
 
-## Dockerfile-Konventionen
+## Dockerfile Conventions
 
-| Framework | Speicherort |
-|-----------|-------------|
-| Spring Boot | `./Dockerfile` (Projekt-Root) |
-| Quarkus | `src/main/docker/Dockerfile.jvm` (Quarkus-Konvention) |
+| Framework | Location |
+|-----------|----------|
+| Spring Boot | `./Dockerfile` (project root) |
+| Quarkus | `src/main/docker/Dockerfile.jvm` (Quarkus convention) |
 
-## Sub-Agents für Parallele Reviews & AI-Service Generierung
+## Sub-Agents for Parallel Reviews & AI Service Generation
 
-Spezialisierte Sub-Agents in `.claude/agents/`:
-- **security-reviewer**: Sicherheits-Analyse (Secrets, Auth, Input-Validation, OWASP)
-- **architecture-reviewer**: BCE-Pattern & Taikai-Compliance
-- **performance-reviewer**: N+1 Queries, Blocking-Operations, Memory Leaks
-- **ai-service-generator**: LangChain4j AI-Service Scaffolding mit Tools, RAG, Guardrails
+Specialized sub-agents in `.claude/agents/`:
+- **security-reviewer**: Security analysis (secrets, auth, input validation, OWASP)
+- **architecture-reviewer**: BCE pattern & Taikai compliance
+- **performance-reviewer**: N+1 queries, blocking operations, memory leaks
+- **ai-service-generator**: LangChain4j AI service scaffolding with tools, RAG, guardrails
 
-**Nutzen**: Nach Code-Änderungen parallel reviewen oder neue AI-Services generieren.
-**Doku**: Siehe [docs/sub-agents.md](docs/sub-agents.md)
+**Benefits**: Review in parallel after code changes or generate new AI services.
+**Docs**: See [docs/sub-agents.md](docs/sub-agents.md)
 
-## Hinweise
+## Notes
 
-- `groupId`, `artifactId` und Framework **immer** abfragen bevor Scaffolding startet
-- ANTHROPIC_API_KEY ist optional – alternativ `claude login` nach Container-Start
-- GIT_TOKEN (nicht GITHUB_TOKEN) für Git-Registries aller Anbieter
-- Dev Services für Quarkus sind deaktiviert – echte Services via `docker compose up`
-- Maven `.m2` Cache ist persistent (Docker Volume)
+- `groupId`, `artifactId`, and framework must **always** be asked before scaffolding starts
+- ANTHROPIC_API_KEY is optional – alternatively use `claude login` after container start
+- GIT_TOKEN (not GITHUB_TOKEN) for Git registries of all providers
+- Dev Services for Quarkus are disabled – real services via `docker compose up`
+- Maven `.m2` cache is persistent (Docker volume)

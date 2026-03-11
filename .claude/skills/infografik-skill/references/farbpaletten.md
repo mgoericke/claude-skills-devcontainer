@@ -1,16 +1,16 @@
-# Farbpaletten für Infografiken
+# Color Palettes for Infographics
 
-Lade diese Datei um die passende Palette für den Image-Prompt zu wählen.
-Die Farben werden als **Textbeschreibung im englischen Prompt** verwendet.
+Load this file to choose the appropriate palette for the image prompt.
+The colors are used as **text descriptions in the English prompt**.
 
-**Grundregel:** Kein dunkles Design. Alle Paletten sind hell, kontrastreich und für professionelle Zielgruppen optimiert.
+**Basic rule:** No dark design. All palettes are light, high-contrast, and optimized for professional audiences.
 
 ---
 
-## Corporate Blue (Standard)
-Klassisch, vertrauenswürdig – optimal für Business Analysten und Projektmanager.
+## Corporate Blue (Default)
+Classic, trustworthy – optimal for business analysts and project managers.
 
-**Prompt-Beschreibung:**
+**Prompt description:**
 ```
 Color scheme: pure white background, cobalt blue (#1A56DB) for headers and primary elements,
 emerald green (#0E9F6E) for positive KPIs and success indicators,
@@ -22,9 +22,9 @@ dark text (#111928), light gray borders (#D1D5DB).
 ---
 
 ## Tech Professional
-Modern, präzise – ideal für Entwickler und Software-Architekten.
+Modern, precise – ideal for developers and software architects.
 
-**Prompt-Beschreibung:**
+**Prompt description:**
 ```
 Color scheme: cool off-white background (#F8FAFC), sky blue (#0284C7) as primary color,
 emerald green (#059669) for tech elements, indigo (#7C3AED) for code and architecture,
@@ -34,9 +34,9 @@ red (#DC2626) for alerts and errors, slate-black text (#0F172A), very light gray
 ---
 
 ## Analytics & Data
-Datengetrieben, strukturiert – für Data Analysten und BI-Experten.
+Data-driven, structured – for data analysts and BI experts.
 
-**Prompt-Beschreibung:**
+**Prompt description:**
 ```
 Color scheme: warm off-white background (#F9FAFB), teal (#0694A2) as primary color,
 light blue (#3F83F8) as secondary, orange (#FF5A1F) for highlights,
@@ -46,9 +46,9 @@ dark blue (#1C64F2) for trends, dark gray text (#1F2937), light gray borders (#E
 ---
 
 ## Enterprise Slate
-Neutral, seriös – für Mixed Audiences und Executive-Präsentationen.
+Neutral, serious – for mixed audiences and executive presentations.
 
-**Prompt-Beschreibung:**
+**Prompt description:**
 ```
 Color scheme: white background, slate (#334155) as primary, light blue (#0EA5E9) as accent,
 green (#10B981) for positive values, yellow-orange (#F59E0B) for KPIs,
@@ -58,9 +58,9 @@ near-black text (#0F172A), slate-300 borders (#CBD5E1).
 ---
 
 ## Agile & Modern
-Frisch, dynamisch – für agile Teams, Scrum Master und moderne PM-Kontexte.
+Fresh, dynamic – for agile teams, scrum masters, and modern PM contexts.
 
-**Prompt-Beschreibung:**
+**Prompt description:**
 ```
 Color scheme: mint-white background (#FAFFFE), teal (#0D9488) as primary,
 indigo (#4F46E5) for sprints and features, orange (#F97316) for blockers and actions,
@@ -70,13 +70,13 @@ light mint borders (#CCFBF1).
 
 ---
 
-## Zielgruppen-Empfehlung
+## Audience Recommendation
 
-| Zielgruppe             | Empfohlene Palette   |
-|------------------------|----------------------|
-| Projektmanager / PMO   | Corporate Blue       |
-| Software-Entwickler    | Tech Professional    |
-| Business Analysten     | Analytics & Data     |
-| C-Level / Executive    | Enterprise Slate     |
-| Agile Teams / Scrum    | Agile & Modern       |
-| Gemischtes Publikum    | Enterprise Slate     |
+| Audience               | Recommended Palette    |
+|------------------------|------------------------|
+| Project Managers / PMO | Corporate Blue         |
+| Software Developers    | Tech Professional      |
+| Business Analysts      | Analytics & Data       |
+| C-Level / Executive    | Enterprise Slate       |
+| Agile Teams / Scrum    | Agile & Modern         |
+| Mixed Audience         | Enterprise Slate       |

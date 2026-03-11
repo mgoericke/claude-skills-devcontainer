@@ -1,11 +1,11 @@
 /**
- * REST-Controller für {{ENTITY_NAME}}-Ressourcen.
+ * REST controller for {{ENTITY_NAME}} resources.
  *
- * <p>BCE-Architektur: Boundary-Schicht (boundary/rest)<br>
- * Enthält nur HTTP-Routing und Delegation – keine Business-Logik.
+ * <p>BCE architecture: Boundary layer (boundary/rest)<br>
+ * Contains only HTTP routing and delegation – no business logic.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.boundary.rest;
 

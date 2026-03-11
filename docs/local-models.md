@@ -1,28 +1,28 @@
-# Lokale Modelle & Datensouveränität
+# Local Models & Data Sovereignty
 
-> **Datenschutz-Hinweis:** Bei der Nutzung der Anthropic Cloud API werden Prompts,
-> Kontext und **Quellcode** an externe Server gesendet und dort verarbeitet.
-> Für sensible Projekte, interne Architekturen oder regulierte Umgebungen empfehlen
-> wir die Verwendung lokaler Modelle – der Code verlässt dann nie den Rechner.
+> **Privacy Notice:** When using the Anthropic Cloud API, prompts,
+> context, and **source code** are sent to and processed on external servers.
+> For sensitive projects, internal architectures, or regulated environments,
+> we recommend using local models – the code then never leaves the machine.
 
-Claude Code unterstützt lokale Modelle als vollständigen Ersatz für die Cloud API.
-Die Konfiguration erfolgt über zwei Umgebungsvariablen – kein Code-Umbau nötig.
+Claude Code supports local models as a complete replacement for the Cloud API.
+Configuration is done via two environment variables – no code changes needed.
 
 ---
 
-## Schnellstart
+## Quick Start
 
-**Schritt 1 – Modell-Server auf dem Host starten** (Ollama oder LM Studio, s. u.)
+**Step 1 – Start a model server on the host** (Ollama or LM Studio, see below)
 
-**Schritt 2 – Umgebungsvariablen auf dem Host setzen** (`~/.zshrc` oder `~/.bashrc`):
+**Step 2 – Set environment variables on the host** (`~/.zshrc` or `~/.bashrc`):
 
 ```bash
 # Ollama
 export ANTHROPIC_BASE_URL="http://host.docker.internal:11434"
 export ANTHROPIC_AUTH_TOKEN="ollama"
-unset ANTHROPIC_API_KEY   # Cloud API deaktivieren
+unset ANTHROPIC_API_KEY   # Disable Cloud API
 
-# – oder – LM Studio
+# – or – LM Studio
 export ANTHROPIC_BASE_URL="http://host.docker.internal:1234"
 export ANTHROPIC_AUTH_TOKEN="lmstudio"
 unset ANTHROPIC_API_KEY
@@ -35,52 +35,52 @@ $env:ANTHROPIC_AUTH_TOKEN = "ollama"
 Remove-Item Env:ANTHROPIC_API_KEY -ErrorAction SilentlyContinue
 ```
 
-**Schritt 3 – DevContainer neu bauen:**
+**Step 3 – Rebuild the DevContainer:**
 `Cmd+Shift+P` → `Dev Containers: Rebuild Container`
 
-**Schritt 4 – Modell beim Start angeben:**
+**Step 4 – Specify the model at startup:**
 ```bash
 claude --model qwen3-coder       # Ollama
 claude --model openai/qwen3-coder  # LM Studio
 ```
 
-> **`host.docker.internal` statt `localhost`:** Im DevContainer zeigt `localhost`
-> auf den Container selbst – nicht auf den Host. `host.docker.internal` ist die
-> korrekte Adresse für Dienste, die auf dem Host laufen (funktioniert automatisch
-> unter Docker Desktop auf macOS und Windows; unter Linux ggf. `172.17.0.1`).
+> **`host.docker.internal` instead of `localhost`:** In the DevContainer, `localhost`
+> points to the container itself – not to the host. `host.docker.internal` is the
+> correct address for services running on the host (works automatically
+> under Docker Desktop on macOS and Windows; on Linux use `172.17.0.1` if needed).
 
-> **Modell-Server im LAN?** `host.docker.internal` lässt sich durch eine beliebige
-> erreichbare Adresse ersetzen – auch eine LAN-IP wie `http://192.168.1.100:11434`.
+> **Model server on the LAN?** `host.docker.internal` can be replaced by any
+> reachable address – including a LAN IP like `http://192.168.1.100:11434`.
 
 ---
 
 ## Option A – Ollama
 
-[Ollama](https://ollama.com) läuft als lokaler Server und verwaltet Modelle automatisch.
+[Ollama](https://ollama.com) runs as a local server and manages models automatically.
 
 **Installation & Start:**
 ```bash
 # macOS
 brew install ollama
-ollama serve                      # Server starten (läuft auf Port 11434)
+ollama serve                      # Start server (runs on port 11434)
 
-# Modell herunterladen und starten
-ollama pull qwen3-coder           # ~8 GB, empfohlen für Code-Aufgaben
+# Download and start a model
+ollama pull qwen3-coder           # ~8 GB, recommended for code tasks
 ```
 
-**Empfohlene Modelle für Claude Code:**
+**Recommended models for Claude Code:**
 
-| Modell | Größe | Stärke |
-|--------|-------|--------|
-| `qwen3-coder` | ~8 GB | Code-Generierung, Reasoning |
-| `glm-4.7` | ~5 GB | Kompakt, schnell |
-| `gpt-oss:20b` | ~12 GB | Generalisten-Modell |
-| `gpt-oss:120b` | ~70 GB | Maximale Qualität (leistungsstarke Hardware) |
+| Model | Size | Strength |
+|-------|------|----------|
+| `qwen3-coder` | ~8 GB | Code generation, reasoning |
+| `glm-4.7` | ~5 GB | Compact, fast |
+| `gpt-oss:20b` | ~12 GB | Generalist model |
+| `gpt-oss:120b` | ~70 GB | Maximum quality (powerful hardware) |
 
-> **Kontextfenster:** Claude Code benötigt mindestens 64k Token Kontext.
-> Ollama konfiguriert dies automatisch für empfohlene Modelle.
+> **Context window:** Claude Code requires at least 64k token context.
+> Ollama configures this automatically for recommended models.
 
-**Kurzbefehl (ohne DevContainer, direkt im Terminal):**
+**Quick command (without DevContainer, directly in the terminal):**
 ```bash
 ANTHROPIC_AUTH_TOKEN=ollama ANTHROPIC_BASE_URL=http://localhost:11434 \
   ANTHROPIC_API_KEY="" claude --model qwen3-coder
@@ -90,49 +90,49 @@ ANTHROPIC_AUTH_TOKEN=ollama ANTHROPIC_BASE_URL=http://localhost:11434 \
 
 ## Option B – LM Studio
 
-[LM Studio](https://lmstudio.ai) bietet eine grafische Oberfläche zur Modellverwaltung
-und einen OpenAI-kompatiblen API-Server.
+[LM Studio](https://lmstudio.ai) offers a graphical interface for model management
+and an OpenAI-compatible API server.
 
 **Installation & Start:**
 ```bash
-# Server starten (Port 1234)
+# Start server (port 1234)
 lms server start --port 1234
 ```
 
-Oder über die LM Studio GUI: **Local Server** → **Start Server**
+Or via the LM Studio GUI: **Local Server** → **Start Server**
 
-**Modell wählen:** In LM Studio ein Modell mit mindestens 25k Token Kontext laden.
-Empfehlung: Qwen3-Coder, DeepSeek-Coder oder ähnliche Code-optimierte Modelle.
+**Choose a model:** In LM Studio, load a model with at least 25k token context.
+Recommendation: Qwen3-Coder, DeepSeek-Coder, or similar code-optimized models.
 
-**Claude Code starten:**
+**Start Claude Code:**
 ```bash
 claude --model openai/qwen3-coder
 ```
 
-> **Kontextfenster:** Mindestens 25k Token – je mehr, desto besser für
-> umfangreiche Codebase-Analysen.
+> **Context window:** At least 25k tokens – the more, the better for
+> extensive codebase analyses.
 
 ---
 
-## Zurück zur Cloud API
+## Switch Back to the Cloud API
 
 ```bash
-# Variablen entfernen und API Key wieder setzen
+# Remove variables and set API key again
 unset ANTHROPIC_BASE_URL
 unset ANTHROPIC_AUTH_TOKEN
 export ANTHROPIC_API_KEY="sk-ant-..."
-# DevContainer neu bauen
+# Rebuild DevContainer
 ```
 
 ---
 
-## Vergleich: Cloud vs. Lokal
+## Comparison: Cloud vs. Local
 
-| | Cloud API (Anthropic) | Lokal (Ollama / LM Studio) |
+| | Cloud API (Anthropic) | Local (Ollama / LM Studio) |
 |-|----------------------|---------------------------|
-| **Datenschutz** | Code wird extern verarbeitet | Code bleibt auf dem Rechner |
-| **Modellqualität** | Claude Sonnet / Opus | Je nach Hardware |
-| **Geschwindigkeit** | Schnell (Serverinfrastruktur) | Abhängig von lokaler GPU/CPU |
-| **Kosten** | Pay-per-use | Einmalig (Hardware) |
-| **Offline** | Nein | Ja |
-| **Empfehlung** | Allgemeine Entwicklung | Sensible Projekte, Regulierung |
+| **Privacy** | Code is processed externally | Code stays on the machine |
+| **Model quality** | Claude Sonnet / Opus | Depends on hardware |
+| **Speed** | Fast (server infrastructure) | Depends on local GPU/CPU |
+| **Cost** | Pay-per-use | One-time (hardware) |
+| **Offline** | No | Yes |
+| **Recommendation** | General development | Sensitive projects, regulation |

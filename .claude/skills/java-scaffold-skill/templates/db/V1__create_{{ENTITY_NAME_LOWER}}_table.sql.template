@@ -1,15 +1,15 @@
 -- V1__create_{{ENTITY_NAME_LOWER}}_table.sql
--- Flyway-Migration: Erstellt die Initialtabelle für {{ENTITY_NAME}}
+-- Flyway migration: Creates the initial table for {{ENTITY_NAME}}
 --
--- Speicherort: src/main/resources/db/migration/
--- Flyway führt diese Migration beim ersten Start automatisch aus.
+-- Location: src/main/resources/db/migration/
+-- Flyway executes this migration automatically on first startup.
 --
 -- Co-Author: Claude (claude-sonnet-4-6, Anthropic)
 
 CREATE TABLE {{ENTITY_NAME_LOWER}} (
     id          UUID        NOT NULL DEFAULT gen_random_uuid(),
 
-    -- TODO: Fachliche Spalten hier ergänzen, z. B.:
+    -- TODO: Add domain-specific columns here, e.g.:
     -- name        VARCHAR(255) NOT NULL,
     -- status      VARCHAR(50)  NOT NULL DEFAULT 'ACTIVE',
     -- amount      NUMERIC(19, 2),

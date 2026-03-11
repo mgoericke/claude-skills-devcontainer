@@ -1,67 +1,67 @@
 ---
 name: html-skill
-description: Erstellt einfache HTML-Seiten mit Tailwind CSS (CDN). Verwende bei "erstelle eine HTML-Seite", "einfache Webseite", "Landing Page" oder "statische Seite".
-argument-hint: "[beschreibung]"
+description: Creates simple HTML pages with Tailwind CSS (CDN). Use for "create an HTML page", "simple website", "landing page", or "static page".
+argument-hint: "[description]"
 ---
 
 # HTML Skill
 
-Erstellt einfache, responsive HTML-Seiten mit **Tailwind CSS** via CDN-Link.
-Kein Build-Tool, kein npm, kein Node – nur eine HTML-Datei.
+Creates simple, responsive HTML pages with **Tailwind CSS** via CDN link.
+No build tool, no npm, no Node – just an HTML file.
 
-> **Philosophie:** Nicht jede Oberfläche braucht ein Framework.
-> Manchmal reicht eine gut gestaltete HTML-Seite.
+> **Philosophy:** Not every interface needs a framework.
+> Sometimes a well-designed HTML page is enough.
 
 ---
 
 ## When to Use This Skill
 
-- Eine einfache HTML-Seite soll erstellt werden (Landing Page, Admin-UI, Dashboard, Formular)
-- Eine statische Seite ohne JavaScript-Framework wird benötigt
-- Formulierungen wie "erstelle eine HTML-Seite", "einfache Webseite", "Landing Page", "baue mir ein Formular", "statische Seite"
-- **Nicht verwenden** für Single Page Applications (SPAs) oder komplexe Frontend-Anwendungen
+- A simple HTML page should be created (landing page, admin UI, dashboard, form)
+- A static page without JavaScript framework is needed
+- Phrases like "create an HTML page", "simple website", "landing page", "build me a form", "static page"
+- **Do not use** for single page applications (SPAs) or complex frontend applications
 
 ## What This Skill Does
 
-1. **Fragt Seitenzweck ab** – Was soll die Seite zeigen? (Landing Page, Formular, Dashboard, etc.)
-2. **Generiert HTML** – Responsive, semantisch korrekt, mit Tailwind CSS gestylt
-3. **Speichert die Datei** – Im Projekt oder an einem gewünschten Pfad
+1. **Asks for page purpose** – What should the page show? (Landing page, form, dashboard, etc.)
+2. **Generates HTML** – Responsive, semantically correct, styled with Tailwind CSS
+3. **Saves the file** – In the project or at a desired path
 
 ## How to Use
 
 ```
-Erstelle eine einfache Landing Page für mein Projekt
+Create a simple landing page for my project
 ```
 
 ```
-/html-skill Kontaktformular mit Name, E-Mail und Nachricht
+/html-skill Contact form with name, email, and message
 ```
 
 ```
-Baue mir ein Dashboard mit KPI-Kacheln
+Build me a dashboard with KPI tiles
 ```
 
 ---
 
 ## Instructions
 
-### Schritt 1 – Zweck und Inhalt klären
+### Step 1 – Clarify purpose and content
 
-| # | Frage | Hinweis |
-|---|-------|---------|
-| 1 | **Was soll die Seite zeigen?** | Landing Page, Formular, Dashboard, Tabelle, etc. |
-| 2 | **Welche Inhalte?** | Texte, Felder, Tabellendaten, KPIs |
-| 3 | **Wo speichern?** | Standard: Projekt-Root. Alternative: `src/main/resources/static/` für Spring Boot, `src/main/resources/META-INF/resources/` für Quarkus |
+| # | Question | Hint |
+|---|----------|------|
+| 1 | **What should the page show?** | Landing page, form, dashboard, table, etc. |
+| 2 | **What content?** | Texts, fields, table data, KPIs |
+| 3 | **Where to save?** | Default: project root. Alternative: `src/main/resources/static/` for Spring Boot, `src/main/resources/META-INF/resources/` for Quarkus |
 
-Wenn `$ARGUMENTS` übergeben wurde, daraus Zweck und Inhalt ableiten und nur Rückfragen stellen wenn nötig.
+If `$ARGUMENTS` was provided, derive purpose and content from it and only ask follow-up questions if necessary.
 
-### Schritt 2 – HTML generieren
+### Step 2 – Generate HTML
 
-Jede generierte HTML-Seite folgt diesem Grundgerüst:
+Every generated HTML page follows this skeleton:
 
 ```html
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,41 +69,41 @@ Jede generierte HTML-Seite folgt diesem Grundgerüst:
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-900">
-    <!-- Inhalt hier -->
+    <!-- Content here -->
 </body>
 </html>
 ```
 
-**Stilregeln:**
+**Style rules:**
 
-- **Tailwind CSS via CDN** – kein lokales Build, kein npm
-- **Responsive** – Mobile-first mit `sm:`, `md:`, `lg:` Breakpoints
-- **Semantisches HTML** – `<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`
-- **Barrierefreiheit** – `alt`-Attribute, `aria-label` wo sinnvoll, ausreichender Kontrast
-- **Kein JavaScript** außer Tailwind CDN – es sei denn der User fragt explizit danach
-- **Dark Mode** – Optional via `class="dark"` und `dark:` Prefix (nur auf Wunsch)
+- **Tailwind CSS via CDN** – no local build, no npm
+- **Responsive** – Mobile-first with `sm:`, `md:`, `lg:` breakpoints
+- **Semantic HTML** – `<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`
+- **Accessibility** – `alt` attributes, `aria-label` where meaningful, sufficient contrast
+- **No JavaScript** except Tailwind CDN – unless the user explicitly asks for it
+- **Dark Mode** – Optional via `class="dark"` and `dark:` prefix (only on request)
 
-**Tailwind-Klassen-Richtlinien:**
+**Tailwind class guidelines:**
 
 - Container: `max-w-4xl mx-auto px-4 py-8`
-- Karten: `bg-white rounded-lg shadow-md p-6`
+- Cards: `bg-white rounded-lg shadow-md p-6`
 - Buttons: `bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg`
-- Formulare: `border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent`
-- Tabellen: `w-full border-collapse` mit `divide-y divide-gray-200`
-- Typografie: `text-3xl font-bold` für H1, `text-xl font-semibold` für H2
+- Forms: `border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent`
+- Tables: `w-full border-collapse` with `divide-y divide-gray-200`
+- Typography: `text-3xl font-bold` for H1, `text-xl font-semibold` for H2
 
-### Schritt 3 – Speichern
+### Step 3 – Save
 
-Dateiname aus dem Seitenzweck ableiten (kebab-case):
+Derive filename from the page purpose (kebab-case):
 
 ```
 landing-page.html
-kontakt-formular.html
+contact-form.html
 dashboard.html
 ```
 
-Speicherort je nach Kontext:
-- **Standalone**: Projekt-Root
+Storage location depending on context:
+- **Standalone**: Project root
 - **Spring Boot**: `src/main/resources/static/`
 - **Quarkus**: `src/main/resources/META-INF/resources/`
 
@@ -111,15 +111,15 @@ Speicherort je nach Kontext:
 
 ## Additional resources
 
-- Tailwind CSS Dokumentation: https://tailwindcss.com/docs
-- Tailwind CDN: https://cdn.tailwindcss.com (Play CDN – für Prototypen und einfache Seiten)
+- Tailwind CSS documentation: https://tailwindcss.com/docs
+- Tailwind CDN: https://cdn.tailwindcss.com (Play CDN – for prototypes and simple pages)
 
 ---
 
 ## Conventions
 
-- **Sprache HTML**: `lang="de"` (default) oder `lang="en"` je nach Kontext
-- **Styling**: Ausschließlich Tailwind CSS Utility-Klassen – kein eigenes CSS
-- **JavaScript**: Nur wenn explizit gewünscht – Standard ist reines HTML
-- **Bilder**: Platzhalter mit `https://placehold.co/` oder SVG-Icons
-- **Co-Author**: `<!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via html-skill -->`
+- **HTML language**: `lang="en"` (default) or `lang="de"` depending on context
+- **Styling**: Exclusively Tailwind CSS utility classes – no custom CSS
+- **JavaScript**: Only if explicitly requested – default is pure HTML
+- **Images**: Placeholders with `https://placehold.co/` or SVG icons
+- **Co-Author**: `<!-- Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via html-skill -->`

@@ -1,208 +1,208 @@
 ---
 name: review-skill
-description: Prueft geaenderten oder bestehenden Code gegen Projekt-Konventionen, Architektur-Regeln (BCE) und Best Practices. Erfasst automatisch staged/unstaged Changes oder Branch-Diffs. Verwende diesen Skill bei "review code", "pruefe den Code", "code review", "schau dir den Code an", "Qualitaetspruefung" oder wenn Code vor einem Commit oder Merge geprueft werden soll.
-argument-hint: "[dateien-oder-verzeichnis]"
+description: Reviews changed or existing code against project conventions, architecture rules (BCE), and best practices. Automatically captures staged/unstaged changes or branch diffs. Use this skill for "review code", "check the code", "code review", "look at the code", "quality check" or when code should be reviewed before a commit or merge.
+argument-hint: "[files-or-directory]"
 ---
 
 # Review Skill
 
-Systematisches Code-Review gegen Projekt-Konventionen, Architektur-Regeln und Best Practices.
+Systematic code review against project conventions, architecture rules, and best practices.
 
-> **Philosophie:** Ein guter Review findet nicht nur Fehler – er stellt sicher, dass der Code
-> den Konventionen des Projekts folgt und langfristig wartbar bleibt.
+> **Philosophy:** A good review doesn't just find bugs – it ensures that code
+> follows the project's conventions and remains maintainable long-term.
 
 ---
 
 ## What This Skill Does
 
-1. **Erfasst Änderungen** – Staged/Unstaged Changes, Branch-Diff oder vom User benannte Dateien
-2. **Prüft gegen Regeln** – BCE-Architektur, Lessons-Learned, Sicherheit, Code-Qualität, Konfiguration, Tests
-3. **Erstellt Report** – Strukturierte Ausgabe mit Findings (Kritisch / Warnung / Hinweis) und positivem Feedback
-4. **Bietet Fixes an** – Nach Bestätigung können Findings direkt korrigiert werden
+1. **Captures changes** – Staged/unstaged changes, branch diff, or user-specified files
+2. **Checks against rules** – BCE architecture, lessons-learned, security, code quality, configuration, tests
+3. **Creates report** – Structured output with findings (Critical / Warning / Note) and positive feedback
+4. **Offers fixes** – After confirmation, findings can be corrected directly
 
 ## How to Use
 
 ```
-Prüfe den Code den ich geändert habe
+Check the code I changed
 ```
 
 ```
-Review die Änderungen auf dem aktuellen Branch
+Review the changes on the current branch
 ```
 
 ```
-Mach ein Code Review für src/main/java/com/example/
+Do a code review for src/main/java/com/example/
 ```
 
 ---
 
 ## Instructions
 
-> **Vor jedem Review**:
-> 1. `.claude/lessons-learned.md` lesen
-> 2. [references/review-checklist.md](references/review-checklist.md) als Prüfkatalog verwenden
+> **Before every review**:
+> 1. Read `.claude/lessons-learned.md`
+> 2. Use [references/review-checklist.md](references/review-checklist.md) as the review catalog
 
-## Dynamischer Kontext (automatisch vorgeladen)
+## Dynamic Context (automatically preloaded)
 
-Folgende Git-Informationen werden beim Aufruf automatisch injiziert:
+The following Git information is automatically injected on invocation:
 
 - Staged changes: !`git diff --cached --name-only 2>/dev/null`
 - Unstaged changes: !`git diff --name-only 2>/dev/null`
 - Untracked files: !`git ls-files --others --exclude-standard 2>/dev/null`
 - Current branch: !`git branch --show-current 2>/dev/null`
 
-### Schritt 1 – Änderungen erfassen
+### Step 1 – Capture Changes
 
-Wenn `$ARGUMENTS` übergeben wurde (z.B. `/review-skill src/main/java/`), diese Dateien/Verzeichnisse reviewen.
+If `$ARGUMENTS` was provided (e.g. `/review-skill src/main/java/`), review those files/directories.
 
-Andernfalls den **dynamischen Kontext** oben auswerten – in dieser Reihenfolge:
+Otherwise, evaluate the **dynamic context** above – in this order:
 
-| Priorität | Quelle |
-|-----------|--------|
-| 1 | `$ARGUMENTS` (explizit übergebene Dateien/Verzeichnisse) |
-| 2 | Staged Changes (aus dynamischem Kontext) |
-| 3 | Unstaged Changes (aus dynamischem Kontext) |
-| 4 | Branch-Diff gegen main: `git diff main...HEAD --name-only` |
+| Priority | Source |
+|----------|--------|
+| 1 | `$ARGUMENTS` (explicitly provided files/directories) |
+| 2 | Staged changes (from dynamic context) |
+| 3 | Unstaged changes (from dynamic context) |
+| 4 | Branch diff against main: `git diff main...HEAD --name-only` |
 
-**Regeln:**
-- Wenn staged oder unstaged Changes vorhanden → diese reviewen
-- Wenn keine lokalen Änderungen, aber Branch ≠ main → Branch-Diff reviewen
-- Wenn gar keine Änderungen vorhanden → User fragen: welche Dateien oder Verzeichnisse sollen geprüft werden?
-- Nur relevante Dateien reviewen (Java, Properties, YAML, SQL, Dockerfile, docker-compose) – generierte Dateien (target/, .class) ignorieren
+**Rules:**
+- If staged or unstaged changes exist → review those
+- If no local changes but branch != main → review branch diff
+- If no changes at all → ask user: which files or directories should be reviewed?
+- Only review relevant files (Java, Properties, YAML, SQL, Dockerfile, docker-compose) – ignore generated files (target/, .class)
 
-**Dateien lesen:** Alle geänderten Dateien vollständig lesen, nicht nur das Diff. Der Kontext ist wichtig für die Bewertung.
+**Read files:** Read all changed files completely, not just the diff. Context is important for evaluation.
 
-### Schritt 2 – Review durchführen
+### Step 2 – Perform Review
 
-Jede geänderte Datei gegen den Prüfkatalog (`references/review-checklist.md`) prüfen.
+Check each changed file against the review catalog (`references/review-checklist.md`).
 
-**Prüfkategorien (Kurzfassung):**
+**Review categories (summary):**
 
-#### 2.1 Architektur (BCE)
+#### 2.1 Architecture (BCE)
 
-- Klassen in der richtigen Schicht? (`boundary/rest/`, `boundary/messaging/`, `control/`, `entity/`)
-- Keine direkten Repository-Aufrufe aus der Boundary-Schicht
-- Keine REST-/Messaging-Logik in der Entity-Schicht
-- Controller/Resource delegiert an Service (Control), nicht an Repository (Entity)
+- Classes in the correct layer? (`boundary/rest/`, `boundary/messaging/`, `control/`, `entity/`)
+- No direct repository calls from the boundary layer
+- No REST/messaging logic in the entity layer
+- Controller/Resource delegates to Service (Control), not to Repository (Entity)
 
-#### 2.2 Lessons-Learned Abgleich
+#### 2.2 Lessons-Learned Comparison
 
-`.claude/lessons-learned.md` gegen den geänderten Code prüfen:
+Check `.claude/lessons-learned.md` against the changed code:
 
-| Regel | Prüfung |
-|-------|---------|
-| `@Blocking` bei Quarkus-Consumer | `@Incoming` ohne `@Blocking` bei DB-Zugriff? |
-| Flyway statt ddl-auto | `ddl-auto=create` oder `update` in Properties? |
-| Health Checks | Actuator/SmallRye-Health Dependency vorhanden? |
-| Dev Services deaktiviert | Quarkus Dev Services noch aktiv? |
-| Dockerfile-Konvention | Spring Boot → Root, Quarkus → `src/main/docker/` |
-| RabbitMQ Config | Falsche Property-Keys (`quarkus.rabbitmq.*` statt `rabbitmq-host`)? |
+| Rule | Check |
+|------|-------|
+| `@Blocking` for Quarkus consumers | `@Incoming` without `@Blocking` with DB access? |
+| Flyway instead of ddl-auto | `ddl-auto=create` or `update` in properties? |
+| Health checks | Actuator/SmallRye-Health dependency present? |
+| Dev Services disabled | Quarkus Dev Services still active? |
+| Dockerfile convention | Spring Boot → root, Quarkus → `src/main/docker/` |
+| RabbitMQ config | Wrong property keys (`quarkus.rabbitmq.*` instead of `rabbitmq-host`)? |
 
-#### 2.3 Coding-Standards
+#### 2.3 Coding Standards
 
-- **Sprache:** Kommentare/Javadoc auf Deutsch, Code (Klassen, Methoden, Variablen) auf Englisch
-- **Naming:** Java-Konventionen (CamelCase Klassen, camelCase Methoden, UPPER_SNAKE Konstanten)
+- **Language:** Comments/Javadoc in English, code (classes, methods, variables) in English
+- **Naming:** Java conventions (CamelCase classes, camelCase methods, UPPER_SNAKE constants)
 - **Packages:** `{{groupId}}.boundary.rest`, `{{groupId}}.control`, `{{groupId}}.entity`
-- **Fachliche Neutralität:** Keine domänenspezifischen Namen in Templates
+- **Domain neutrality:** No domain-specific names in templates
 
-#### 2.4 Sicherheit
+#### 2.4 Security
 
-- SQL-Injection: Keine String-Konkatenation in Queries (`"SELECT ... " + param`)
-- Input-Validierung: `@Valid` an Controller/Resource-Methoden bei Request-Bodies
-- Secrets: Keine hartcodierten Passwörter, Tokens oder Keys in Quellcode/Properties
-- CORS: Nicht `allowedOrigins("*")` in Produktion
-- Security-Config: Swagger-UI-Pfade freigegeben, aber nicht alles `permitAll()`
+- SQL injection: No string concatenation in queries (`"SELECT ... " + param`)
+- Input validation: `@Valid` on controller/resource methods for request bodies
+- Secrets: No hardcoded passwords, tokens, or keys in source code/properties
+- CORS: Not `allowedOrigins("*")` in production
+- Security config: Swagger UI paths permitted, but not everything `permitAll()`
 
-#### 2.5 Code-Qualität
+#### 2.5 Code Quality
 
-- Unnötige Komplexität oder Over-Engineering
-- Duplikation (gleiche Logik an mehreren Stellen)
-- Fehlende oder falsche Exception-Behandlung
-- Unused Imports, tote Code-Pfade
-- Lombok sinnvoll eingesetzt (nicht überladen)
+- Unnecessary complexity or over-engineering
+- Duplication (same logic in multiple places)
+- Missing or incorrect exception handling
+- Unused imports, dead code paths
+- Lombok used sensibly (not overloaded)
 
-#### 2.6 Konfiguration
+#### 2.6 Configuration
 
-- `application.properties` vollständig (DB, Messaging, Health, Flyway)
-- `docker-compose.yml`: Health Checks für alle Services
-- Flyway-Migration vorhanden für jede neue Entity
-- `versions-maven-plugin` in der POM
-- `renovate.json` im Projekt-Root
+- `application.properties` complete (DB, messaging, health, Flyway)
+- `docker-compose.yml`: Health checks for all services
+- Flyway migration present for every new entity
+- `versions-maven-plugin` in the POM
+- `renovate.json` in the project root
 
 #### 2.7 Tests
 
-- Architekturtest (Taikai) vorhanden?
-- Neue Geschäftslogik (Control-Schicht) hat Unit-Tests?
-- Testklassen im richtigen Package?
+- Architecture test (Taikai) present?
+- New business logic (control layer) has unit tests?
+- Test classes in the correct package?
 
-### Schritt 3 – Report erstellen
+### Step 3 – Create Report
 
-Ergebnis als strukturierte Markdown-Ausgabe im Chat:
+Result as structured Markdown output in the chat:
 
 ```
-## Review-Ergebnis
+## Review Result
 
-### Zusammenfassung
-- X Dateien geprüft
-- X Findings (Y kritisch, Z Warnungen, W Hinweise)
+### Summary
+- X files reviewed
+- X findings (Y critical, Z warnings, W notes)
 
-### Kritisch 🔴
-| # | Datei | Zeile | Problem | Lösung |
-|---|-------|-------|---------|--------|
+### Critical
+| # | File | Line | Problem | Solution |
+|---|------|------|---------|----------|
 | 1 | ... | ... | ... | ... |
 
-### Warnung 🟡
-| # | Datei | Zeile | Problem | Lösung |
-|---|-------|-------|---------|--------|
+### Warning
+| # | File | Line | Problem | Solution |
+|---|------|------|---------|----------|
 
-### Hinweis 🔵
-| # | Datei | Zeile | Problem | Lösung |
-|---|-------|-------|---------|--------|
+### Note
+| # | File | Line | Problem | Solution |
+|---|------|------|---------|----------|
 
-### ✅ Positiv
-- Was gut gelöst ist (nicht nur Fehler suchen!)
+### Positive
+- What is well done (don't just look for bugs!)
 ```
 
-**Kategorisierung:**
+**Categorization:**
 
-| Kategorie | Kriterium |
-|-----------|-----------|
-| **Kritisch** 🔴 | Sicherheitslücke, Datenverlust möglich, Architektur-Verletzung, `ddl-auto=create` |
-| **Warnung** 🟡 | Konventions-Verletzung, fehlender Test, fehlende Validierung |
-| **Hinweis** 🔵 | Verbesserungsvorschlag, Stil, Lesbarkeit |
+| Category | Criteria |
+|----------|----------|
+| **Critical** | Security vulnerability, possible data loss, architecture violation, `ddl-auto=create` |
+| **Warning** | Convention violation, missing test, missing validation |
+| **Note** | Improvement suggestion, style, readability |
 
-**Nach dem Report:** Fragen ob Findings direkt gefixt werden sollen.
-Nur fixen nach expliziter Bestätigung – nie automatisch.
+**After the report:** Ask if findings should be fixed directly.
+Only fix after explicit confirmation – never automatically.
 
 ---
 
 ## References
 
-| Datei | Beschreibung |
-|-------|-------------|
-| `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen – vor jedem Review lesen |
-| [references/review-checklist.md](references/review-checklist.md) | Detaillierter Prüfkatalog mit Regeln pro Kategorie |
+| File | Description |
+|------|-------------|
+| `.claude/lessons-learned.md` | Findings and corrections – read before every review |
+| [references/review-checklist.md](references/review-checklist.md) | Detailed review catalog with rules per category |
 
 ---
 
 ## Conventions
 
-- Der Review-Skill **ändert keinen Code** ohne Bestätigung
-- Positives Feedback geben – nicht nur Fehler auflisten
-- Bei Unsicherheit lieber als Hinweis statt als Kritisch einstufen
-- Keine Findings für generierten Code (target/, build/)
-- Framework erkennen (Spring Boot vs. Quarkus) und passende Regeln anwenden
+- The review skill **does not change code** without confirmation
+- Give positive feedback – don't just list errors
+- When uncertain, classify as note rather than critical
+- No findings for generated code (target/, build/)
+- Detect framework (Spring Boot vs. Quarkus) and apply appropriate rules
 
-### Position im Workflow
+### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – fachliche Anforderungen
-        ↓
-[openapi-skill]           wenn OpenAPI Spec vorhanden
-        ↓
-[java-scaffold-skill]     Rahmen: DB, Messaging, Infra
-        ↓
-[review-skill]            ◀ Code-Review
-        ↓
-[doc-skill]               Projektdokumentation
+[spec-feature-skill]      optional – business requirements
+        |
+[openapi-skill]           if OpenAPI spec needed
+        |
+[java-scaffold-skill]     framework: DB, messaging, infra
+        |
+[review-skill]            <-- code review
+        |
+[doc-skill]               project documentation
 ```

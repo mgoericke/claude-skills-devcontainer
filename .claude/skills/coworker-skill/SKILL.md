@@ -1,356 +1,356 @@
 ---
 name: coworker-skill
-description: Phasen-basierter Coworker fuer End-to-End Projekt-Setup. Fuehrt durch Spezifikation, API-Design und Code-Generierung mit Review nach jeder Phase. Verwende diesen Skill wenn ein neues Projekt von Grund auf aufgesetzt werden soll oder der Entwickler sich durch den kompletten Workflow fuehren lassen moechte. Auch bei "neues Projekt starten", "Coworker", "fuehr mich durch das Setup", "ich brauche ein neues Projekt" oder "Projekt aufsetzen end-to-end".
-argument-hint: "[projektname oder thema]"
+description: Phase-based coworker for end-to-end project setup. Guides through specification, API design, and code generation with review after each phase. Use this skill when a new project needs to be set up from scratch or when the developer wants to be guided through the complete workflow. Also for "start a new project", "coworker", "guide me through the setup", "I need a new project", or "set up a project end-to-end".
+argument-hint: "[project-name or topic]"
 disable-model-invocation: true
 ---
 
 # Coworker Skill
 
-Phasen-basierter Coworker fuer das End-to-End Setup neuer Projekte.
-Orchestriert die bestehenden Skills in der richtigen Reihenfolge – mit Review
-und Feedback-Moeglichkeit nach jeder Phase.
+Phase-based coworker for end-to-end setup of new projects.
+Orchestrates the existing skills in the right order – with review
+and feedback opportunity after each phase.
 
-> **Philosophie:** Ein guter Coworker denkt mit, schlaegt die naechsten Schritte vor
-> und laesst dem Entwickler die Kontrolle. Jede Phase hat ein klares Ergebnis.
-> Nichts passiert ohne Bestaetigung.
+> **Philosophy:** A good coworker thinks ahead, suggests the next steps,
+> and leaves the developer in control. Each phase has a clear outcome.
+> Nothing happens without confirmation.
 
 ---
 
 ## What This Skill Does
 
-1. **Fuehrt durch Phasen** – Spezifikation, API-Design, Code-Generierung
-2. **Orchestriert bestehende Skills** – Nutzt `spec-feature-skill`, `openapi-skill`, `java-scaffold-skill`
-3. **Review nach jeder Phase** – Ergebnis pruefen, Feedback geben, anpassen oder weitermachen
-4. **Flexibel ueberspringen** – Phasen koennen uebersprungen werden, wenn Artefakte schon existieren
+1. **Guides through phases** – Specification, API design, code generation
+2. **Orchestrates existing skills** – Uses `spec-feature-skill`, `openapi-skill`, `java-scaffold-skill`
+3. **Review after each phase** – Check results, give feedback, adjust or continue
+4. **Flexibly skip** – Phases can be skipped if artifacts already exist
 
 ## How to Use
 
 ```
-Starte den Coworker fuer ein neues Projekt
+Start the coworker for a new project
 ```
 
 ```
-Ich brauche ein neues Projekt fuer einen Bestellservice
+I need a new project for an order service
 ```
 
 ```
-Coworker: neues Projekt aufsetzen
+Coworker: set up a new project
 ```
 
 ---
 
 ## Instructions
 
-> **Vor jeder Ausfuehrung**:
-> 1. `.claude/lessons-learned.md` pruefen
-> 2. Pruefen ob bereits Artefakte existieren (`specs/`, `api/`, `pom.xml`)
+> **Before every execution**:
+> 1. Check `.claude/lessons-learned.md`
+> 2. Check if artifacts already exist (`specs/`, `api/`, `pom.xml`)
 
-### Ueberblick: Die Phasen
-
-```
-Phase 1: Projekt-Kontext          → Grundlegende Entscheidungen (Framework, Name, Scope)
-         ↓ Bestaetigung
-Phase 2: Feature spezifizieren    → specs/<feature>.md
-         ↓ Review & Bestaetigung
-Phase 3: API designen             → api/<service>.yaml
-         ↓ Review & Bestaetigung
-Phase 4: Code generieren          → Java-Projekt mit BCE, Tests, Docker, Infra
-         ↓ Review & Bestaetigung
-Phase 5: Zusammenfassung          → Was wurde erstellt, naechste Schritte
-```
-
----
-
-### Schritt 0 – Bestandsaufnahme
-
-Vor dem Start pruefen, was bereits existiert:
-
-- Gibt es eine `pom.xml`? → Projekt existiert bereits, Phasen 1+4 ggf. ueberspringen
-- Gibt es Dateien in `specs/`? → Phase 2 ggf. ueberspringen
-- Gibt es Dateien in `api/`? → Phase 3 ggf. ueberspringen
-
-Ergebnis dem Benutzer mitteilen:
+### Overview: The Phases
 
 ```
-Bestandsaufnahme:
-  Projekt:  ✅ vorhanden (order-service, Spring Boot)
-  Specs:    ❌ keine gefunden
-  API Spec: ❌ keine gefunden
-
-Empfehlung: Mit Phase 2 (Feature spezifizieren) starten.
-```
-
-Oder bei leerem Projekt:
-
-```
-Bestandsaufnahme:
-  Projekt:  ❌ kein Projekt gefunden
-  Specs:    ❌ keine gefunden
-  API Spec: ❌ keine gefunden
-
-Empfehlung: Mit Phase 1 (Projekt-Kontext) starten.
+Phase 1: Project context           → Fundamental decisions (framework, name, scope)
+         ↓ Confirmation
+Phase 2: Specify feature            → specs/<feature>.md
+         ↓ Review & confirmation
+Phase 3: Design API                 → api/<service>.yaml
+         ↓ Review & confirmation
+Phase 4: Generate code              → Java project with BCE, tests, Docker, infra
+         ↓ Review & confirmation
+Phase 5: Summary                    → What was created, next steps
 ```
 
 ---
 
-### Phase 1 – Projekt-Kontext
+### Step 0 – Inventory check
 
-**Ziel:** Die grundlegenden Entscheidungen treffen, bevor es losgeht.
+Before starting, check what already exists:
 
-**Mit `AskUserQuestion` abfragen:**
+- Is there a `pom.xml`? → Project already exists, phases 1+4 may be skippable
+- Are there files in `specs/`? → Phase 2 may be skippable
+- Are there files in `api/`? → Phase 3 may be skippable
 
-#### Frage 1 – Projektname und Zweck
-
-| # | Frage | Hinweis |
-|---|-------|---------|
-| 1 | **Projektname** | Kurzer Name, z.B. `order-service` |
-| 2 | **Was soll das Projekt tun?** | Ein Satz – wird fuer Spec und Doku verwendet |
-
-#### Frage 2 – Framework
+Communicate the result to the user:
 
 ```
-Welches Framework soll verwendet werden?
+Inventory check:
+  Project:  ✅ exists (order-service, Spring Boot)
+  Specs:    ❌ none found
+  API Spec: ❌ none found
+
+Recommendation: Start with Phase 2 (specify feature).
 ```
 
-Optionen:
-- **Spring Boot (Empfohlen)** – Spring Boot 4.x mit Spring AMQP, Actuator, Flyway
-- **Quarkus** – Quarkus 3.31+ mit SmallRye, MicroProfile Health, Flyway
-
-#### Frage 3 – Dienste
+Or for an empty project:
 
 ```
-Welche Dienste braucht das Projekt?
+Inventory check:
+  Project:  ❌ no project found
+  Specs:    ❌ none found
+  API Spec: ❌ none found
+
+Recommendation: Start with Phase 1 (project context).
 ```
 
-Optionen (multiSelect):
-- **PostgreSQL** – Relationale Datenbank
-- **RabbitMQ** – Messaging / Event-Kommunikation
-- **Keycloak** – Authentifizierung und Autorisierung
+---
 
-**Phasen-Uebergang:**
+### Phase 1 – Project Context
+
+**Goal:** Make the fundamental decisions before getting started.
+
+**Ask with `AskUserQuestion`:**
+
+#### Question 1 – Project name and purpose
+
+| # | Question | Hint |
+|---|----------|------|
+| 1 | **Project name** | Short name, e.g. `order-service` |
+| 2 | **What should the project do?** | One sentence – used for spec and docs |
+
+#### Question 2 – Framework
 
 ```
-Phase 1 abgeschlossen ✅
+Which framework should be used?
+```
 
-  Projekt:   order-service
+Options:
+- **Spring Boot (Recommended)** – Spring Boot 4.x with Spring AMQP, Actuator, Flyway
+- **Quarkus** – Quarkus 3.31+ with SmallRye, MicroProfile Health, Flyway
+
+#### Question 3 – Services
+
+```
+What services does the project need?
+```
+
+Options (multiSelect):
+- **PostgreSQL** – Relational database
+- **RabbitMQ** – Messaging / event communication
+- **Keycloak** – Authentication and authorization
+
+**Phase transition:**
+
+```
+Phase 1 completed ✅
+
+  Project:   order-service
   Framework: Spring Boot
-  Dienste:   PostgreSQL, RabbitMQ
+  Services:  PostgreSQL, RabbitMQ
 
-  Naechste Phase: Feature spezifizieren
-  → Der spec-feature-skill fuehrt ein Interview und erstellt eine Spec-Datei.
+  Next phase: Specify feature
+  → The spec-feature-skill conducts an interview and creates a spec file.
 
-Weiter mit Phase 2?
+Continue with Phase 2?
 ```
 
-Per `AskUserQuestion` bestaetigen:
-- **Weiter mit Phase 2** – Feature spezifizieren
-- **Phase 2 ueberspringen** – Direkt zu Phase 3 (API designen)
-- **Hier stoppen** – Spaeter weitermachen
+Confirm via `AskUserQuestion`:
+- **Continue with Phase 2** – Specify feature
+- **Skip Phase 2** – Go directly to Phase 3 (design API)
+- **Stop here** – Continue later
 
 ---
 
-### Phase 2 – Feature spezifizieren
+### Phase 2 – Specify Feature
 
-**Ziel:** Eine fachliche Spezifikation erstellen, bevor Code geschrieben wird.
+**Goal:** Create a business specification before writing code.
 
-**Delegation an `spec-feature-skill`:**
+**Delegation to `spec-feature-skill`:**
 
-Den `spec-feature-skill` ausfuehren – mit dem Projektkontext aus Phase 1 als Vorwissen.
-Der Skill fuehrt sein eigenes Interview (4 Fragengruppen) und erstellt `specs/<feature>.md`.
+Execute the `spec-feature-skill` – with the project context from Phase 1 as prior knowledge.
+The skill conducts its own interview (4 question groups) and creates `specs/<feature>.md`.
 
-**Nach Abschluss:**
+**After completion:**
 
 ```
-Phase 2 abgeschlossen ✅
+Phase 2 completed ✅
 
-  Erstellt: specs/order-creation.md
+  Created: specs/order-creation.md
 
-  Zusammenfassung:
-    Feature: Bestellungen erstellen und verwalten
-    Akteure: Kunde, Admin
-    Endpunkte: 5 (CRUD + Statusaenderung)
-    Messaging: OrderCreatedEvent an RabbitMQ
+  Summary:
+    Feature: Create and manage orders
+    Actors: Customer, Admin
+    Endpoints: 5 (CRUD + status change)
+    Messaging: OrderCreatedEvent to RabbitMQ
 
-  Naechste Phase: API designen
-  → Der openapi-skill erstellt eine OpenAPI Spec basierend auf der Feature-Spec.
+  Next phase: Design API
+  → The openapi-skill creates an OpenAPI spec based on the feature spec.
 
-Weiter mit Phase 3?
+Continue with Phase 3?
 ```
 
-Per `AskUserQuestion`:
-- **Weiter mit Phase 3** – API Spec erstellen
-- **Phase 2 wiederholen** – Weiteres Feature spezifizieren
-- **Phase 3 ueberspringen** – Direkt zu Phase 4 (Code generieren)
-- **Hier stoppen** – Spaeter weitermachen
+Via `AskUserQuestion`:
+- **Continue with Phase 3** – Create API spec
+- **Repeat Phase 2** – Specify another feature
+- **Skip Phase 3** – Go directly to Phase 4 (generate code)
+- **Stop here** – Continue later
 
 ---
 
-### Phase 3 – API designen
+### Phase 3 – Design API
 
-**Ziel:** Eine OpenAPI Spec erstellen, die den API-Kontrakt definiert.
+**Goal:** Create an OpenAPI spec that defines the API contract.
 
-**Delegation an `openapi-skill` (Modus A: Neue Spec erstellen):**
+**Delegation to `openapi-skill` (Mode A: Create new spec):**
 
-Den `openapi-skill` im Modus "Neue Spec erstellen" ausfuehren.
-Dabei die Informationen aus Phase 1 (Framework, Dienste) und Phase 2 (Feature-Spec) als Kontext uebergeben.
+Execute the `openapi-skill` in "Create new spec" mode.
+Pass along the information from Phase 1 (framework, services) and Phase 2 (feature spec) as context.
 
-Falls in Phase 2 bereits Endpunkte und Datenmodelle definiert wurden, diese als Vorschlag anbieten
-statt erneut abzufragen.
+If endpoints and data models were already defined in Phase 2, offer them as suggestions
+instead of asking again.
 
-**Nach Abschluss:**
+**After completion:**
 
 ```
-Phase 3 abgeschlossen ✅
+Phase 3 completed ✅
 
-  Erstellt: api/order-service.yaml (OpenAPI 3.1.0)
+  Created: api/order-service.yaml (OpenAPI 3.1.0)
 
-  Schemas:  CreateOrderRequest, OrderResponse, ErrorResponse
-  Endpunkte: 5
+  Schemas:   CreateOrderRequest, OrderResponse, ErrorResponse
+  Endpoints: 5
     GET    /api/v1/orders
     POST   /api/v1/orders
     GET    /api/v1/orders/{id}
     PUT    /api/v1/orders/{id}
     DELETE /api/v1/orders/{id}
 
-  Naechste Phase: Code generieren
-  → Der java-scaffold-skill erstellt das Projekt, der openapi-skill generiert Code aus der Spec.
+  Next phase: Generate code
+  → The java-scaffold-skill creates the project, the openapi-skill generates code from the spec.
 
-Weiter mit Phase 4?
+Continue with Phase 4?
 ```
 
-Per `AskUserQuestion`:
-- **Weiter mit Phase 4** – Projekt und Code generieren
-- **Phase 3 wiederholen** – API Spec anpassen
-- **Hier stoppen** – Spaeter weitermachen
+Via `AskUserQuestion`:
+- **Continue with Phase 4** – Generate project and code
+- **Repeat Phase 3** – Adjust API spec
+- **Stop here** – Continue later
 
 ---
 
-### Phase 4 – Code generieren
+### Phase 4 – Generate Code
 
-**Ziel:** Das lauffaehige Projekt erstellen – Struktur, Code, Infra, Tests.
+**Goal:** Create the runnable project – structure, code, infra, tests.
 
-Diese Phase kombiniert zwei Skills:
+This phase combines two skills:
 
-**Schritt 4a – Projekt-Scaffolding (java-scaffold-skill):**
-- `pom.xml`, BCE-Paketstruktur, Flyway, Docker, Health Checks
-- `docker-compose.yml` mit den gewaehlten Diensten aus Phase 1
-- Taikai-Architekturtests
+**Step 4a – Project scaffolding (java-scaffold-skill):**
+- `pom.xml`, BCE package structure, Flyway, Docker, health checks
+- `docker-compose.yml` with the selected services from Phase 1
+- Taikai architecture tests
 - `renovate.json`, `.gitignore`
 
-**Schritt 4b – Code aus API Spec (openapi-skill, Modus C):**
-- DTOs in `entity/dto/` aus der OpenAPI Spec
-- REST-Controller/Resources in `boundary/rest/`
-- Service-Stubs in `control/`
+**Step 4b – Code from API spec (openapi-skill, Mode C):**
+- DTOs in `entity/dto/` from the OpenAPI spec
+- REST controllers/resources in `boundary/rest/`
+- Service stubs in `control/`
 
-**Nach Abschluss:**
+**After completion:**
 
 ```
-Phase 4 abgeschlossen ✅
+Phase 4 completed ✅
 
-  Generiert:
+  Generated:
     ✅ pom.xml             – Spring Boot, PostgreSQL, Spring AMQP
-    ✅ BCE-Paketstruktur   – boundary/, control/, entity/
-    ✅ Taikai-Tests        – Architekturregeln als Unit-Tests
-    ✅ Flyway              – db/migration/ mit initialer Migration
-    ✅ Health Check        – /actuator/health
-    ✅ Dockerfile          – Multi-Stage Build
-    ✅ docker-compose.yml  – PostgreSQL, RabbitMQ
-    ✅ REST-Endpunkte      – 5 Endpunkte aus der API Spec
-    ✅ DTOs                – 3 Records mit Validierung
-    ✅ Service-Stubs       – Business-Logik Platzhalter
+    ✅ BCE package structure – boundary/, control/, entity/
+    ✅ Taikai tests         – Architecture rules as unit tests
+    ✅ Flyway               – db/migration/ with initial migration
+    ✅ Health check          – /actuator/health
+    ✅ Dockerfile            – Multi-stage build
+    ✅ docker-compose.yml    – PostgreSQL, RabbitMQ
+    ✅ REST endpoints        – 5 endpoints from the API spec
+    ✅ DTOs                  – 3 records with validation
+    ✅ Service stubs         – Business logic placeholders
 
-  Starten mit:
+  Start with:
     docker compose up -d && ./mvnw spring-boot:run
 
-Weiter mit Phase 5 (Zusammenfassung)?
+Continue with Phase 5 (summary)?
 ```
 
 ---
 
-### Phase 5 – Zusammenfassung und naechste Schritte
+### Phase 5 – Summary and Next Steps
 
-**Ziel:** Ueberblick ueber alles, was erstellt wurde, und Empfehlungen fuer die naechsten Schritte.
+**Goal:** Overview of everything created and recommendations for next steps.
 
 ```
-Projekt order-service – Setup abgeschlossen ✅
+Project order-service – Setup completed ✅
 
-Erstellte Artefakte:
-  specs/order-creation.md          – Feature-Spezifikation
-  api/order-service.yaml           – OpenAPI 3.1.0 Spec
-  pom.xml                          – Spring Boot 4.x Projekt
-  src/main/java/...                – BCE-Struktur mit 5 Endpunkten
-  src/test/java/...                – Architekturtests
+Created artifacts:
+  specs/order-creation.md          – Feature specification
+  api/order-service.yaml           – OpenAPI 3.1.0 spec
+  pom.xml                          – Spring Boot 4.x project
+  src/main/java/...                – BCE structure with 5 endpoints
+  src/test/java/...                – Architecture tests
   docker-compose.yml               – PostgreSQL, RabbitMQ
-  Dockerfile                       – Multi-Stage Build
+  Dockerfile                       – Multi-stage build
 
-Empfohlene naechste Schritte:
-  1. docker compose up -d           – Infrastruktur starten
-  2. ./mvnw spring-boot:run         – Anwendung starten
-  3. Service-Stubs implementieren   – Business-Logik in control/
-  4. Flyway-Migrationen anpassen    – Tabellen fuer Entities
-  5. /review-skill                  – Code-Review durchfuehren
-  6. /doc-skill                     – Projektdokumentation erstellen
+Recommended next steps:
+  1. docker compose up -d           – Start infrastructure
+  2. ./mvnw spring-boot:run         – Start application
+  3. Implement service stubs        – Business logic in control/
+  4. Adjust Flyway migrations       – Tables for entities
+  5. /review-skill                  – Run code review
+  6. /doc-skill                     – Create project documentation
 ```
 
 ---
 
-## Phasen-Steuerung
+## Phase Control
 
-### Ueberspringen von Phasen
+### Skipping Phases
 
-Der Coworker erkennt automatisch, welche Phasen uebersprungen werden koennen:
+The coworker automatically detects which phases can be skipped:
 
-| Wenn vorhanden | Phase ueberspringbar |
-|----------------|---------------------|
-| `pom.xml` | Phase 1 + 4a (Scaffolding) |
-| `specs/*.md` | Phase 2 (Spec) |
-| `api/*.yaml` | Phase 3 (API Design) |
-| Klassen in `boundary/rest/` | Phase 4b (Code aus Spec) |
+| If present | Phase skippable |
+|------------|----------------|
+| `pom.xml` | Phase 1 + 4a (scaffolding) |
+| `specs/*.md` | Phase 2 (spec) |
+| `api/*.yaml` | Phase 3 (API design) |
+| Classes in `boundary/rest/` | Phase 4b (code from spec) |
 
-### Wiederholen von Phasen
+### Repeating Phases
 
-Jede Phase kann wiederholt werden – z.B. um ein weiteres Feature zu spezifizieren
-oder die API Spec zu erweitern. Der Coworker fragt nach jeder Phase explizit.
+Each phase can be repeated – e.g. to specify another feature
+or extend the API spec. The coworker asks explicitly after each phase.
 
-### Abbrechen und Fortsetzen
+### Stopping and Resuming
 
-Der Coworker kann nach jeder Phase gestoppt werden. Beim naechsten Aufruf
-erkennt die Bestandsaufnahme (Schritt 0), wo der Entwickler aufgehoert hat.
+The coworker can be stopped after each phase. On the next invocation,
+the inventory check (Step 0) detects where the developer left off.
 
 ---
 
 ## References
 
-| Datei | Beschreibung |
-|-------|-------------|
-| `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen |
-| `.claude/skills/spec-feature-skill/SKILL.md` | Feature-Spezifikation (Phase 2) |
-| `.claude/skills/openapi-skill/SKILL.md` | API Design + Code-Generierung (Phase 3 + 4b) |
-| `.claude/skills/java-scaffold-skill/SKILL.md` | Projekt-Scaffolding (Phase 4a) |
-| `.claude/skills/review-skill/SKILL.md` | Code-Review (empfohlener naechster Schritt) |
-| `.claude/skills/doc-skill/SKILL.md` | Projektdokumentation (empfohlener naechster Schritt) |
+| File | Description |
+|------|-------------|
+| `.claude/lessons-learned.md` | Findings and corrections |
+| `.claude/skills/spec-feature-skill/SKILL.md` | Feature specification (Phase 2) |
+| `.claude/skills/openapi-skill/SKILL.md` | API design + code generation (Phase 3 + 4b) |
+| `.claude/skills/java-scaffold-skill/SKILL.md` | Project scaffolding (Phase 4a) |
+| `.claude/skills/review-skill/SKILL.md` | Code review (recommended next step) |
+| `.claude/skills/doc-skill/SKILL.md` | Project documentation (recommended next step) |
 
 ---
 
 ## Conventions
 
-- **Sprache:** Deutsch in der Interaktion, Englisch im Code
-- **Phasen-Uebergaenge:** Immer per `AskUserQuestion` bestaetigen lassen
-- **Delegation:** Bestehende Skills nutzen, nicht deren Logik duplizieren
-- **Kontext weitergeben:** Informationen aus frueheren Phasen in spaetere Phasen uebergeben
-- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via coworker-skill`
+- **Language:** English in code, documentation language follows user preference
+- **Phase transitions:** Always confirm via `AskUserQuestion`
+- **Delegation:** Use existing skills, don't duplicate their logic
+- **Pass context forward:** Pass information from earlier phases into later phases
+- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via coworker-skill`
 
-### Position im Workflow
+### Position in Workflow
 
 ```
-[coworker-skill]          ◀ Orchestriert den gesamten Workflow
+[coworker-skill]          < Orchestrates the entire workflow
         │
         ├── [spec-feature-skill]     Phase 2
         ├── [openapi-skill]          Phase 3 + 4b
         ├── [java-scaffold-skill]    Phase 4a
         │
-        └── empfiehlt danach:
-            ├── [review-skill]       Code-Review
-            └── [doc-skill]          Dokumentation
+        └── recommends afterwards:
+            ├── [review-skill]       Code review
+            └── [doc-skill]          Documentation
 ```

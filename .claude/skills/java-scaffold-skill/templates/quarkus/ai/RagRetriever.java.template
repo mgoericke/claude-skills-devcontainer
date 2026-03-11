@@ -1,14 +1,14 @@
 /**
- * RAG Retrieval Augmentor – reichert LLM-Anfragen mit Dokumentenwissen an.
+ * RAG Retrieval Augmentor – enriches LLM requests with document knowledge.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Control-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Control layer / AI)
  *
- * <p>Dieser Bean wird automatisch vom AI Service genutzt, um relevante
- * Dokument-Segmente aus der Vektordatenbank (PgVector) abzurufen und
- * dem LLM-Prompt hinzuzufuegen.
+ * <p>This bean is automatically used by the AI Service to retrieve relevant
+ * document segments from the vector database (PgVector) and add them
+ * to the LLM prompt.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.control.ai;
 

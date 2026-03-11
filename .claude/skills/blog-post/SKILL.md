@@ -1,5 +1,5 @@
 ---
-name: blog-post-skill
+name: blog-post
 description: Creates technical blog posts in the style of the-main-thread.com with structured interviews and audience adaptation (Developer, Business Analysts, Project Managers). Use this skill whenever a blog post, article, tutorial, guide, experience report, or technical contribution needs to be created – also for informal requests like "write something about X", "I want to blog about X", or "make an article out of this". Also use when an existing draft should be turned into blog post format.
 argument-hint: "[topic]"
 ---
@@ -168,7 +168,7 @@ After the blog post, ask:
 Should a hero image be generated for the post?
 ```
 
-If yes, via Hugging Face API (as in infografik-skill):
+If yes, via Hugging Face API (as in infografik):
 
 **Prompt schema for blog hero images:**
 
@@ -210,7 +210,7 @@ Check before presenting:
 |------|-------------|
 | [blog-post.md.template](blog-post.md.template) | Markdown template for the blog post |
 | `.claude/lessons-learned.md` | Findings and corrections |
-| `references/farbpaletten.md` | Color palettes for hero image generation (from infografik-skill) |
+| `references/farbpaletten.md` | Color palettes for hero image generation (from infografik) |
 
 ### Style references
 
@@ -231,19 +231,19 @@ The style rules are based on the analysis of these posts from [the-main-thread.c
 - **Prose language:** German (default) or English – depending on interview
 - **Code language:** Always English
 - **Technical terms:** Remain English, even in German posts
-- **Co-Author:** At the end of the post: `*Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via blog-post-skill*`
+- **Co-Author:** At the end of the post: `*Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via blog-post*`
 - **Hero Image:** `docs/hero_<topic-or-timestamp>.png` – never overwrite
 
 ### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – business requirements
+[spec-feature]      optional – business requirements
         |
-[java-scaffold-skill]     project setup
+[java-scaffold]     project setup
         |
-[review-skill]            code review
+[review]            code review
         |
-[doc-skill]               project documentation
+[doc]               project documentation
         |
-[blog-post-skill]         < blog post about the project / technology
+[blog-post]         < blog post about the project / technology
 ```

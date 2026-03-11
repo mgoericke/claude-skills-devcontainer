@@ -1,6 +1,6 @@
 # Review Checklist
 
-Detailed review catalog for the review-skill.
+Detailed review catalog for the review.
 Each rule contains: what is checked, what a violation looks like, and what the solution is.
 
 ---

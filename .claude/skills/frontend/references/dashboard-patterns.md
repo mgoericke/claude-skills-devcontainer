@@ -1,6 +1,6 @@
 # Dashboard Patterns (TailAdmin)
 
-Reference patterns for the dashboard mode of the frontend-skill.
+Reference patterns for the dashboard mode of the frontend.
 Based on TailAdmin (MIT License): https://demo.tailadmin.com/
 
 ---

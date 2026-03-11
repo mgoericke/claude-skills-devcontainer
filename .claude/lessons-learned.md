@@ -158,7 +158,7 @@ Source: https://www.the-main-thread.com/p/architecture-testing-java-quarkus-taik
 
 Every generated file receives a co-author note:
 ```java
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold
 ```
 In properties/YAML as comment:
 ```

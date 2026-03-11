@@ -24,7 +24,7 @@ Never enter tokens directly in configuration files.
 ```bash
 # macOS/Linux (~/.zshrc or ~/.bashrc)
 export ANTHROPIC_API_KEY="sk-ant-..."        # or: claude login in the container
-export HF_TOKEN="hf_..."                     # Hugging Face – for infografik-skill (free)
+export HF_TOKEN="hf_..."                     # Hugging Face – for infografik (free)
 
 # Optional – only when needed
 export ARTIFACTORY_URL="https://company.jfrog.io/artifactory"
@@ -55,7 +55,7 @@ claude login
 
 ### Hugging Face Token (`HF_TOKEN`)
 
-Required for the **infografik-skill**. One-time setup:
+Required for the **infografik**. One-time setup:
 
 1. Create a token at https://huggingface.co/settings/tokens (**Token type:** `Read`)
 2. Set as `HF_TOKEN` on the host (see above)

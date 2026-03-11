@@ -1,5 +1,5 @@
 ---
-name: java-scaffold-skill
+name: java-scaffold
 description: Scaffolding for Java projects with Spring Boot or Quarkus, PostgreSQL, RabbitMQ, LangChain4j AI, and Docker. Generates pom.xml, BCE package structure, Flyway migrations, architecture tests (Taikai), Dockerfile, and docker-compose. Supports AI business applications with LangChain4j (AI Services, Tools/Function Calling, RAG, Guardrails). Use this skill for new Java applications, new entities, Dockerfiles, docker-compose, architecture tests, AI services, or AI integrations – also for "create a new project", "scaffold", "new module", "new entity", "AI Service", "Chatbot", "RAG", "LangChain4j".
 argument-hint: "[framework] [description]"
 ---
@@ -71,7 +71,7 @@ the following questions before generating code**:
 
 **Ask before scaffolding:** Is there an OpenAPI specification for this project?
 
-- **Yes** → run `openapi-skill` first; then during scaffold
+- **Yes** → run `openapi` first; then during scaffold
   **do not** regenerate `boundary/rest/` and `entity/dto/` – only the framework
   (pom.xml, docker-compose, application.properties, Flyway, architecture test, Dockerfile).
 - **No** → proceed normally, generate all layers.
@@ -414,18 +414,18 @@ Renovate automatically creates pull requests for dependency updates and keeps th
 - **Examples:** Domain-neutral (`order`, `product`, `event`, `item`)
 - **Language:** English in comments/docs and code
 - **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
-- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill`
+- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold`
 
 ### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – business requirements
+[spec-feature]      optional – business requirements
         |
-[openapi-skill]           if OpenAPI spec available
+[openapi]           if OpenAPI spec available
         |
-[java-scaffold-skill]     framework: DB, messaging, AI, infra
+[java-scaffold]     framework: DB, messaging, AI, infra
         |
-[review-skill]            code review
+[review]            code review
         |
-[doc-skill]               project documentation
+[doc]               project documentation
 ```

@@ -1,5 +1,5 @@
 ---
-name: spec-feature-skill
+name: spec-feature
 description: Spec Driven Development – gathers business features through a structured interview sequence (context, behavior, technical hints, quality) and creates a specification file in specs/. Use this skill for "specify a feature", "create a spec", "describe the feature", "what should the system do?" or when requirements should be captured in a structured way before code is written.
 argument-hint: "[feature-name]"
 ---
@@ -94,9 +94,9 @@ Template: see `templates/feature-spec.md.template`
 - **Feature name (heading):** Title case, English (`Order Creation`)
 - **Code artifacts in the proposal:** English (`OrderService`, `createOrder`)
 
-### Integration with java-scaffold-skill
+### Integration with java-scaffold
 
-After spec creation, the `java-scaffold-skill` can use the spec as input:
+After spec creation, the `java-scaffold` can use the spec as input:
 
 ```
 Implement the feature according to specs/order-creation.md
@@ -110,13 +110,13 @@ The scaffold skill reads the spec and derives:
 ### Position in Workflow
 
 ```
-[spec-feature-skill]      <-- capture business requirements
+[spec-feature]      <-- capture business requirements
         |
-[openapi-skill]           if OpenAPI spec needed
+[openapi]           if OpenAPI spec needed
         |
-[java-scaffold-skill]     framework: DB, messaging, infra
+[java-scaffold]     framework: DB, messaging, infra
         |
-[review-skill]            code review
+[review]            code review
         |
-[doc-skill]               project documentation
+[doc]               project documentation
 ```

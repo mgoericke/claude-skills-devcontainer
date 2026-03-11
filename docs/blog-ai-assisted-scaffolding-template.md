@@ -46,7 +46,7 @@ Each skill is a `SKILL.md` file -- a structured instruction set with frontmatter
 
 ```yaml
 ---
-name: java-scaffold-skill
+name: java-scaffold
 description: Scaffolding for Java projects with Spring Boot or Quarkus,
   PostgreSQL, RabbitMQ, LangChain4j AI and Docker.
 argument-hint: "[framework] [project-name]"
@@ -69,7 +69,7 @@ Skills follow the [Agent Skills](https://agentskills.io) open standard. They can
 
 ### The Question-Answer Approach
 
-Instead of guessing, skills **interview you** before generating anything. The `spec-feature-skill`, for example, walks through four groups of questions -- Context, Behavior, Technical Hints, Quality -- before producing a specification file in `specs/`. That spec then feeds into code generation.
+Instead of guessing, skills **interview you** before generating anything. The `spec-feature`, for example, walks through four groups of questions -- Context, Behavior, Technical Hints, Quality -- before producing a specification file in `specs/`. That spec then feeds into code generation.
 
 This means the AI doesn't just write code. It first **understands what it should build**, documents that understanding, gets your confirmation, and *then* generates.
 
@@ -176,18 +176,18 @@ Beyond scaffolding, the template includes skills for the entire development life
 
 | Skill | What It Does |
 |-------|-------------|
-| `java-scaffold-skill` | Project scaffolding (Spring Boot / Quarkus, AI profiles) |
-| `spec-feature-skill` | Structured feature interviews before coding |
-| `openapi-skill` | Create, extend, and generate code from OpenAPI 3.x specs |
-| `coworker-skill` | End-to-end orchestration across all skills with review gates |
-| `review-skill` | Automated code review against project conventions and BCE rules |
-| `doc-skill` | Project documentation from source code analysis |
-| `frontend-skill` | Web UIs with Tailwind CSS (dashboards, landing pages) |
-| `blog-post-skill` | Technical blog posts with audience-specific depth |
-| `infografik-skill` | AI-generated infographics via Hugging Face FLUX |
+| `java-scaffold` | Project scaffolding (Spring Boot / Quarkus, AI profiles) |
+| `spec-feature` | Structured feature interviews before coding |
+| `openapi` | Create, extend, and generate code from OpenAPI 3.x specs |
+| `coworker` | End-to-end orchestration across all skills with review gates |
+| `review` | Automated code review against project conventions and BCE rules |
+| `doc` | Project documentation from source code analysis |
+| `frontend` | Web UIs with Tailwind CSS (dashboards, landing pages) |
+| `blog-post` | Technical blog posts with audience-specific depth |
+| `infografik` | AI-generated infographics via Hugging Face FLUX |
 | `skill-creator` | Create and optimize new skills, measure skill performance |
 
-The `coworker-skill` is particularly useful -- it orchestrates a full project setup across phases (specify, design API, generate code, document) with review gates between each step. Think of it as a guided project wizard.
+The `coworker` is particularly useful -- it orchestrates a full project setup across phases (specify, design API, generate code, document) with review gates between each step. Think of it as a guided project wizard.
 
 Want to create your own skill? There's a `SKILL.md.template` in the repo. Copy it, fill in the placeholders, and Claude picks it up automatically.
 
@@ -256,7 +256,7 @@ Set up an AI service with RAG and PgVector
 This is a **work in progress**. I use this template daily, and it evolves with every project. New lessons get captured, skills get refined, templates get better. Some things I'm exploring:
 
 - More framework-specific templates (Micronaut?)
-- Tighter integration between spec-feature-skill and test generation
+- Tighter integration between spec-feature and test generation
 - Community contributions -- the skill system is open and extensible
 
 The repository is public: **[github.com/mgoericke/claude-skills-devcontainer](https://github.com/mgoericke/claude-skills-devcontainer)**
@@ -269,4 +269,4 @@ If you're using Claude Code for Java development, give it a try. Clone it, open 
 
 ---
 
-*Co-Author: Claude (claude-opus-4-6, Anthropic) -- generated via blog-post-skill*
+*Co-Author: Claude (claude-opus-4-6, Anthropic) -- generated via blog-post*

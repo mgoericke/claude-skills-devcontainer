@@ -18,14 +18,14 @@ Interactive, prompt-driven workflows that guide you through a task step by step.
 
 | Skill | Description |
 |-------|-------------|
-| **java-scaffold-skill** | Scaffolds new Java projects, entities, Dockerfiles, docker-compose, and AI services |
-| **spec-feature-skill** | Structured feature interview that produces a spec file before code is written |
-| **openapi-skill** | Create, extend, or generate Java code from an OpenAPI 3.x spec |
-| **review-skill** | Code review against project conventions, architecture rules (BCE), and best practices |
-| **doc-skill** | Reads source code and configuration, creates project documentation in `docs/` |
-| **blog-post-skill** | Creates technical blog posts with structured interviews and audience adaptation |
-| **frontend-skill** | Web UIs: Dashboards (TailAdmin), Landing Pages, and SPAs with Tailwind CSS |
-| **infografik-skill** | AI image generation via Hugging Face FLUX.1 |
+| **java-scaffold** | Scaffolds new Java projects, entities, Dockerfiles, docker-compose, and AI services |
+| **spec-feature** | Structured feature interview that produces a spec file before code is written |
+| **openapi** | Create, extend, or generate Java code from an OpenAPI 3.x spec |
+| **review** | Code review against project conventions, architecture rules (BCE), and best practices |
+| **doc** | Reads source code and configuration, creates project documentation in `docs/` |
+| **blog-post** | Creates technical blog posts with structured interviews and audience adaptation |
+| **frontend** | Web UIs: Simple HTML pages, Dashboards (TailAdmin), Landing Pages with Tailwind CSS |
+| **infografik** | AI image generation via Hugging Face FLUX.1 |
 | **skill-creator** | Create new skills, optimize existing skills, and measure skill performance |
 
 ### Agents

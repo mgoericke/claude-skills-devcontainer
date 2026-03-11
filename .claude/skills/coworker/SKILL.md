@@ -1,5 +1,5 @@
 ---
-name: coworker-skill
+name: coworker
 description: Phase-based coworker for end-to-end project setup. Guides through specification, API design, and code generation with review after each phase. Use this skill when a new project needs to be set up from scratch or when the developer wants to be guided through the complete workflow. Also for "start a new project", "coworker", "guide me through the setup", "I need a new project", or "set up a project end-to-end".
 argument-hint: "[project-name or topic]"
 disable-model-invocation: true
@@ -20,7 +20,7 @@ and feedback opportunity after each phase.
 ## What This Skill Does
 
 1. **Guides through phases** – Specification, API design, code generation
-2. **Orchestrates existing skills** – Uses `spec-feature-skill`, `openapi-skill`, `java-scaffold-skill`
+2. **Orchestrates existing skills** – Uses `spec-feature`, `openapi`, `java-scaffold`
 3. **Review after each phase** – Check results, give feedback, adjust or continue
 4. **Flexibly skip** – Phases can be skipped if artifacts already exist
 
@@ -138,7 +138,7 @@ Phase 1 completed ✅
   Services:  PostgreSQL, RabbitMQ
 
   Next phase: Specify feature
-  → The spec-feature-skill conducts an interview and creates a spec file.
+  → The spec-feature conducts an interview and creates a spec file.
 
 Continue with Phase 2?
 ```
@@ -154,9 +154,9 @@ Confirm via `AskUserQuestion`:
 
 **Goal:** Create a business specification before writing code.
 
-**Delegation to `spec-feature-skill`:**
+**Delegation to `spec-feature`:**
 
-Execute the `spec-feature-skill` – with the project context from Phase 1 as prior knowledge.
+Execute the `spec-feature` – with the project context from Phase 1 as prior knowledge.
 The skill conducts its own interview (4 question groups) and creates `specs/<feature>.md`.
 
 **After completion:**
@@ -173,7 +173,7 @@ Phase 2 completed ✅
     Messaging: OrderCreatedEvent to RabbitMQ
 
   Next phase: Design API
-  → The openapi-skill creates an OpenAPI spec based on the feature spec.
+  → The openapi creates an OpenAPI spec based on the feature spec.
 
 Continue with Phase 3?
 ```
@@ -190,9 +190,9 @@ Via `AskUserQuestion`:
 
 **Goal:** Create an OpenAPI spec that defines the API contract.
 
-**Delegation to `openapi-skill` (Mode A: Create new spec):**
+**Delegation to `openapi` (Mode A: Create new spec):**
 
-Execute the `openapi-skill` in "Create new spec" mode.
+Execute the `openapi` in "Create new spec" mode.
 Pass along the information from Phase 1 (framework, services) and Phase 2 (feature spec) as context.
 
 If endpoints and data models were already defined in Phase 2, offer them as suggestions
@@ -214,7 +214,7 @@ Phase 3 completed ✅
     DELETE /api/v1/orders/{id}
 
   Next phase: Generate code
-  → The java-scaffold-skill creates the project, the openapi-skill generates code from the spec.
+  → The java-scaffold creates the project, the openapi generates code from the spec.
 
 Continue with Phase 4?
 ```
@@ -232,13 +232,13 @@ Via `AskUserQuestion`:
 
 This phase combines two skills:
 
-**Step 4a – Project scaffolding (java-scaffold-skill):**
+**Step 4a – Project scaffolding (java-scaffold):**
 - `pom.xml`, BCE package structure, Flyway, Docker, health checks
 - `docker-compose.yml` with the selected services from Phase 1
 - Taikai architecture tests
 - `renovate.json`, `.gitignore`
 
-**Step 4b – Code from API spec (openapi-skill, Mode C):**
+**Step 4b – Code from API spec (openapi, Mode C):**
 - DTOs in `entity/dto/` from the OpenAPI spec
 - REST controllers/resources in `boundary/rest/`
 - Service stubs in `control/`
@@ -289,8 +289,8 @@ Recommended next steps:
   2. ./mvnw spring-boot:run         – Start application
   3. Implement service stubs        – Business logic in control/
   4. Adjust Flyway migrations       – Tables for entities
-  5. /review-skill                  – Run code review
-  6. /doc-skill                     – Create project documentation
+  5. /review                  – Run code review
+  6. /doc                     – Create project documentation
 ```
 
 ---
@@ -325,11 +325,11 @@ the inventory check (Step 0) detects where the developer left off.
 | File | Description |
 |------|-------------|
 | `.claude/lessons-learned.md` | Findings and corrections |
-| `.claude/skills/spec-feature-skill/SKILL.md` | Feature specification (Phase 2) |
-| `.claude/skills/openapi-skill/SKILL.md` | API design + code generation (Phase 3 + 4b) |
-| `.claude/skills/java-scaffold-skill/SKILL.md` | Project scaffolding (Phase 4a) |
-| `.claude/skills/review-skill/SKILL.md` | Code review (recommended next step) |
-| `.claude/skills/doc-skill/SKILL.md` | Project documentation (recommended next step) |
+| `.claude/skills/spec-feature/SKILL.md` | Feature specification (Phase 2) |
+| `.claude/skills/openapi/SKILL.md` | API design + code generation (Phase 3 + 4b) |
+| `.claude/skills/java-scaffold/SKILL.md` | Project scaffolding (Phase 4a) |
+| `.claude/skills/review/SKILL.md` | Code review (recommended next step) |
+| `.claude/skills/doc/SKILL.md` | Project documentation (recommended next step) |
 
 ---
 
@@ -339,18 +339,18 @@ the inventory check (Step 0) detects where the developer left off.
 - **Phase transitions:** Always confirm via `AskUserQuestion`
 - **Delegation:** Use existing skills, don't duplicate their logic
 - **Pass context forward:** Pass information from earlier phases into later phases
-- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via coworker-skill`
+- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via coworker`
 
 ### Position in Workflow
 
 ```
-[coworker-skill]          < Orchestrates the entire workflow
+[coworker]          < Orchestrates the entire workflow
         │
-        ├── [spec-feature-skill]     Phase 2
-        ├── [openapi-skill]          Phase 3 + 4b
-        ├── [java-scaffold-skill]    Phase 4a
+        ├── [spec-feature]     Phase 2
+        ├── [openapi]          Phase 3 + 4b
+        ├── [java-scaffold]    Phase 4a
         │
         └── recommends afterwards:
-            ├── [review-skill]       Code review
-            └── [doc-skill]          Documentation
+            ├── [review]       Code review
+            └── [doc]          Documentation
 ```

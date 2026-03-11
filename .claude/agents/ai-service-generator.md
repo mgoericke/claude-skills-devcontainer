@@ -5,7 +5,7 @@ tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
 permissionMode: acceptEdits
 skills:
-  - java-scaffold-skill
+  - java-scaffold
 ---
 
 # AI Service Generator Agent

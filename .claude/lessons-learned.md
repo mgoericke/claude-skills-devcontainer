@@ -260,8 +260,9 @@ Dependency:
 quarkus.oidc.auth-server-url=http://keycloak:8080/realms/<realm-name>
 quarkus.oidc.client-id=<client-id>
 quarkus.oidc.application-type=service
-# Dev configuration (no TLS check)
-quarkus.oidc.tls.verification=none
+# LOCAL DEVELOPMENT ONLY – never use in staging or production.
+# In production, use a valid TLS certificate and remove this line entirely.
+%dev.quarkus.oidc.tls.verification=none
 ```
 
 > **Note:** In docker-compose, the application uses the service name `keycloak:8080` (internal).
@@ -269,15 +270,16 @@ quarkus.oidc.tls.verification=none
 
 ### Keycloak – Production Configuration (PostgreSQL)
 
-For production, switch KC_DB to postgres:
+For production, switch KC_DB to postgres.
+**Never use default credentials in any network-accessible environment, including internal staging.**
 ```yaml
 environment:
   KC_DB: postgres
   KC_DB_URL: jdbc:postgresql://postgres:5432/keycloakdb
-  KC_DB_USERNAME: keycloak
-  KC_DB_PASSWORD: keycloak
-  KEYCLOAK_ADMIN: admin
-  KEYCLOAK_ADMIN_PASSWORD: admin
+  KC_DB_USERNAME: ${KC_DB_USERNAME}                    # REQUIRED: set via environment variable
+  KC_DB_PASSWORD: ${KC_DB_PASSWORD}                    # REQUIRED: set via environment variable
+  KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}                    # REQUIRED: set via environment variable
+  KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}  # REQUIRED: set via environment variable
 command: start --optimized
 ```
 

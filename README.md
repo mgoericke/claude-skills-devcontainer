@@ -101,3 +101,6 @@ docker compose up -d
 | Skills & Workflow-Übersicht | [docs/skills.md](docs/skills.md) |
 | MCP-Datenzugriff (PostgreSQL, RabbitMQ) | [docs/mcp.md](docs/mcp.md) |
 | Lokale Modelle (Ollama / LM Studio) | [docs/local-models.md](docs/local-models.md) |
+| **Sub-Agents Übersicht** | **[docs/sub-agents.md](docs/sub-agents.md)** |
+| Sub-Agents Quick-Start Guide | [docs/agents-quickstart.md](docs/agents-quickstart.md) |
+| Sub-Agents Architektur & Flows | [docs/agents-architecture.md](docs/agents-architecture.md) |

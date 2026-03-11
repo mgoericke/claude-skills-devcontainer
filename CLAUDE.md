@@ -78,6 +78,17 @@ Properties/YAML-Dateien als Kommentar: `# Co-Author: Claude (claude-sonnet-4-6, 
 | Spring Boot | `./Dockerfile` (Projekt-Root) |
 | Quarkus | `src/main/docker/Dockerfile.jvm` (Quarkus-Konvention) |
 
+## Sub-Agents für Parallele Reviews & AI-Service Generierung
+
+Spezialisierte Sub-Agents in `.claude/agents/`:
+- **security-reviewer**: Sicherheits-Analyse (Secrets, Auth, Input-Validation, OWASP)
+- **architecture-reviewer**: BCE-Pattern & Taikai-Compliance
+- **performance-reviewer**: N+1 Queries, Blocking-Operations, Memory Leaks
+- **ai-service-generator**: LangChain4j AI-Service Scaffolding mit Tools, RAG, Guardrails
+
+**Nutzen**: Nach Code-Änderungen parallel reviewen oder neue AI-Services generieren.
+**Doku**: Siehe [docs/sub-agents.md](docs/sub-agents.md)
+
 ## Hinweise
 
 - `groupId`, `artifactId` und Framework **immer** abfragen bevor Scaffolding startet

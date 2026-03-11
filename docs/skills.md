@@ -14,13 +14,15 @@ graph TD
     B -->|or use individual skills directly| C[spec-feature]
     C --> D[openapi]
     D --> E[java-scaffold]
-    E --> F[doc]
+    E --> E2[infrastructure]
+    E2 --> F[doc]
 
     B -.-|"Orchestrates all phases<br>with review in between"| B
 
     C -.-|"Interview → specs/feature.md"| C
     D -.-|"api/name.yaml OR<br>boundary/rest/ + entity/dto/"| D
-    E -.-|"pom.xml, docker-compose,<br>Flyway, Dockerfile,<br>ArchitectureTest, renovate.json,<br>AI Services (LangChain4j)"| E
+    E -.-|"pom.xml, BCE, Flyway,<br>ArchitectureTest, renovate.json,<br>AI Services (LangChain4j)"| E
+    E2 -.-|"Dockerfile, docker-compose,<br>Helm Charts, CI/CD"| E2
     F -.-|"docs/artifactId.md"| F
 
     G[Usable in parallel at any time]
@@ -113,8 +115,8 @@ will **not** generate `boundary/rest/` and `entity/dto/` again.
 ## java-scaffold
 
 **Purpose:** Creates the complete project framework for a new Java application –
-including build configuration, infrastructure, architecture tests, and optionally AI integration
-via LangChain4j.
+including build configuration, architecture tests, and optionally AI integration
+via LangChain4j. For Dockerfiles, docker-compose, and infrastructure, use the `infrastructure` skill.
 
 **Trigger:** `Create a new Quarkus project` · `AI Service` · `Chatbot` · `RAG` · `LangChain4j`
 
@@ -124,9 +126,7 @@ via LangChain4j.
 | Artifact | Description |
 |----------|-------------|
 | `pom.xml` | With current versions (always queried from the internet) |
-| `docker-compose.yml` | Only with confirmed services |
 | `application.properties` | Framework-specific preconfigured |
-| `Dockerfile` | Spring: project root · Quarkus: `src/main/docker/` |
 | `ArchitectureTest.java` | Taikai-based BCE rule validation (incl. AI layer rules) |
 | `renovate.json` | Automatic dependency update PRs |
 
@@ -145,6 +145,27 @@ via LangChain4j.
 
 **Version requirement:** Before each generation, current versions are queried
 from the internet – never from memory.
+
+---
+
+## infrastructure
+
+**Purpose:** Infrastructure scaffolding for Java projects – Dockerfiles, docker-compose,
+Helm Charts, and CI/CD pipelines. Reads existing project configuration to detect
+framework, services, and health endpoints automatically.
+
+**Trigger:** `Create a Dockerfile` · `docker-compose` · `Helm chart` · `CI/CD pipeline` · `Infrastructure`
+
+**Generates:**
+| Artifact | Description |
+|----------|-------------|
+| `Dockerfile` | Multi-stage build with health checks, non-root user |
+| `docker-compose.yml` | All required services with health checks and volumes |
+| Helm Charts | Kubernetes deployment manifests (future) |
+| CI/CD pipelines | GitHub Actions, GitLab CI (future) |
+
+**Behavior:** Reads `pom.xml` and `application.properties` first – never guesses
+framework or services. Uses templates from `templates/spring/` or `templates/quarkus/`.
 
 ---
 

@@ -1,11 +1,11 @@
 /**
- * RabbitMQ-Konfiguration für {{ARTIFACT_ID}}.
+ * RabbitMQ configuration for {{ARTIFACT_ID}}.
  *
- * <p>Definiert Queue, Exchange, Binding und Jackson-MessageConverter.<br>
- * Konstanten werden im {@link {{ENTITY_NAME}}Consumer} und beim Senden von Nachrichten verwendet.
+ * <p>Defines Queue, Exchange, Binding and Jackson MessageConverter.<br>
+ * Constants are used in {@link {{ENTITY_NAME}}Consumer} and when sending messages.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.boundary.messaging;
 

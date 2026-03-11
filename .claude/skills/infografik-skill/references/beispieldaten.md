@@ -1,30 +1,30 @@
-# Beispiel-Datensätze für Demo-Infografiken
+# Example Datasets for Demo Infographics
 
-Verwende diese Daten wenn der Nutzer kein eigenes Dataset mitbringt,
-oder als Vorlage für ähnliche Themen.
-Die Daten werden als **Textbeschreibung im englischen Image-Prompt** eingebettet.
+Use this data when the user doesn't bring their own dataset,
+or as a template for similar topics.
+The data is embedded as **text description in the English image prompt**.
 
 ---
 
-## Marktanteile / Kreisdiagramm
+## Market Shares / Pie Chart
 
-Thema: Marktanteile 2025
-Werte: Produkt A 42%, Produkt B 28%, Produkt C 19%, Sonstige 11%
+Topic: Market shares 2025
+Values: Product A 42%, Product B 28%, Product C 19%, Others 11%
 
-Prompt-Snippet:
+Prompt snippet:
 ```
 Pie chart showing market shares 2025: Product A 42%, Product B 28%, Product C 19%, Others 11%.
 ```
 
 ---
 
-## Zeitreihe / Wachstum
+## Time Series / Growth
 
-Thema: Umsatzentwicklung (Mio. €)
-Werte: 2020: 100, 2021: 118, 2022: 134, 2023: 152, 2024: 171, 2025: 195
-CAGR: 14,3%
+Topic: Revenue development (M EUR)
+Values: 2020: 100, 2021: 118, 2022: 134, 2023: 152, 2024: 171, 2025: 195
+CAGR: 14.3%
 
-Prompt-Snippet:
+Prompt snippet:
 ```
 Line chart showing revenue growth from 100M EUR (2020) to 195M EUR (2025), CAGR 14.3%.
 Key milestones labeled at each data point.
@@ -32,12 +32,12 @@ Key milestones labeled at each data point.
 
 ---
 
-## Branchen-Vergleich / Balken
+## Industry Comparison / Bar Chart
 
-Thema: Branchenwachstum Year-over-Year
-Werte: Technologie 87%, Finanzen 74%, Gesundheit 61%, Industrie 55%, Handel 48%, Energie 39%
+Topic: Industry growth year-over-year
+Values: Technology 87%, Finance 74%, Healthcare 61%, Industry 55%, Retail 48%, Energy 39%
 
-Prompt-Snippet:
+Prompt snippet:
 ```
 Horizontal bar chart comparing industry growth YoY:
 Technology 87%, Finance 74%, Healthcare 61%, Industry 55%, Retail 48%, Energy 39%.
@@ -45,12 +45,12 @@ Technology 87%, Finance 74%, Healthcare 61%, Industry 55%, Retail 48%, Energy 39
 
 ---
 
-## Bevölkerung / Demografie
+## Demographics / User Base
 
-Thema: Altersstruktur Nutzerbasis
-Werte: 18–24: 11%, 25–34: 18%, 35–44: 22%, 45–54: 20%, 55–64: 16%, 65+: 13%
+Topic: Age distribution of user base
+Values: 18–24: 11%, 25–34: 18%, 35–44: 22%, 45–54: 20%, 55–64: 16%, 65+: 13%
 
-Prompt-Snippet:
+Prompt snippet:
 ```
 Demographic bar chart showing user age distribution:
 18-24 (11%), 25-34 (18%), 35-44 (22%), 45-54 (20%), 55-64 (16%), 65+ (13%).
@@ -58,12 +58,12 @@ Demographic bar chart showing user age distribution:
 
 ---
 
-## Länder-Vergleich / DACH+
+## Regional Comparison / DACH+
 
-Thema: DACH+ Umsatz nach Land (Mio. €)
-Werte: Deutschland 100, Schweiz 45, Frankreich 67, Österreich 38, Niederlande 29
+Topic: DACH+ revenue by country (M EUR)
+Values: Germany 100, Switzerland 45, France 67, Austria 38, Netherlands 29
 
-Prompt-Snippet:
+Prompt snippet:
 ```
 Regional comparison chart for DACH+ revenue in million EUR:
 Germany 100M, Switzerland 45M, France 67M, Austria 38M, Netherlands 29M.
@@ -71,13 +71,13 @@ Germany 100M, Switzerland 45M, France 67M, Austria 38M, Netherlands 29M.
 
 ---
 
-## KI & Digitalisierung (Behörden-Kontext)
+## AI & Digitalization (Government Context)
 
-Thema: Digitalisierungsgrad Behördenprozesse 2025
-Bereiche: Dokumentenverarbeitung 78%, Bürger-Chat 65%, Antragsprüfung 52%, Terminvergabe 88%, Berichtswesen 71%
-KPIs: 12.400 Anträge/Tag, Bearbeitungszeit ↓67%, Fehlerquote 0,3%, Nutzerzufriedenheit 4,2/5
+Topic: Digitalization level of government processes 2025
+Areas: Document processing 78%, Citizen chat 65%, Application review 52%, Appointment booking 88%, Reporting 71%
+KPIs: 12,400 applications/day, Processing time ↓67%, Error rate 0.3%, User satisfaction 4.2/5
 
-Prompt-Snippet:
+Prompt snippet:
 ```
 Government digitalization dashboard 2025.
 Progress bars: Document Processing 78%, Citizen Chat 65%, Application Review 52%,
@@ -87,12 +87,12 @@ KPI tiles: 12,400 applications/day, processing time reduced 67%, error rate 0.3%
 
 ---
 
-## Projekt-Status / Dashboard
+## Project Status / Dashboard
 
-Thema: Projektstatus Q1 2025
-Phasen: Konzept ✅ 100%, Design ✅ 100%, Entwicklung 🔄 60%, Test ⏳ 0%, Rollout ⏳ 0%
+Topic: Project status Q1 2025
+Phases: Concept ✅ 100%, Design ✅ 100%, Development 🔄 60%, Testing ⏳ 0%, Rollout ⏳ 0%
 
-Prompt-Snippet:
+Prompt snippet:
 ```
 Project status dashboard Q1 2025.
 Phase timeline: Concept (done 100%), Design (done 100%), Development (in progress 60%),
@@ -102,10 +102,10 @@ Progress bars with status icons.
 
 ---
 
-## Daten vom Nutzer übernehmen
+## Using User Data
 
-Wenn der Nutzer eine CSV oder Tabelle mitschickt, die Werte direkt als Textliste in den Prompt einbauen:
+When the user provides a CSV or table, embed the values directly as a text list in the prompt:
 
 ```
-Content: [Label 1]: [Wert 1], [Label 2]: [Wert 2], [Label 3]: [Wert 3] ...
+Content: [Label 1]: [Value 1], [Label 2]: [Value 2], [Label 3]: [Value 3] ...
 ```

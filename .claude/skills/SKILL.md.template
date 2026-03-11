@@ -1,71 +1,71 @@
 ---
 name: {{SKILL_NAME}}
-description: {{SKILL_DESCRIPTION – ein Satz, was der Skill tut und wann er verwendet wird.}}
+description: {{SKILL_DESCRIPTION – one sentence describing what the skill does and when to use it.}}
 argument-hint: "[{{ARGUMENT_HINT}}]"
 disable-model-invocation: false
 ---
 
 # {{SKILL_TITLE}}
 
-{{KURZBESCHREIBUNG – 1-2 Sätze, was der Skill tut.}}
+{{SHORT_DESCRIPTION – 1-2 sentences describing what the skill does.}}
 
-> **Philosophie:** {{LEITSATZ – ein Satz, der die Haltung des Skills beschreibt.}}
+> **Philosophy:** {{GUIDING_PRINCIPLE – one sentence describing the skill's approach.}}
 
 ---
 
 ## When to Use This Skill
 
-- {{Situation oder Trigger-Phrase, die den Skill auslöst}}
-- {{Weitere Situation}}
-- {{Formulierungsbeispiel des Users, z.B. "erstelle ein neues Projekt"}}
+- {{Situation or trigger phrase that activates the skill}}
+- {{Another situation}}
+- {{Example user phrasing, e.g. "create a new project"}}
 
 ## What This Skill Does
 
-1. {{Kern-Aktion 1 – was passiert konkret?}}
-2. {{Kern-Aktion 2}}
-3. {{Kern-Aktion 3}}
+1. {{Core action 1 – what happens concretely?}}
+2. {{Core action 2}}
+3. {{Core action 3}}
 
 ## How to Use
 
 ```
-{{Beispiel-Aufruf 1 – natürliche Sprache}}
+{{Example invocation 1 – natural language}}
 ```
 
 ```
-/{{SKILL_NAME}} {{BEISPIEL_ARGUMENT}}
+/{{SKILL_NAME}} {{EXAMPLE_ARGUMENT}}
 ```
 
 ---
 
 ## Instructions
 
-> **Vor jeder Ausführung**:
-> 1. `.claude/lessons-learned.md` prüfen
-> 2. {{Weitere Pflicht-Prüfungen, z.B. Versionen im Internet abfragen}}
+> **Before every execution**:
+> 1. Check `.claude/lessons-learned.md`
+> 2. {{Additional mandatory checks, e.g. query versions online}}
 
-### Schritt 1 – {{Titel}}
+### Step 1 – {{Title}}
 
-{{Detaillierte Anweisungen für den ersten Schritt.}}
+{{Detailed instructions for the first step.}}
 
-### Schritt 2 – {{Titel}}
+### Step 2 – {{Title}}
 
-{{Detaillierte Anweisungen für den zweiten Schritt.}}
+{{Detailed instructions for the second step.}}
 
-### Schritt 3 – {{Titel}}
+### Step 3 – {{Title}}
 
-{{Detaillierte Anweisungen für den dritten Schritt.}}
+{{Detailed instructions for the third step.}}
 
 ---
 
 ## Additional resources
 
-- For {{BESCHREIBUNG}}, see [{{TEMPLATE_NAME}}]({{TEMPLATE_NAME}})
-- For {{BESCHREIBUNG}}, see [{{REFERENCE_NAME}}](references/{{REFERENCE_NAME}})
+- For {{DESCRIPTION}}, see [{{TEMPLATE_NAME}}]({{TEMPLATE_NAME}})
+- For {{DESCRIPTION}}, see [{{REFERENCE_NAME}}](references/{{REFERENCE_NAME}})
 
 ---
 
 ## Conventions
 
-- **Sprache:** Deutsch in Kommentaren/Doku, Englisch im Code
-- **Co-Author:** Jede generierte Datei enthält `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via {{SKILL_NAME}}`
-- {{Weitere skill-spezifische Konventionen}}
+- **Language:** English in code, comments and documentation follow project conventions
+- **Co-Author:** Every generated file contains `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via {{SKILL_NAME}}`
+- {{Additional skill-specific conventions}}

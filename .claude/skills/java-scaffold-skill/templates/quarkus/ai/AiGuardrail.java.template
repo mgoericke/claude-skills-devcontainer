@@ -1,16 +1,16 @@
 /**
- * Guardrails fuer AI Services – validiert Ein- und Ausgaben.
+ * Guardrails for AI Services – validates inputs and outputs.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Control-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Control layer / AI)
  *
- * <p>Guardrails werden als CDI-Beans implementiert und per
- * {@code @InputGuardrails} / {@code @OutputGuardrails} am AI Service registriert.
+ * <p>Guardrails are implemented as CDI beans and registered on the AI Service
+ * via {@code @InputGuardrails} / {@code @OutputGuardrails}.
  *
- * <p>Seit quarkus-langchain4j 1.x werden die Upstream-LangChain4j-Klassen
- * aus {@code dev.langchain4j.guardrail} verwendet (nicht mehr {@code io.quarkiverse}).
+ * <p>Since quarkus-langchain4j 1.x, the upstream LangChain4j classes
+ * from {@code dev.langchain4j.guardrail} are used (no longer {@code io.quarkiverse}).
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  * @see <a href="https://docs.quarkiverse.io/quarkus-langchain4j/dev/guardrails.html">Guardrails Docs</a>
  */
 package {{GROUP_ID}}.control.ai;
@@ -22,7 +22,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 
 /**
- * Beispiel Input-Guardrail: prueft Benutzereingaben vor dem LLM-Aufruf.
+ * Example input guardrail: validates user input before the LLM call.
  */
 @ApplicationScoped
 @Named("{{INPUT_GUARDRAIL_NAME}}")
@@ -32,10 +32,10 @@ public class {{INPUT_GUARDRAIL_NAME}} implements InputGuardrail {
     public GuardrailResult validate(InputGuardrailParams params) {
         String userMessage = params.userMessage().singleText();
 
-        // TODO: Validierungslogik implementieren
-        // Beispiel: Prompt-Injection erkennen, Laenge pruefen, etc.
+        // TODO: Implement validation logic
+        // Example: detect prompt injection, check length, etc.
         if (userMessage == null || userMessage.isBlank()) {
-            return failure("Leere Eingabe ist nicht erlaubt.");
+            return failure("Empty input is not allowed.");
         }
 
         return success();

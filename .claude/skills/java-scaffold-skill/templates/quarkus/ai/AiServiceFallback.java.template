@@ -1,13 +1,13 @@
 /**
- * Fallback-Handler fuer den AI Service bei LLM-Ausfaellen.
+ * Fallback handler for the AI Service during LLM outages.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Control-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Control layer / AI)
  *
- * <p>Wird aufgerufen, wenn der LLM-Aufruf trotz Retries fehlschlaegt.
- * Gibt eine benutzerfreundliche Fehlermeldung zurueck.
+ * <p>Called when the LLM call fails despite retries.
+ * Returns a user-friendly error message.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.control.ai;
 
@@ -21,7 +21,7 @@ public class {{AI_SERVICE_NAME}}Fallback implements FallbackHandler<String> {
 
     @Override
     public String handle(ExecutionContext context) {
-        Log.errorf("AI Service nicht erreichbar: %s", context.getFailure().getMessage());
-        return "Der AI-Assistent ist derzeit nicht verfuegbar. Bitte versuchen Sie es spaeter erneut.";
+        Log.errorf("AI Service unreachable: %s", context.getFailure().getMessage());
+        return "The AI assistant is currently unavailable. Please try again later.";
     }
 }

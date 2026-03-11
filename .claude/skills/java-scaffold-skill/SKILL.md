@@ -1,211 +1,211 @@
 ---
 name: java-scaffold-skill
-description: Scaffolding fuer Java-Projekte mit Spring Boot oder Quarkus, PostgreSQL, RabbitMQ, LangChain4j AI und Docker. Generiert pom.xml, BCE-Paketstruktur, Flyway-Migrationen, Architekturtests (Taikai), Dockerfile und docker-compose. Unterstuetzt AI-Fachanwendungen mit LangChain4j (AI Services, Tools/Function Calling, RAG, Guardrails). Verwende diesen Skill bei neuen Java-Anwendungen, neuen Entities, Dockerfiles, docker-compose, Architekturtests, AI-Services oder AI-Integrationen – auch bei "erstelle ein neues Projekt", "scaffold", "neues Modul", "neue Entity", "AI Service", "Chatbot", "RAG", "LangChain4j".
-argument-hint: "[framework] [beschreibung]"
+description: Scaffolding for Java projects with Spring Boot or Quarkus, PostgreSQL, RabbitMQ, LangChain4j AI, and Docker. Generates pom.xml, BCE package structure, Flyway migrations, architecture tests (Taikai), Dockerfile, and docker-compose. Supports AI business applications with LangChain4j (AI Services, Tools/Function Calling, RAG, Guardrails). Use this skill for new Java applications, new entities, Dockerfiles, docker-compose, architecture tests, AI services, or AI integrations – also for "create a new project", "scaffold", "new module", "new entity", "AI Service", "Chatbot", "RAG", "LangChain4j".
+argument-hint: "[framework] [description]"
 ---
 
 # Java Scaffold Skill
 
-Scaffolding für Java-Projekte mit Spring Boot oder Quarkus – inklusive AI-Support via LangChain4j.
+Scaffolding for Java projects with Spring Boot or Quarkus – including AI support via LangChain4j.
 
-> **Philosophie:** Vor jeder Generierung: lessons-learned.md prüfen + aktuelle Versionen
-> im Internet abfragen – niemals veraltete Versionen aus dem Gedächtnis verwenden.
+> **Philosophy:** Before every generation: check lessons-learned.md + query current versions
+> from the internet – never use outdated versions from memory.
 
 ---
 
 ## What This Skill Does
 
-1. **Fragt Projekt-Koordinaten ab** – groupId, artifactId, Framework (Spring Boot / Quarkus)
-2. **Prüft aktuelle Versionen** – Spring Boot, Quarkus, Taikai, LangChain4j im Internet verifizieren
-3. **Generiert Projektstruktur** – pom.xml, application.properties, docker-compose.yml
-4. **Erstellt BCE-Schichten** – Entity, Repository, Service, Controller/Resource im BCE-Pattern
-5. **Erstellt AI-Schichten** (optional) – AI Service, Tools, RAG, Guardrails via LangChain4j
-6. **Erstellt Flyway-Migration** – Initiales SQL-Schema passend zur Entity
-7. **Erstellt Infrastruktur** – Dockerfile, Health Checks, Swagger UI, Renovate-Config
-8. **Erstellt Architekturtests** – Taikai-basierter ArchitectureTest (inkl. AI-Schicht-Regeln)
+1. **Queries project coordinates** – groupId, artifactId, framework (Spring Boot / Quarkus)
+2. **Checks current versions** – Verify Spring Boot, Quarkus, Taikai, LangChain4j online
+3. **Generates project structure** – pom.xml, application.properties, docker-compose.yml
+4. **Creates BCE layers** – Entity, Repository, Service, Controller/Resource in BCE pattern
+5. **Creates AI layers** (optional) – AI Service, Tools, RAG, Guardrails via LangChain4j
+6. **Creates Flyway migration** – Initial SQL schema matching the entity
+7. **Creates infrastructure** – Dockerfile, health checks, Swagger UI, Renovate config
+8. **Creates architecture tests** – Taikai-based ArchitectureTest (incl. AI layer rules)
 
 ## How to Use
 
 ```
-Erstelle ein neues Quarkus Projekt mit PostgreSQL und AI-Support (LangChain4j)
+Create a new Quarkus project with PostgreSQL and AI support (LangChain4j)
 ```
 
 ```
-Erstelle eine Fachanwendung mit Chatbot und RAG (Dokumentensuche)
+Create a business application with chatbot and RAG (document search)
 ```
 
 ```
-Erstelle ein neues Spring Boot Projekt mit PostgreSQL und RabbitMQ
+Create a new Spring Boot project with PostgreSQL and RabbitMQ
 ```
 
 ```
-Erstelle eine neue Entity "Product" mit Name und Preis
+Create a new entity "Product" with name and price
 ```
 
 ```
-Generiere einen AI Service mit Tool-Integration fuer mein Quarkus-Projekt
+Generate an AI service with tool integration for my Quarkus project
 ```
 
 ---
 
 ## Instructions
 
-> **Vor jeder Generierung**:
-> 1. `.claude/lessons-learned.md` prüfen
-> 2. **Aktuelle Versionen im Internet abfragen** (Maven Central / GitHub Releases) – niemals veraltete Versionen aus dem Gedächtnis verwenden!
+> **Before every generation**:
+> 1. Check `.claude/lessons-learned.md`
+> 2. **Query current versions from the internet** (Maven Central / GitHub Releases) – never use outdated versions from memory!
 
-### Schritt 1 – Pflichtabfrage
+### Step 1 – Required Query
 
-Vor jeder neuen Anwendung oder jedem Modul – sofern nicht bereits bekannt – **immer alle
-folgenden Fragen stellen, bevor Code generiert wird**:
+Before every new application or module – if not already known – **always ask all
+the following questions before generating code**:
 
-#### 1a – Projekt-Koordinaten
+#### 1a – Project Coordinates
 
-| # | Angabe | Beispiel |
-|---|--------|---------|
+| # | Field | Example |
+|---|-------|---------|
 | 1 | `groupId` | `com.example.orders` |
 | 2 | `artifactId` | `order-service` |
-| 3 | **Framework** | `Spring Boot` oder `Quarkus` |
+| 3 | **Framework** | `Spring Boot` or `Quarkus` |
 
-#### 1b – OpenAPI Spec vorhanden? (optional)
+#### 1b – OpenAPI Spec Available? (optional)
 
-**Vor dem Scaffold fragen:** Gibt es eine OpenAPI-Spezifikation für dieses Projekt?
+**Ask before scaffolding:** Is there an OpenAPI specification for this project?
 
-- **Ja** → zuerst `openapi-skill` ausführen lassen; danach beim Scaffold
-  `boundary/rest/` und `entity/dto/` **nicht** nochmal generieren – nur Rahmen
-  (pom.xml, docker-compose, application.properties, Flyway, Architekturtest, Dockerfile).
-- **Nein** → normal weitermachen, alle Schichten generieren.
+- **Yes** → run `openapi-skill` first; then during scaffold
+  **do not** regenerate `boundary/rest/` and `entity/dto/` – only the framework
+  (pom.xml, docker-compose, application.properties, Flyway, architecture test, Dockerfile).
+- **No** → proceed normally, generate all layers.
 
-#### 1c – Benötigte Dienste
+#### 1c – Required Services
 
-Explizit abfragen, welche Dienste tatsächlich benötigt werden:
+Explicitly ask which services are actually needed:
 
-| Dienst | Abhängigkeit (Spring) | Abhängigkeit (Quarkus) | Standard |
-|--------|----------------------|------------------------|---------|
-| **Datenbank** (PostgreSQL) | `spring-boot-starter-data-jpa`, `postgresql`, `spring-boot-starter-flyway`, `flyway-database-postgresql` | `quarkus-hibernate-orm-panache`, `quarkus-jdbc-postgresql`, Flyway | Ja |
-| **REST / Swagger UI** | `springdoc-openapi-starter-webmvc-ui` | `quarkus-smallrye-openapi` | **Ja** (immer bei REST) |
-| **Messaging** (RabbitMQ) | `spring-boot-starter-amqp` | `quarkus-messaging-rabbitmq` | Nein |
-| **Auth / IAM** (Keycloak) | `spring-boot-starter-oauth2-resource-server` | `quarkus-oidc` | Nein |
+| Service | Dependency (Spring) | Dependency (Quarkus) | Default |
+|---------|---------------------|----------------------|---------|
+| **Database** (PostgreSQL) | `spring-boot-starter-data-jpa`, `postgresql`, `spring-boot-starter-flyway`, `flyway-database-postgresql` | `quarkus-hibernate-orm-panache`, `quarkus-jdbc-postgresql`, Flyway | Yes |
+| **REST / Swagger UI** | `springdoc-openapi-starter-webmvc-ui` | `quarkus-smallrye-openapi` | **Yes** (always for REST) |
+| **Messaging** (RabbitMQ) | `spring-boot-starter-amqp` | `quarkus-messaging-rabbitmq` | No |
+| **Auth / IAM** (Keycloak) | `spring-boot-starter-oauth2-resource-server` | `quarkus-oidc` | No |
 
-Nur bestätigte Dienste werden in `pom.xml`, `docker-compose.yml` und `application.properties`
-aufgenommen. Nicht benötigte Dienste vollständig weglassen – keine auskommentierten Blöcke.
+Only confirmed services are included in `pom.xml`, `docker-compose.yml`, and `application.properties`.
+Unneeded services are omitted entirely – no commented-out blocks.
 
-Nie raten oder Defaults verwenden – immer explizit fragen.
+Never guess or use defaults – always ask explicitly.
 
-#### 1d – AI-Support (LangChain4j) – optional
+#### 1d – AI Support (LangChain4j) – optional
 
-**Fragen:** Soll die Anwendung AI-Funktionalität (LLM-Integration) enthalten?
+**Ask:** Should the application include AI functionality (LLM integration)?
 
-Wenn **Ja**, folgende Details abfragen:
+If **Yes**, query the following details:
 
-| # | Angabe | Optionen | Standard |
-|---|--------|----------|---------|
-| 1 | **LLM-Provider** | `OpenAI`, `Ollama` (lokal), `Anthropic` (Claude) | OpenAI |
-| 2 | **AI-Features** | `Chat` (einfacher AI Service), `Tools` (Function Calling), `RAG` (Dokumentensuche), `Guardrails` (Ein-/Ausgabevalidierung), `Agents` (Agentic Workflows) | Chat |
-| 3 | **RAG-Vektorspeicher** (nur bei RAG) | `PgVector` (PostgreSQL), `Chroma`, `Redis` | PgVector |
-| 4 | **Fault Tolerance** (Produktion) | `Ja` / `Nein` | Nein |
+| # | Field | Options | Default |
+|---|-------|---------|---------|
+| 1 | **LLM Provider** | `OpenAI`, `Ollama` (local), `Anthropic` (Claude) | OpenAI |
+| 2 | **AI Features** | `Chat` (simple AI service), `Tools` (function calling), `RAG` (document search), `Guardrails` (input/output validation), `Agents` (agentic workflows) | Chat |
+| 3 | **RAG Vector Store** (only for RAG) | `PgVector` (PostgreSQL), `Chroma`, `Redis` | PgVector |
+| 4 | **Fault Tolerance** (production) | `Yes` / `No` | No |
 
-**AI-Profil-Übersicht (Quarkus):**
+**AI Profile Overview (Quarkus):**
 
-| Profil | Beschreibung | Dependencies | Templates |
-|--------|-------------|-------------|-----------|
-| **Chat** | Einfacher AI Service mit System-/User-Prompt | `quarkus-langchain4j-{provider}` | AiService, AiResource |
-| **Chat + Tools** | AI Service mit Function Calling (Datenbankzugriff, REST-Calls) | + keine extra Dep (Teil des Core) | + AiTool |
-| **Chat + RAG** | AI Service mit Dokumentensuche (Vektordatenbank) | + `quarkus-langchain4j-pgvector` | + RagIngestion, RagRetriever |
-| **Chat + Guardrails** | AI Service mit Ein-/Ausgabevalidierung | + keine extra Dep (Teil des Core) | + AiGuardrail |
-| **Agentic** | Autonome Agents mit Workflow-Orchestrierung | + `quarkus-langchain4j-agentic` | Agent, AgentWorkflow |
-| **Fault Tolerant** | Produktionsreifes Setup mit Retry/Timeout/Fallback | + `quarkus-smallrye-fault-tolerance` | AiServiceWithFaultTolerance, AiServiceFallback |
-| **Vollständig** | Alle Features kombiniert | Alle oben | Alle Templates |
+| Profile | Description | Dependencies | Templates |
+|---------|-------------|-------------|-----------|
+| **Chat** | Simple AI service with system/user prompt | `quarkus-langchain4j-{provider}` | AiService, AiResource |
+| **Chat + Tools** | AI service with function calling (DB access, REST calls) | + no extra dep (part of core) | + AiTool |
+| **Chat + RAG** | AI service with document search (vector database) | + `quarkus-langchain4j-pgvector` | + RagIngestion, RagRetriever |
+| **Chat + Guardrails** | AI service with input/output validation | + no extra dep (part of core) | + AiGuardrail |
+| **Agentic** | Autonomous agents with workflow orchestration | + `quarkus-langchain4j-agentic` | Agent, AgentWorkflow |
+| **Fault Tolerant** | Production-ready setup with retry/timeout/fallback | + `quarkus-smallrye-fault-tolerance` | AiServiceWithFaultTolerance, AiServiceFallback |
+| **Complete** | All features combined | All above | All templates |
 
-### Schritt 2 – Versionspruefung
+### Step 2 – Version Check
 
-Veraltete Dependency-Versionen fuehren zu Inkompatibilitaeten und Sicherheitsluecken. Daher vor jeder Code-Generierung die aktuellen Versionen im Internet pruefen:
+Outdated dependency versions lead to incompatibilities and security vulnerabilities. Therefore, check current versions online before every code generation:
 
-| Artifact | Wo prüfen |
-|----------|-----------|
+| Artifact | Where to check |
+|----------|----------------|
 | Spring Boot Parent POM | https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent |
 | Quarkus BOM | https://mvnrepository.com/artifact/io.quarkus.platform/quarkus-bom |
 | Taikai | https://central.sonatype.com/artifact/com.enofex/taikai |
 | versions-maven-plugin | https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin |
 | quarkus-langchain4j | https://mvnrepository.com/artifact/io.quarkiverse.langchain4j/quarkus-langchain4j-openai |
 
-**Bekannte Versionen (Stand 2026-03-01 – immer im Internet verifizieren!):**
+**Known versions (as of 2026-03-01 – always verify online!):**
 
-| Artifact | Version | Java 25 kompatibel |
+| Artifact | Version | Java 25 compatible |
 |----------|---------|-------------------|
-| Spring Boot | 4.0.3 | ✅ (volles Java 25 Support) |
-| Quarkus | 3.31.4 | ✅ (volles Java 25 Support ab 3.31) |
-| Taikai | 1.60.0 | ✅ |
-| versions-maven-plugin | 2.21.0 | ✅ |
-| quarkus-langchain4j | 1.8.0.CR1 | ✅ (vor Generierung prüfen!) |
+| Spring Boot | 4.0.3 | Yes (full Java 25 support) |
+| Quarkus | 3.31.4 | Yes (full Java 25 support since 3.31) |
+| Taikai | 1.60.0 | Yes |
+| versions-maven-plugin | 2.21.0 | Yes |
+| quarkus-langchain4j | 1.8.0.CR1 | Yes (check before generation!) |
 
-> ⚠️ **Quarkus 3.27 (LTS) läuft zwar mit Java 25, produziert aber Warnungen.**
-> Für Java 25 zwingend **Quarkus 3.31+** verwenden.
+> **Quarkus 3.27 (LTS) technically runs with Java 25 but produces warnings.**
+> For Java 25, **Quarkus 3.31+** is required.
 
-### Schritt 3 – Code generieren
+### Step 3 – Generate Code
 
-Reihenfolge der Generierung:
+Generation order:
 
-1. `pom.xml` mit allen Dependencies, versions-maven-plugin, Taikai
-2. `application.properties` (DB, Flyway, Health, ggf. Messaging, Auth, AI)
+1. `pom.xml` with all dependencies, versions-maven-plugin, Taikai
+2. `application.properties` (DB, Flyway, health, optionally messaging, auth, AI)
 3. Entity + Repository (`entity/`)
 4. Service (`control/`)
 5. Controller/Resource (`boundary/rest/`)
-6. Consumer (`boundary/messaging/`) – nur wenn RabbitMQ bestätigt
-7. Security-Config – nur wenn Keycloak bestätigt
-8. **AI Service** (`boundary/ai/`) – nur wenn AI-Support bestätigt
-9. **AI Tools** (`control/ai/`) – nur wenn Tools bestätigt
-10. **RAG-Komponenten** (`control/ai/`) – nur wenn RAG bestätigt
-11. **Guardrails** (`control/ai/`) – nur wenn Guardrails bestätigt
-12. **AI REST-Endpunkt** (`boundary/rest/`) – wenn AI-Support bestätigt
-13. Flyway-Migration (`db/migration/V1__create_<entity>_table.sql`)
-14. Architekturtest (`ArchitectureTest.java`) – inkl. AI-Schicht-Regeln bei AI-Support
-15. Dockerfile (Spring: Root, Quarkus: `src/main/docker/Dockerfile.jvm`)
-16. `docker-compose.yml` mit Health Checks (bei AI: `docker-compose-ai.yml` mit PgVector/Ollama)
+6. Consumer (`boundary/messaging/`) – only if RabbitMQ confirmed
+7. Security config – only if Keycloak confirmed
+8. **AI Service** (`boundary/ai/`) – only if AI support confirmed
+9. **AI Tools** (`control/ai/`) – only if tools confirmed
+10. **RAG Components** (`control/ai/`) – only if RAG confirmed
+11. **Guardrails** (`control/ai/`) – only if guardrails confirmed
+12. **AI REST Endpoint** (`boundary/rest/`) – if AI support confirmed
+13. Flyway migration (`db/migration/V1__create_<entity>_table.sql`)
+14. Architecture test (`ArchitectureTest.java`) – incl. AI layer rules if AI support
+15. Dockerfile (Spring: root, Quarkus: `src/main/docker/Dockerfile.jvm`)
+16. `docker-compose.yml` with health checks (for AI: `docker-compose-ai.yml` with PgVector/Ollama)
 17. `renovate.json`
 
-### Schritt 3a – AI Dependencies (Quarkus + LangChain4j)
+### Step 3a – AI Dependencies (Quarkus + LangChain4j)
 
-Bei AI-Support folgende Dependencies in die `pom.xml` aufnehmen:
+For AI support, include the following dependencies in `pom.xml`:
 
-**LLM Provider (genau EINEN wählen):**
+**LLM Provider (choose exactly ONE):**
 
 | Provider | Dependency (groupId:artifactId) | Version |
 |----------|-------------------------------|---------|
-| **OpenAI** (oder kompatible API) | `io.quarkiverse.langchain4j:quarkus-langchain4j-openai` | Teil des Quarkiverse BOM |
-| **Ollama** (lokal) | `io.quarkiverse.langchain4j:quarkus-langchain4j-ollama` | Teil des Quarkiverse BOM |
-| **Anthropic** (Claude) | `io.quarkiverse.langchain4j:quarkus-langchain4j-anthropic` | Teil des Quarkiverse BOM |
+| **OpenAI** (or compatible API) | `io.quarkiverse.langchain4j:quarkus-langchain4j-openai` | Part of Quarkiverse BOM |
+| **Ollama** (local) | `io.quarkiverse.langchain4j:quarkus-langchain4j-ollama` | Part of Quarkiverse BOM |
+| **Anthropic** (Claude) | `io.quarkiverse.langchain4j:quarkus-langchain4j-anthropic` | Part of Quarkiverse BOM |
 
-**RAG – Vektorspeicher (nur bei RAG-Feature):**
+**RAG – Vector Store (only for RAG feature):**
 
-| Speicher | Dependency | Hinweis |
-|----------|-----------|---------|
-| **PgVector** | `io.quarkiverse.langchain4j:quarkus-langchain4j-pgvector` | Nutzt vorhandene PostgreSQL-DB |
-| **Easy RAG** | `io.quarkiverse.langchain4j:quarkus-langchain4j-easy-rag` | Einfachste Variante, auto-ingestion aus Verzeichnis |
-| Chroma | `io.quarkiverse.langchain4j:quarkus-langchain4j-chroma` | Externer Service nötig |
-| Redis | `io.quarkiverse.langchain4j:quarkus-langchain4j-redis` | Externer Service nötig |
+| Store | Dependency | Note |
+|-------|-----------|------|
+| **PgVector** | `io.quarkiverse.langchain4j:quarkus-langchain4j-pgvector` | Uses existing PostgreSQL DB |
+| **Easy RAG** | `io.quarkiverse.langchain4j:quarkus-langchain4j-easy-rag` | Simplest variant, auto-ingestion from directory |
+| Chroma | `io.quarkiverse.langchain4j:quarkus-langchain4j-chroma` | External service needed |
+| Redis | `io.quarkiverse.langchain4j:quarkus-langchain4j-redis` | External service needed |
 
-**Agentic Workflows (nur bei Agents-Feature):**
+**Agentic Workflows (only for agents feature):**
 
-| Feature | Dependency | Hinweis |
-|---------|-----------|---------|
-| Agentic | `io.quarkiverse.langchain4j:quarkus-langchain4j-agentic` | @Agent, Workflow-Patterns |
-| MCP Client | `io.quarkiverse.langchain4j:quarkus-langchain4j-mcp` | Remote Tools via Model Context Protocol |
+| Feature | Dependency | Note |
+|---------|-----------|------|
+| Agentic | `io.quarkiverse.langchain4j:quarkus-langchain4j-agentic` | @Agent, workflow patterns |
+| MCP Client | `io.quarkiverse.langchain4j:quarkus-langchain4j-mcp` | Remote tools via Model Context Protocol |
 
-**Fault Tolerance (empfohlen für Produktion):**
+**Fault Tolerance (recommended for production):**
 
-| Feature | Dependency | Hinweis |
-|---------|-----------|---------|
+| Feature | Dependency | Note |
+|---------|-----------|------|
 | Fault Tolerance | `io.quarkus:quarkus-smallrye-fault-tolerance` | @Timeout, @Retry, @Fallback |
 
-**Quarkiverse BOM** – statt einzelner Versionen die BOM verwenden:
+**Quarkiverse BOM** – use the BOM instead of individual versions:
 ```xml
 <dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
             <artifactId>quarkus-langchain4j-bom</artifactId>
-            <version><!-- VOR GENERIERUNG PRÜFEN: https://mvnrepository.com/artifact/io.quarkiverse.langchain4j/quarkus-langchain4j-bom --></version>
+            <version><!-- CHECK BEFORE GENERATION: https://mvnrepository.com/artifact/io.quarkiverse.langchain4j/quarkus-langchain4j-bom --></version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -213,104 +213,104 @@ Bei AI-Support folgende Dependencies in die `pom.xml` aufnehmen:
 </dependencyManagement>
 ```
 
-### Schritt 3b – AI Paketstruktur (BCE)
+### Step 3b – AI Package Structure (BCE)
 
-AI-Komponenten folgen dem BCE-Pattern mit dedizierten Sub-Paketen:
+AI components follow the BCE pattern with dedicated sub-packages:
 
 ```
 src/main/java/{{GROUP_ID}}/
 ├── boundary/
-│   ├── ai/              ← AI Services (@RegisterAiService Interfaces)
-│   ├── rest/            ← REST-Endpunkte (inkl. AI-Resource)
-│   └── messaging/       ← RabbitMQ Consumer (optional)
+│   ├── ai/              ← AI Services (@RegisterAiService interfaces)
+│   ├── rest/            ← REST endpoints (incl. AI resource)
+│   └── messaging/       ← RabbitMQ consumers (optional)
 ├── control/
 │   ├── ai/              ← AI Tools, RAG, Guardrails
-│   └── ...              ← Fachliche Services
+│   └── ...              ← Business services
 └── entity/
-    └── ...              ← JPA Entities, DTOs
+    └── ...              ← JPA entities, DTOs
 ```
 
-**Architekturregeln für AI-Schichten:**
-- `@RegisterAiService` Interfaces → `boundary/ai/`
-- `@Tool`-Klassen → `control/ai/`
-- RAG-Komponenten (Ingestion, Retriever) → `control/ai/`
+**Architecture rules for AI layers:**
+- `@RegisterAiService` interfaces → `boundary/ai/`
+- `@Tool` classes → `control/ai/`
+- RAG components (ingestion, retriever) → `control/ai/`
 - Guardrails → `control/ai/`
-- AI REST-Endpunkte → `boundary/rest/`
+- AI REST endpoints → `boundary/rest/`
 
-### Schritt 3c – AI application.properties
+### Step 3c – AI application.properties
 
-AI-spezifische Properties aus Template `templates/quarkus/ai/application-ai.properties` als Referenz nutzen.
-**Beim Generieren nur den gewählten Provider einbinden** – das Template enthält alle drei Provider als Referenz,
-aber in die generierte `application.properties` wird **nur** der gewählte Provider übernommen (ohne auskommentierte Alternativen).
+Use AI-specific properties from template `templates/quarkus/ai/application-ai.properties` as reference.
+**When generating, only include the chosen provider** – the template contains all three providers as reference,
+but only the chosen provider is included in the generated `application.properties` (without commented-out alternatives).
 
-Wichtige Konfiguration je nach Provider:
+Important configuration per provider:
 
-| Provider | API-Key Property | Model Property |
+| Provider | API Key Property | Model Property |
 |----------|-----------------|---------------|
 | OpenAI | `quarkus.langchain4j.openai.api-key` | `quarkus.langchain4j.openai.chat-model.model-name` |
-| Ollama | (kein Key nötig) | `quarkus.langchain4j.ollama.chat-model.model-id` |
+| Ollama | (no key needed) | `quarkus.langchain4j.ollama.chat-model.model-id` |
 | Anthropic | `quarkus.langchain4j.anthropic.api-key` | `quarkus.langchain4j.anthropic.chat-model.model-name` |
 
-**Dev Services bei AI deaktivieren** (echte Services via Docker Compose):
+**Disable AI Dev Services** (real services via Docker Compose):
 ```properties
 quarkus.langchain4j.ollama.devservices.enabled=false
 ```
 
-### Schritt 4 – Swagger UI
+### Step 4 – Swagger UI
 
-Jede Anwendung mit REST-Endpunkten erhält eine **Swagger UI**:
+Every application with REST endpoints gets a **Swagger UI**:
 
-| Framework | Dependency (groupId:artifactId) | Swagger-UI-URL | OpenAPI-JSON-URL |
+| Framework | Dependency (groupId:artifactId) | Swagger UI URL | OpenAPI JSON URL |
 |-----------|---------------------------------|---------------|-----------------|
 | **Spring Boot** | `org.springdoc:springdoc-openapi-starter-webmvc-ui` | `/swagger-ui.html` | `/v3/api-docs` |
 | **Quarkus** | `io.quarkus:quarkus-smallrye-openapi` | `/q/swagger-ui` | `/q/openapi` |
 
-**Versionen vor Generierung im Internet prüfen:**
+**Check versions before generation:**
 - Spring Boot: https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
-- Quarkus: Teil des Quarkus BOM – keine eigene Version nötig
+- Quarkus: Part of the Quarkus BOM – no separate version needed
 
-**Wichtig bei Security (Spring Boot):** Die `SecurityConfig` muss Swagger-UI-Pfade explizit
-freigeben (bereits im Template enthalten):
+**Important with Security (Spring Boot):** The `SecurityConfig` must explicitly
+permit Swagger UI paths (already included in template):
 ```java
 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
 ```
 
-**Wichtig bei Quarkus:** `quarkus.swagger-ui.always-include=true` aktivieren, damit die
-Swagger UI auch im Produktions-Modus (nicht nur `quarkus:dev`) verfügbar bleibt.
+**Important for Quarkus:** Enable `quarkus.swagger-ui.always-include=true` so the
+Swagger UI remains available in production mode (not just `quarkus:dev`).
 
-### Schritt 5 – Health Checks
+### Step 5 – Health Checks
 
-Health-Endpunkte sind die Grundlage fuer Docker-Healthchecks und Kubernetes-Probes. Ohne sie kann weder Docker noch ein Orchestrator den Zustand der Anwendung pruefen:
+Health endpoints are the foundation for Docker health checks and Kubernetes probes. Without them, neither Docker nor an orchestrator can check the application's state:
 
-| Framework | Endpunkt | Dependency |
+| Framework | Endpoint | Dependency |
 |-----------|----------|-----------|
 | Spring Boot | `/actuator/health` | `spring-boot-starter-actuator` |
 | Quarkus | `/q/health/live`, `/q/health/ready` | `quarkus-smallrye-health` |
 
-Health Checks werden verwendet in:
-- `HEALTHCHECK` im Dockerfile
-- `healthcheck` im `docker-compose.yml`
+Health checks are used in:
+- `HEALTHCHECK` in Dockerfile
+- `healthcheck` in `docker-compose.yml`
 
-### Schritt 6 – Architekturtests
+### Step 6 – Architecture Tests
 
-Architekturtests mit Taikai stellen sicher, dass die BCE-Schichtentrennung auch bei wachsendem Projekt erhalten bleibt. Template: `templates/arch/ArchitectureTest.java.template`
+Architecture tests with Taikai ensure that BCE layer separation is maintained even as the project grows. Template: `templates/arch/ArchitectureTest.java.template`
 
-Bei AI-Projekten enthält der ArchitectureTest zusätzliche Regeln:
-- `@RegisterAiService` Interfaces müssen in `boundary.ai` liegen
-- `@Tool`-Klassen müssen in `control.ai` liegen
+For AI projects, the ArchitectureTest contains additional rules:
+- `@RegisterAiService` interfaces must reside in `boundary.ai`
+- `@Tool` classes must reside in `control.ai`
 
 ```xml
 <dependency>
     <groupId>com.enofex</groupId>
     <artifactId>taikai</artifactId>
-    <version><!-- VOR GENERIERUNG AKTUELLE VERSION PRÜFEN: https://central.sonatype.com/artifact/com.enofex/taikai --></version>
+    <version><!-- CHECK CURRENT VERSION BEFORE GENERATION: https://central.sonatype.com/artifact/com.enofex/taikai --></version>
     <scope>test</scope>
 </dependency>
 ```
 
-### Schritt 7 – versions-maven-plugin
+### Step 7 – versions-maven-plugin
 
-Das versions-maven-plugin ermoeglicht Entwicklern, veraltete Dependencies lokal zu erkennen – ergaenzt Renovate fuer den CI/CD-Workflow. In jeder `pom.xml` im `<build><pluginManagement>` Block konfigurieren:
+The versions-maven-plugin enables developers to detect outdated dependencies locally – complementing Renovate for the CI/CD workflow. Configure in every `pom.xml` in the `<build><pluginManagement>` block:
 
 ```xml
 <build>
@@ -319,7 +319,7 @@ Das versions-maven-plugin ermoeglicht Entwicklern, veraltete Dependencies lokal 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
-        <version><!-- AKTUELLE VERSION: https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin --></version>
+        <version><!-- CURRENT VERSION: https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin --></version>
         <configuration>
           <generateBackupPoms>false</generateBackupPoms>
         </configuration>
@@ -329,53 +329,53 @@ Das versions-maven-plugin ermoeglicht Entwicklern, veraltete Dependencies lokal 
 </build>
 ```
 
-Nützliche Befehle für Entwickler:
+Useful commands for developers:
 ```bash
 ./mvnw versions:display-dependency-updates
 ./mvnw versions:display-plugin-updates
 ./mvnw versions:display-parent-updates
 ```
 
-### Schritt 8 – Renovate
+### Step 8 – Renovate
 
-Renovate erstellt automatisch Pull Requests fuer Dependency-Updates und haelt das Projekt aktuell. Jedes generierte Projekt erhaelt `renovate.json` aus `templates/renovate.json`.
+Renovate automatically creates pull requests for dependency updates and keeps the project current. Every generated project receives `renovate.json` from `templates/renovate.json`.
 
 ---
 
 ## References
 
-| Datei | Beschreibung |
-|-------|-------------|
-| `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen – vor jeder Generierung prüfen |
-| [templates/spring/](templates/spring/) | Spring Boot Templates (Entity, Controller, Service, Consumer, Security, Dockerfile, Properties, docker-compose) |
-| [templates/quarkus/](templates/quarkus/) | Quarkus Templates (Entity, Resource, Service) + `src-main-docker/` für Dockerfiles |
-| [templates/quarkus/ai/](templates/quarkus/ai/) | **Quarkus AI Templates** (AI Service, Tools, RAG, Guardrails, Properties, docker-compose) |
-| [templates/arch/ArchitectureTest.java.template](templates/arch/ArchitectureTest.java.template) | Taikai-basierter Architekturtest (inkl. AI-Schicht-Regeln) |
-| [templates/db/V1__create_table.sql.template](templates/db/V1__create_{{ENTITY_NAME_LOWER}}_table.sql.template) | Initiale Flyway-Migration |
-| [templates/renovate.json](templates/renovate.json) | Renovate-Konfiguration für automatische Dependency-Updates |
+| File | Description |
+|------|-------------|
+| `.claude/lessons-learned.md` | Findings and corrections – check before every generation |
+| [templates/spring/](templates/spring/) | Spring Boot templates (Entity, Controller, Service, Consumer, Security, Dockerfile, Properties, docker-compose) |
+| [templates/quarkus/](templates/quarkus/) | Quarkus templates (Entity, Resource, Service) + `src-main-docker/` for Dockerfiles |
+| [templates/quarkus/ai/](templates/quarkus/ai/) | **Quarkus AI templates** (AI Service, Tools, RAG, Guardrails, Properties, docker-compose) |
+| [templates/arch/ArchitectureTest.java.template](templates/arch/ArchitectureTest.java.template) | Taikai-based architecture test (incl. AI layer rules) |
+| [templates/db/V1__create_table.sql.template](templates/db/V1__create_{{ENTITY_NAME_LOWER}}_table.sql.template) | Initial Flyway migration |
+| [templates/renovate.json](templates/renovate.json) | Renovate configuration for automatic dependency updates |
 
 ### AI Templates (Quarkus + LangChain4j)
 
-| Template | Paket | Beschreibung |
-|----------|-------|-------------|
-| [AiService.java.template](templates/quarkus/ai/AiService.java.template) | `boundary.ai` | Einfacher deklarativer AI Service (`@RegisterAiService`) |
-| [AiServiceWithTools.java.template](templates/quarkus/ai/AiServiceWithTools.java.template) | `boundary.ai` | AI Service mit `@ToolBox` Integration |
-| [AiServiceWithRag.java.template](templates/quarkus/ai/AiServiceWithRag.java.template) | `boundary.ai` | AI Service mit RAG (RetrievalAugmentor) |
-| [AiTool.java.template](templates/quarkus/ai/AiTool.java.template) | `control.ai` | Tool-Klasse mit `@Tool` Annotation für Function Calling |
-| [RagIngestion.java.template](templates/quarkus/ai/RagIngestion.java.template) | `control.ai` | Dokument-Ingestion beim Start (EmbeddingStore) |
-| [RagRetriever.java.template](templates/quarkus/ai/RagRetriever.java.template) | `control.ai` | RetrievalAugmentor Supplier für PgVector |
-| [AiGuardrail.java.template](templates/quarkus/ai/AiGuardrail.java.template) | `control.ai` | Input-/Output-Guardrails für Validierung |
-| [Agent.java.template](templates/quarkus/ai/Agent.java.template) | `boundary.ai` | Autonomer Agent mit `@Agent` und `@ToolBox` |
-| [AgentWorkflow.java.template](templates/quarkus/ai/AgentWorkflow.java.template) | `boundary.ai` | Workflow-Orchestrierung (Sequence, Parallel, Loop, Supervisor) |
-| [AiServiceWithFaultTolerance.java.template](templates/quarkus/ai/AiServiceWithFaultTolerance.java.template) | `boundary.ai` | AI Service mit `@Timeout`, `@Retry`, `@Fallback` |
-| [AiServiceFallback.java.template](templates/quarkus/ai/AiServiceFallback.java.template) | `control.ai` | Fallback-Handler bei LLM-Ausfällen |
-| [AiResource.java.template](templates/quarkus/ai/AiResource.java.template) | `boundary.rest` | REST-Endpunkt `/ai/chat` für den AI Service |
-| [application-ai.properties](templates/quarkus/ai/application-ai.properties) | – | AI-spezifische Properties (Provider, RAG, Guardrails) |
-| [docker-compose-ai.yml](templates/quarkus/ai/docker-compose-ai.yml) | – | Docker Compose mit PgVector und optionalem Ollama |
+| Template | Package | Description |
+|----------|---------|-------------|
+| [AiService.java.template](templates/quarkus/ai/AiService.java.template) | `boundary.ai` | Simple declarative AI service (`@RegisterAiService`) |
+| [AiServiceWithTools.java.template](templates/quarkus/ai/AiServiceWithTools.java.template) | `boundary.ai` | AI service with `@ToolBox` integration |
+| [AiServiceWithRag.java.template](templates/quarkus/ai/AiServiceWithRag.java.template) | `boundary.ai` | AI service with RAG (RetrievalAugmentor) |
+| [AiTool.java.template](templates/quarkus/ai/AiTool.java.template) | `control.ai` | Tool class with `@Tool` annotation for function calling |
+| [RagIngestion.java.template](templates/quarkus/ai/RagIngestion.java.template) | `control.ai` | Document ingestion at startup (EmbeddingStore) |
+| [RagRetriever.java.template](templates/quarkus/ai/RagRetriever.java.template) | `control.ai` | RetrievalAugmentor supplier for PgVector |
+| [AiGuardrail.java.template](templates/quarkus/ai/AiGuardrail.java.template) | `control.ai` | Input/output guardrails for validation |
+| [Agent.java.template](templates/quarkus/ai/Agent.java.template) | `boundary.ai` | Autonomous agent with `@Agent` and `@ToolBox` |
+| [AgentWorkflow.java.template](templates/quarkus/ai/AgentWorkflow.java.template) | `boundary.ai` | Workflow orchestration (Sequence, Parallel, Loop, Supervisor) |
+| [AiServiceWithFaultTolerance.java.template](templates/quarkus/ai/AiServiceWithFaultTolerance.java.template) | `boundary.ai` | AI service with `@Timeout`, `@Retry`, `@Fallback` |
+| [AiServiceFallback.java.template](templates/quarkus/ai/AiServiceFallback.java.template) | `control.ai` | Fallback handler for LLM failures |
+| [AiResource.java.template](templates/quarkus/ai/AiResource.java.template) | `boundary.rest` | REST endpoint `/ai/chat` for the AI service |
+| [application-ai.properties](templates/quarkus/ai/application-ai.properties) | – | AI-specific properties (provider, RAG, guardrails) |
+| [docker-compose-ai.yml](templates/quarkus/ai/docker-compose-ai.yml) | – | Docker Compose with PgVector and optional Ollama |
 
-### Platzhalter
+### Placeholders
 
-| Platzhalter | Beispiel |
+| Placeholder | Example |
 |-------------|---------|
 | `{{GROUP_ID}}` | `com.example.orders` |
 | `{{ARTIFACT_ID}}` | `order-service` |
@@ -392,40 +392,40 @@ Renovate erstellt automatisch Pull Requests fuer Dependency-Updates und haelt da
 | `{{INPUT_GUARDRAIL_NAME}}` | `InputValidator` |
 | `{{AI_RESOURCE_NAME}}` | `AiResource` |
 | `{{AGENT_NAME}}` | `OrderAgent` |
-| `{{AGENT_DESCRIPTION}}` | `Bestellungs-Spezialist` |
-| `{{AGENT_TASK_DESCRIPTION}}` | `Bearbeite die folgende Bestellanfrage` |
+| `{{AGENT_DESCRIPTION}}` | `Order specialist` |
+| `{{AGENT_TASK_DESCRIPTION}}` | `Process the following order request` |
 | `{{WORKFLOW_NAME}}` | `OrderWorkflow` |
-| `{{DOMAIN_DESCRIPTION}}` | `Bestellverwaltung` |
+| `{{DOMAIN_DESCRIPTION}}` | `Order management` |
 
 ---
 
 ## Conventions
 
-- **Stack:** Java 25 · Spring Boot 4.x oder Quarkus 3.31+ · PostgreSQL 17 · RabbitMQ 4 · Keycloak 26.x · Maven 3.9 · Docker
-- **AI-Stack:** Quarkus LangChain4j · OpenAI / Ollama / Anthropic · PgVector (RAG)
-- **Architektur:** BCE-Pattern strikt (Boundary / Control / Entity)
-- **AI-Architektur:** AI Services in `boundary/ai/`, Tools + RAG + Guardrails in `control/ai/`
-- **Entities:** Lombok `@Data` + `@Builder` – `maven-compiler-plugin` muss Lombok als `annotationProcessorPath` konfigurieren
-- **Persistenz:** Flyway für alle Migrationen – kein `ddl-auto=create`
-- **Messaging:** RabbitMQ-Consumer immer in `boundary/messaging/`; Quarkus: `@Blocking` + `@Transactional` bei DB-Zugriffen im Consumer
-- **AI Tools:** `@Blocking` + `@Transactional` bei Datenbankzugriffen in Tools
-- **Dockerfile:** Spring Boot → `./Dockerfile` (Root); Quarkus → `src/main/docker/Dockerfile.jvm`
-- **Docker Compose AI:** `pgvector/pgvector:pg17` statt `postgres:17-alpine` (PgVector Extension vorinstalliert)
-- **Beispiele:** Fachlich neutral (`order`, `product`, `event`, `item`)
-- **Sprache:** Deutsch in Kommentaren/Doku, Englisch im Code
+- **Stack:** Java 25 · Spring Boot 4.x or Quarkus 3.31+ · PostgreSQL 17 · RabbitMQ 4 · Keycloak 26.x · Maven 3.9 · Docker
+- **AI Stack:** Quarkus LangChain4j · OpenAI / Ollama / Anthropic · PgVector (RAG)
+- **Architecture:** BCE pattern strict (Boundary / Control / Entity)
+- **AI Architecture:** AI Services in `boundary/ai/`, Tools + RAG + Guardrails in `control/ai/`
+- **Entities:** Lombok `@Data` + `@Builder` – `maven-compiler-plugin` must configure Lombok as `annotationProcessorPath`
+- **Persistence:** Flyway for all migrations – no `ddl-auto=create`
+- **Messaging:** RabbitMQ consumers always in `boundary/messaging/`; Quarkus: `@Blocking` + `@Transactional` for DB access in consumers
+- **AI Tools:** `@Blocking` + `@Transactional` for database access in tools
+- **Dockerfile:** Spring Boot → `./Dockerfile` (root); Quarkus → `src/main/docker/Dockerfile.jvm`
+- **Docker Compose AI:** `pgvector/pgvector:pg17` instead of `postgres:17-alpine` (PgVector extension pre-installed)
+- **Examples:** Domain-neutral (`order`, `product`, `event`, `item`)
+- **Language:** English in comments/docs and code
 - **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
-- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill`
+- **Co-Author:** `@author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill`
 
-### Position im Workflow
+### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – fachliche Anforderungen
-        ↓
-[openapi-skill]           wenn OpenAPI Spec vorhanden
-        ↓
-[java-scaffold-skill]     Rahmen: DB, Messaging, AI, Infra
-        ↓
-[review-skill]            Code-Review
-        ↓
-[doc-skill]               Projektdokumentation
+[spec-feature-skill]      optional – business requirements
+        |
+[openapi-skill]           if OpenAPI spec available
+        |
+[java-scaffold-skill]     framework: DB, messaging, AI, infra
+        |
+[review-skill]            code review
+        |
+[doc-skill]               project documentation
 ```

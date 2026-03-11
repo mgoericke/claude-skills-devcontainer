@@ -1,136 +1,136 @@
-# Review-Prüfkatalog
+# Review Checklist
 
-Detaillierter Prüfkatalog für den review-skill.
-Jede Regel enthält: Was geprüft wird, wie ein Verstoß aussieht und wie die Lösung ist.
-
----
-
-## 1. Architektur – BCE-Pattern
-
-### 1.1 Boundary-Schicht (`boundary/rest/`, `boundary/messaging/`)
-
-| Regel | Verstoß | Lösung |
-|-------|---------|--------|
-| Controller/Resource ruft nur Services auf | Direkter Repository-Zugriff im Controller | Service-Methode erstellen, Controller delegiert |
-| Keine Geschäftslogik im Controller | if/else-Ketten, Berechnungen im Controller | Logik in Service (Control) verschieben |
-| `@Valid` an Request-Body-Parametern | `@RequestBody` ohne `@Valid` | `@Valid` ergänzen |
-| REST-Klassen in `boundary/rest/` | Controller in falschem Package | In `boundary/rest/` verschieben |
-| Messaging-Klassen in `boundary/messaging/` | Consumer in falschem Package | In `boundary/messaging/` verschieben |
-
-### 1.2 Control-Schicht (`control/`)
-
-| Regel | Verstoß | Lösung |
-|-------|---------|--------|
-| Services sind `@Service` (Spring) oder `@ApplicationScoped` (Quarkus) | Fehlende Annotation | Annotation ergänzen |
-| `@Transactional` bei schreibenden Methoden | Schreibende DB-Operation ohne Transaction | `@Transactional` ergänzen |
-| `readOnly = true` bei Lesemethoden (Spring) | Lese-Methode ohne `readOnly` | `@Transactional(readOnly = true)` |
-| Kein direkter Zugriff auf HTTP-Artefakte | `HttpServletRequest` im Service | HTTP-Logik in Boundary belassen |
-
-### 1.3 Entity-Schicht (`entity/`, `entity/dto/`)
-
-| Regel | Verstoß | Lösung |
-|-------|---------|--------|
-| JPA-Entity mit `@Entity` und `@Table` | Fehlende Annotationen | Ergänzen |
-| UUID als ID-Typ | `Long` oder `Integer` als ID | `UUID` verwenden |
-| Timestamps: `createdAt`, `updatedAt` | Fehlende Audit-Felder | Felder mit `@CreationTimestamp`/`@UpdateTimestamp` ergänzen |
-| DTOs als Java Records | DTO als Klasse statt Record | Als `record` umschreiben |
-| Keine Geschäftslogik in Entities | Service-Methoden in Entity-Klasse | In Control-Schicht verschieben |
+Detailed review catalog for the review-skill.
+Each rule contains: what is checked, what a violation looks like, and what the solution is.
 
 ---
 
-## 2. Lessons-Learned Abgleich
+## 1. Architecture – BCE Pattern
 
-Referenz: `.claude/lessons-learned.md`
+### 1.1 Boundary Layer (`boundary/rest/`, `boundary/messaging/`)
 
-### 2.1 Quarkus-spezifisch
+| Rule | Violation | Solution |
+|------|-----------|----------|
+| Controller/Resource only calls services | Direct repository access in controller | Create service method, controller delegates |
+| No business logic in controller | if/else chains, calculations in controller | Move logic to service (control) |
+| `@Valid` on request body parameters | `@RequestBody` without `@Valid` | Add `@Valid` |
+| REST classes in `boundary/rest/` | Controller in wrong package | Move to `boundary/rest/` |
+| Messaging classes in `boundary/messaging/` | Consumer in wrong package | Move to `boundary/messaging/` |
 
-| Regel | Verstoß | Referenz |
-|-------|---------|----------|
-| `@Blocking @Transactional` bei `@Incoming` mit DB | `@Incoming` ohne `@Blocking` | Abschnitt "Quarkus – @Blocking im Consumer" |
-| RabbitMQ: `rabbitmq-host`, nicht `quarkus.rabbitmq.*` | Falsche Property-Keys | Abschnitt "Quarkus – RabbitMQ Messaging Config" |
-| Dev Services pro Extension deaktivieren | `quarkus.devservices.enabled=false` global | Abschnitt "DevContainer – Dev Services vs. Docker Compose" |
-| Dockerfile in `src/main/docker/` | Dockerfile im Projekt-Root | Abschnitt "Quarkus – Dockerfile-Konvention" |
-| Quarkus 3.31+ für Java 25 | Quarkus < 3.31 mit Java 25 | Abschnitt "Quarkus – Java 25 Kompatibilität" |
+### 1.2 Control Layer (`control/`)
 
-### 2.2 Spring Boot-spezifisch
+| Rule | Violation | Solution |
+|------|-----------|----------|
+| Services are `@Service` (Spring) or `@ApplicationScoped` (Quarkus) | Missing annotation | Add annotation |
+| `@Transactional` on write methods | Write DB operation without transaction | Add `@Transactional` |
+| `readOnly = true` on read methods (Spring) | Read method without `readOnly` | `@Transactional(readOnly = true)` |
+| No direct access to HTTP artifacts | `HttpServletRequest` in service | Keep HTTP logic in boundary |
 
-| Regel | Verstoß | Referenz |
-|-------|---------|----------|
-| `ddl-auto=validate`, nie `create`/`update` | `ddl-auto=create` oder `update` | Abschnitt "Spring Boot – ddl-auto=validate" |
-| Flyway-Migration für jede Entity | Entity ohne Migration in `db/migration/` | Abschnitt "Spring Boot – ddl-auto=validate" |
-| Dockerfile im Projekt-Root | Dockerfile in `src/main/docker/` | Abschnitt "Quarkus – Dockerfile-Konvention" (Umkehrschluss) |
+### 1.3 Entity Layer (`entity/`, `entity/dto/`)
 
-### 2.3 Framework-übergreifend
-
-| Regel | Verstoß | Referenz |
-|-------|---------|----------|
-| Health Checks vorhanden | Keine Actuator/SmallRye-Health Dependency | Abschnitt "Health Checks sind Pflicht" |
-| Taikai-Architekturtest vorhanden | Kein ArchitectureTest im Projekt | Abschnitt "Taikai vs. ArchUnit" |
-| Co-Author im Javadoc | Generierte Datei ohne `@author Co-Author` | Abschnitt "Javadoc Co-Author Pflicht" |
-| Fachlich neutrale Beispiele | Domänenspezifische Namen in Templates | Abschnitt "Fachlich neutrale Beispiele" |
-
----
-
-## 3. Sicherheit
-
-| Regel | Verstoß | Schwere |
-|-------|---------|---------|
-| Keine SQL-String-Konkatenation | `"SELECT * FROM x WHERE id = " + id` | Kritisch |
-| Keine hartcodierten Secrets | `password = "geheim"` im Code | Kritisch |
-| `@Valid` bei Request-Bodies | Fehlende Input-Validierung | Warnung |
-| CORS nicht `*` in Produktion | `allowedOrigins("*")` ohne Profil-Trennung | Warnung |
-| Swagger-UI in Security-Config freigegeben | 403 auf `/swagger-ui/**` | Hinweis |
-| Keine sensiblen Daten in Logs | `log.info("Token: " + token)` | Kritisch |
-| HTTPS/TLS bei externen Aufrufen | `http://` für externe APIs | Warnung |
+| Rule | Violation | Solution |
+|------|-----------|----------|
+| JPA entity with `@Entity` and `@Table` | Missing annotations | Add them |
+| UUID as ID type | `Long` or `Integer` as ID | Use `UUID` |
+| Timestamps: `createdAt`, `updatedAt` | Missing audit fields | Add fields with `@CreationTimestamp`/`@UpdateTimestamp` |
+| DTOs as Java Records | DTO as class instead of record | Rewrite as `record` |
+| No business logic in entities | Service methods in entity class | Move to control layer |
 
 ---
 
-## 4. Code-Qualität
+## 2. Lessons-Learned Comparison
 
-| Regel | Verstoß | Schwere |
-|-------|---------|---------|
-| Keine Code-Duplikation | Gleiche Logik > 2x kopiert | Warnung |
-| Keine leeren catch-Blöcke | `catch (Exception e) { }` | Warnung |
-| Keine Magic Numbers/Strings | Hartcodierte Werte ohne Konstante | Hinweis |
-| Unused Imports | Import ohne Verwendung | Hinweis |
-| Methoden < 30 Zeilen | Überlange Methoden | Hinweis |
-| Sinnvolle Variablennamen | `x`, `temp`, `data` als Variablennamen | Hinweis |
-| Lombok sinnvoll | `@Data` auf Entity (ok), aber nicht auf DTOs (Records!) | Hinweis |
+Reference: `.claude/lessons-learned.md`
+
+### 2.1 Quarkus-specific
+
+| Rule | Violation | Reference |
+|------|-----------|-----------|
+| `@Blocking @Transactional` on `@Incoming` with DB | `@Incoming` without `@Blocking` | Section "Quarkus – @Blocking in Consumer" |
+| RabbitMQ: `rabbitmq-host`, not `quarkus.rabbitmq.*` | Wrong property keys | Section "Quarkus – RabbitMQ Messaging Config" |
+| Disable dev services per extension | `quarkus.devservices.enabled=false` globally | Section "DevContainer – Dev Services vs. Docker Compose" |
+| Dockerfile in `src/main/docker/` | Dockerfile in project root | Section "Quarkus – Dockerfile Convention" |
+| Quarkus 3.31+ for Java 25 | Quarkus < 3.31 with Java 25 | Section "Quarkus – Java 25 Compatibility" |
+
+### 2.2 Spring Boot-specific
+
+| Rule | Violation | Reference |
+|------|-----------|-----------|
+| `ddl-auto=validate`, never `create`/`update` | `ddl-auto=create` or `update` | Section "Spring Boot – ddl-auto=validate" |
+| Flyway migration for every entity | Entity without migration in `db/migration/` | Section "Spring Boot – ddl-auto=validate" |
+| Dockerfile in project root | Dockerfile in `src/main/docker/` | Section "Quarkus – Dockerfile Convention" (inverse) |
+
+### 2.3 Cross-framework
+
+| Rule | Violation | Reference |
+|------|-----------|-----------|
+| Health checks present | No Actuator/SmallRye-Health dependency | Section "Health Checks are Mandatory" |
+| Taikai architecture test present | No ArchitectureTest in project | Section "Taikai vs. ArchUnit" |
+| Co-author in Javadoc | Generated file without `@author Co-Author` | Section "Javadoc Co-Author Mandatory" |
+| Domain-neutral examples | Domain-specific names in templates | Section "Domain-Neutral Examples" |
 
 ---
 
-## 5. Konfiguration
+## 3. Security
 
-| Datei | Regel | Verstoß |
-|-------|-------|---------|
-| `pom.xml` | `versions-maven-plugin` vorhanden | Plugin fehlt |
-| `pom.xml` | Taikai als Test-Dependency | Fehlt oder falscher Scope |
-| `renovate.json` | Datei im Projekt-Root | Datei fehlt |
-| `application.properties` | Health-Endpunkte aktiviert | Actuator/SmallRye fehlt |
-| `application.properties` | Flyway aktiviert | Flyway-Config fehlt |
-| `docker-compose.yml` | Health Checks für alle Services | `healthcheck` Block fehlt |
-| `Dockerfile` | `HEALTHCHECK` Direktive | Fehlt |
+| Rule | Violation | Severity |
+|------|-----------|----------|
+| No SQL string concatenation | `"SELECT * FROM x WHERE id = " + id` | Critical |
+| No hardcoded secrets | `password = "secret"` in code | Critical |
+| `@Valid` on request bodies | Missing input validation | Warning |
+| CORS not `*` in production | `allowedOrigins("*")` without profile separation | Warning |
+| Swagger UI allowed in security config | 403 on `/swagger-ui/**` | Note |
+| No sensitive data in logs | `log.info("Token: " + token)` | Critical |
+| HTTPS/TLS for external calls | `http://` for external APIs | Warning |
+
+---
+
+## 4. Code Quality
+
+| Rule | Violation | Severity |
+|------|-----------|----------|
+| No code duplication | Same logic copied > 2x | Warning |
+| No empty catch blocks | `catch (Exception e) { }` | Warning |
+| No magic numbers/strings | Hardcoded values without constant | Note |
+| No unused imports | Import without usage | Note |
+| Methods < 30 lines | Overly long methods | Note |
+| Meaningful variable names | `x`, `temp`, `data` as variable names | Note |
+| Lombok used sensibly | `@Data` on entity (ok), but not on DTOs (records!) | Note |
+
+---
+
+## 5. Configuration
+
+| File | Rule | Violation |
+|------|------|-----------|
+| `pom.xml` | `versions-maven-plugin` present | Plugin missing |
+| `pom.xml` | Taikai as test dependency | Missing or wrong scope |
+| `renovate.json` | File in project root | File missing |
+| `application.properties` | Health endpoints enabled | Actuator/SmallRye missing |
+| `application.properties` | Flyway enabled | Flyway config missing |
+| `docker-compose.yml` | Health checks for all services | `healthcheck` block missing |
+| `Dockerfile` | `HEALTHCHECK` directive | Missing |
 
 ---
 
 ## 6. Tests
 
-| Regel | Verstoß | Schwere |
-|-------|---------|---------|
-| Architekturtest (Taikai) vorhanden | Kein `ArchitectureTest.java` | Warnung |
-| Service-Logik hat Unit-Tests | Neue Service-Methode ohne Test | Hinweis |
-| Testklassen im richtigen Package | Test nicht im Spiegel-Package | Hinweis |
-| Test-Naming: `should...When...` | Unklar benannte Testmethoden | Hinweis |
+| Rule | Violation | Severity |
+|------|-----------|----------|
+| Architecture test (Taikai) present | No `ArchitectureTest.java` | Warning |
+| Service logic has unit tests | New service method without test | Note |
+| Test classes in correct package | Test not in mirror package | Note |
+| Test naming: `should...When...` | Unclear test method names | Note |
 
 ---
 
-## 7. Sprache & Naming
+## 7. Language & Naming
 
-| Regel | Verstoß |
-|-------|---------|
-| Code (Klassen, Methoden, Variablen): **Englisch** | Deutsche Bezeichner im Code |
-| Kommentare, Javadoc: **Deutsch** | Englische Kommentare |
-| Packages: lowercase, keine Unterstriche | `com.example.Order_Service` |
-| Klassen: UpperCamelCase | `orderService` als Klassenname |
-| Methoden: lowerCamelCase | `GetOrder` als Methodenname |
-| Konstanten: UPPER_SNAKE_CASE | `maxRetries` als Konstante |
+| Rule | Violation |
+|------|-----------|
+| Code (classes, methods, variables): **English** | German identifiers in code |
+| Comments, Javadoc: **English** | Non-English comments |
+| Packages: lowercase, no underscores | `com.example.Order_Service` |
+| Classes: UpperCamelCase | `orderService` as class name |
+| Methods: lowerCamelCase | `GetOrder` as method name |
+| Constants: UPPER_SNAKE_CASE | `maxRetries` as constant |

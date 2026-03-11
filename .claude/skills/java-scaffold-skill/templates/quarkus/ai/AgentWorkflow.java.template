@@ -1,68 +1,68 @@
 /**
- * Agentic Workflow – orchestriert mehrere Agents.
+ * Agentic Workflow – orchestrates multiple agents.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Boundary layer / AI)
  *
- * <p>Verfuegbare Workflow-Patterns:
+ * <p>Available workflow patterns:
  * <ul>
- *   <li>{@code @SequenceAgent} – sequenzielle Ausfuehrung (Agent A → B → C)
- *   <li>{@code @ParallelAgent} – parallele Ausfuehrung auf separaten Threads
- *   <li>{@code @ConditionalAgent} – bedingte Ausfuehrung basierend auf Regeln
- *   <li>{@code @LoopAgent} – iterative Ausfuehrung bis Exit-Bedingung erfuellt
- *   <li>{@code @SupervisorAgent} – LLM-gesteuertes dynamisches Routing
+ *   <li>{@code @SequenceAgent} – sequential execution (Agent A → B → C)
+ *   <li>{@code @ParallelAgent} – parallel execution on separate threads
+ *   <li>{@code @ConditionalAgent} – conditional execution based on rules
+ *   <li>{@code @LoopAgent} – iterative execution until exit condition is met
+ *   <li>{@code @SupervisorAgent} – LLM-driven dynamic routing
  * </ul>
  *
- * <p>Alle Agents teilen sich einen {@code AgenticScope} fuer den Datenaustausch.
- * Daten werden ueber {@code outputKey} zwischen Agents weitergegeben.
+ * <p>All agents share an {@code AgenticScope} for data exchange.
+ * Data is passed between agents via {@code outputKey}.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  * @see <a href="https://quarkus.io/blog/agentic-ai-patterns/">Agentic AI Patterns</a>
  */
 package {{GROUP_ID}}.boundary.ai;
 
-// ── Beispiel: Sequenzieller Workflow ──────────────────────────────────────
+// ── Example: Sequential Workflow ──────────────────────────────────────
 //
-// Ein sequenzieller Workflow fuehrt Agents nacheinander aus.
-// Jeder Agent schreibt sein Ergebnis in den AgenticScope (outputKey),
-// nachfolgende Agents koennen darauf zugreifen.
+// A sequential workflow executes agents one after another.
+// Each agent writes its result to the AgenticScope (outputKey),
+// subsequent agents can access it.
 //
 // @ApplicationScoped
 // @SequenceAgent
 // public interface {{WORKFLOW_NAME}} {
 //
-//     // Definiert die Reihenfolge der Agents
+//     // Defines the order of agents
 //     @Agent
 //     String run(@V("input") String input);
 // }
 //
-// ── Beispiel: Supervisor Workflow ─────────────────────────────────────────
+// ── Example: Supervisor Workflow ─────────────────────────────────────
 //
-// Ein Supervisor-Agent entscheidet dynamisch (via LLM), welcher Agent
-// als naechstes aufgerufen wird.
+// A supervisor agent dynamically decides (via LLM) which agent
+// to call next.
 //
 // @ApplicationScoped
 // @SupervisorAgent
 // public interface {{WORKFLOW_NAME}} {
 //
-//     @SystemMessage("Entscheide welcher Agent die Anfrage am besten bearbeiten kann.")
+//     @SystemMessage("Decide which agent can best handle the request.")
 //     @Agent
 //     String route(@V("input") String input);
 // }
 //
-// ── Aufbau via AgenticServices Builder API ────────────────────────────────
+// ── Building via AgenticServices Builder API ────────────────────────
 //
-// Fuer komplexere Workflows die programmatische API verwenden:
+// For more complex workflows use the programmatic API:
 //
 // import io.quarkiverse.langchain4j.agentic.AgenticServices;
 //
-// // Sequenz
+// // Sequence
 // var workflow = AgenticServices.sequenceBuilder(MyWorkflow.class)
 //         .subAgents(agentA, agentB, agentC)
 //         .outputKey("result")
 //         .build();
 //
-// // Loop mit Exit-Bedingung
+// // Loop with exit condition
 // var loop = AgenticServices.loopBuilder(MyLoop.class)
 //         .subAgents(writer, reviewer)
 //         .outputKey("result")
@@ -73,11 +73,11 @@ package {{GROUP_ID}}.boundary.ai;
 import io.quarkiverse.langchain4j.Agent;
 
 /**
- * Workflow-Definition.
+ * Workflow definition.
  *
- * TODO: Workflow-Pattern waehlen und implementieren.
- * Siehe Kommentare oben fuer Beispiele.
+ * TODO: Choose a workflow pattern and implement it.
+ * See comments above for examples.
  */
 public class {{WORKFLOW_NAME}} {
-    // Programmatische Workflow-Definition hier implementieren
+    // Implement programmatic workflow definition here
 }

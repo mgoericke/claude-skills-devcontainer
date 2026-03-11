@@ -1,58 +1,58 @@
 # Website Patterns (Tailwind CSS)
 
-Referenz-Patterns für den Website-Modus des frontend-skill.
-Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
+Reference patterns for the website mode of the frontend-skill.
+Based on Tailwind CSS Showcase: https://tailwindcss.com/showcase
 
 ---
 
-## Sektions-Patterns
+## Section Patterns
 
 ### Hero Section
 
-**Variante 1: Zentriert mit CTA**
+**Variant 1: Centered with CTA**
 
 ```html
 <header class="relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 text-center">
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
-            Dein Produkt.<br>
-            <span class="text-blue-600">Einfach besser.</span>
+            Your Product.<br>
+            <span class="text-blue-600">Simply better.</span>
         </h1>
         <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-600">
-            Eine kurze, überzeugende Beschreibung des Produkts oder der Dienstleistung.
+            A short, compelling description of the product or service.
         </p>
         <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#" class="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 transition">
-                Jetzt starten
+                Get Started
             </a>
             <a href="#" class="rounded-lg border border-gray-300 px-6 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                Mehr erfahren
+                Learn More
             </a>
         </div>
     </div>
 </header>
 ```
 
-**Variante 2: Split mit Bild**
+**Variant 2: Split with Image**
 
 ```html
 <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div>
             <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
-                Die moderne Lösung für dein Business
+                The modern solution for your business
             </h1>
             <p class="mt-6 text-lg text-gray-600">
-                Beschreibung des Wertangebots in 2-3 Sätzen.
+                Description of the value proposition in 2-3 sentences.
             </p>
             <div class="mt-8 flex gap-4">
                 <a href="#" class="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 transition">
-                    Kostenlos testen
+                    Try for Free
                 </a>
             </div>
         </div>
         <div class="relative">
-            <img src="https://placehold.co/600x400" alt="Produktbild" class="rounded-2xl shadow-2xl">
+            <img src="https://placehold.co/600x400" alt="Product image" class="rounded-2xl shadow-2xl">
         </div>
     </div>
 </header>
@@ -60,15 +60,15 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
 
 ### Features Grid
 
-**3-Spalten mit Icons**
+**3 Columns with Icons**
 
 ```html
 <section id="features" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-gray-900">Alles was du brauchst</h2>
+            <h2 class="text-3xl font-bold text-gray-900">Everything you need</h2>
             <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-                Unsere Features im Überblick
+                Our features at a glance
             </p>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -77,12 +77,12 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
                 <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
                     <!-- SVG Icon -->
                 </div>
-                <h3 class="mt-6 text-lg font-semibold text-gray-900">Feature-Name</h3>
+                <h3 class="mt-6 text-lg font-semibold text-gray-900">Feature Name</h3>
                 <p class="mt-2 text-gray-600">
-                    Kurze Beschreibung des Features und seines Nutzens.
+                    Short description of the feature and its benefit.
                 </p>
             </div>
-            <!-- Weitere Feature Cards -->
+            <!-- More Feature Cards -->
         </div>
     </div>
 </section>
@@ -90,12 +90,12 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
 
 ### Testimonials
 
-**Kartenbasiert**
+**Card-based**
 
 ```html
 <section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-16">Was unsere Kunden sagen</h2>
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-16">What our customers say</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Testimonial Card -->
             <div class="bg-white rounded-xl p-8 shadow-sm border">
@@ -103,13 +103,13 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
                     ★★★★★
                 </div>
                 <p class="text-gray-600 italic">
-                    "Zitat des Kunden über die positive Erfahrung mit dem Produkt oder der Dienstleistung."
+                    "Customer quote about their positive experience with the product or service."
                 </p>
                 <div class="mt-6 flex items-center gap-3">
                     <img src="https://placehold.co/40x40" alt="Avatar" class="h-10 w-10 rounded-full">
                     <div>
-                        <p class="text-sm font-semibold text-gray-900">Anna Schmidt</p>
-                        <p class="text-sm text-gray-500">CEO, Firma GmbH</p>
+                        <p class="text-sm font-semibold text-gray-900">Jane Smith</p>
+                        <p class="text-sm text-gray-500">CEO, Company Inc.</p>
                     </div>
                 </div>
             </div>
@@ -120,23 +120,23 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
 
 ### Pricing
 
-**3-Spalten mit Highlight**
+**3 Columns with Highlight**
 
 ```html
 <section id="pricing" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-gray-900">Einfache, transparente Preise</h2>
-            <p class="mt-4 text-lg text-gray-600">Wähle den Plan, der zu dir passt</p>
+            <h2 class="text-3xl font-bold text-gray-900">Simple, transparent pricing</h2>
+            <p class="mt-4 text-lg text-gray-600">Choose the plan that fits you</p>
         </div>
         <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <!-- Basic -->
             <div class="bg-white rounded-xl p-8 shadow-sm border">
                 <h3 class="text-lg font-semibold text-gray-900">Basic</h3>
-                <p class="mt-2 text-sm text-gray-500">Für Einzelpersonen</p>
+                <p class="mt-2 text-sm text-gray-500">For individuals</p>
                 <div class="mt-6">
-                    <span class="text-4xl font-bold">€9</span>
-                    <span class="text-gray-500">/Monat</span>
+                    <span class="text-4xl font-bold">$9</span>
+                    <span class="text-gray-500">/month</span>
                 </div>
                 <ul class="mt-8 space-y-3">
                     <li class="flex items-center gap-2 text-sm text-gray-600">
@@ -147,52 +147,52 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
                     </li>
                 </ul>
                 <a href="#" class="mt-8 block rounded-lg border border-gray-300 py-2.5 text-center text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                    Auswählen
+                    Select
                 </a>
             </div>
 
             <!-- Pro (Highlighted) -->
             <div class="bg-blue-600 rounded-xl p-8 shadow-lg text-white relative">
                 <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-yellow-400 px-3 py-0.5 text-xs font-semibold text-gray-900">
-                    Beliebt
+                    Popular
                 </span>
                 <h3 class="text-lg font-semibold">Pro</h3>
-                <p class="mt-2 text-sm text-blue-200">Für Teams</p>
+                <p class="mt-2 text-sm text-blue-200">For teams</p>
                 <div class="mt-6">
-                    <span class="text-4xl font-bold">€29</span>
-                    <span class="text-blue-200">/Monat</span>
+                    <span class="text-4xl font-bold">$29</span>
+                    <span class="text-blue-200">/month</span>
                 </div>
                 <ul class="mt-8 space-y-3">
                     <li class="flex items-center gap-2 text-sm">
-                        <svg class="h-5 w-5 text-blue-200">...</svg> Alles aus Basic
+                        <svg class="h-5 w-5 text-blue-200">...</svg> Everything in Basic
                     </li>
                     <li class="flex items-center gap-2 text-sm">
                         <svg class="h-5 w-5 text-blue-200">...</svg> Feature 3
                     </li>
                 </ul>
                 <a href="#" class="mt-8 block rounded-lg bg-white py-2.5 text-center text-sm font-medium text-blue-600 hover:bg-blue-50 transition">
-                    Auswählen
+                    Select
                 </a>
             </div>
 
             <!-- Enterprise -->
             <div class="bg-white rounded-xl p-8 shadow-sm border">
                 <h3 class="text-lg font-semibold text-gray-900">Enterprise</h3>
-                <p class="mt-2 text-sm text-gray-500">Für Unternehmen</p>
+                <p class="mt-2 text-sm text-gray-500">For organizations</p>
                 <div class="mt-6">
-                    <span class="text-4xl font-bold">€99</span>
-                    <span class="text-gray-500">/Monat</span>
+                    <span class="text-4xl font-bold">$99</span>
+                    <span class="text-gray-500">/month</span>
                 </div>
                 <ul class="mt-8 space-y-3">
                     <li class="flex items-center gap-2 text-sm text-gray-600">
-                        <svg class="h-5 w-5 text-green-500">...</svg> Alles aus Pro
+                        <svg class="h-5 w-5 text-green-500">...</svg> Everything in Pro
                     </li>
                     <li class="flex items-center gap-2 text-sm text-gray-600">
                         <svg class="h-5 w-5 text-green-500">...</svg> Feature 4
                     </li>
                 </ul>
                 <a href="#" class="mt-8 block rounded-lg border border-gray-300 py-2.5 text-center text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                    Kontaktieren
+                    Contact Us
                 </a>
             </div>
         </div>
@@ -206,12 +206,12 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
 <section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="rounded-2xl bg-blue-600 px-8 py-16 text-center text-white">
-            <h2 class="text-3xl font-bold">Bereit loszulegen?</h2>
+            <h2 class="text-3xl font-bold">Ready to get started?</h2>
             <p class="mt-4 text-lg text-blue-100 max-w-xl mx-auto">
-                Starte noch heute und überzeuge dich selbst.
+                Start today and see for yourself.
             </p>
             <a href="#" class="mt-8 inline-block rounded-lg bg-white px-8 py-3 text-sm font-medium text-blue-600 hover:bg-blue-50 transition">
-                Jetzt kostenlos testen
+                Try for Free
             </a>
         </div>
     </div>
@@ -223,17 +223,17 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
 ```html
 <section class="py-20 bg-gray-50">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Häufige Fragen</h2>
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Frequently Asked Questions</h2>
         <div class="space-y-4" x-data="{ active: null }">
             <!-- FAQ Item -->
             <div class="rounded-xl bg-white shadow-sm">
                 <button @click="active = active === 1 ? null : 1"
                         class="flex w-full items-center justify-between px-6 py-4 text-left">
-                    <span class="text-sm font-semibold text-gray-900">Wie funktioniert die kostenlose Testphase?</span>
+                    <span class="text-sm font-semibold text-gray-900">How does the free trial work?</span>
                     <svg :class="active === 1 ? 'rotate-180' : ''" class="h-5 w-5 text-gray-400 transition-transform">...</svg>
                 </button>
                 <div x-show="active === 1" x-collapse class="px-6 pb-4">
-                    <p class="text-sm text-gray-600">Antwort auf die Frage...</p>
+                    <p class="text-sm text-gray-600">Answer to the question...</p>
                 </div>
             </div>
         </div>
@@ -241,7 +241,7 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
 </section>
 ```
 
-**Hinweis:** FAQ mit Alpine.js benötigt `<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>` im `<head>`.
+**Note:** FAQ with Alpine.js requires `<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>` in the `<head>`.
 
 ### Stats
 
@@ -250,16 +250,16 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             <div>
-                <p class="text-4xl font-bold text-blue-600">10.000+</p>
-                <p class="mt-2 text-sm text-gray-600">Zufriedene Kunden</p>
+                <p class="text-4xl font-bold text-blue-600">10,000+</p>
+                <p class="mt-2 text-sm text-gray-600">Happy Customers</p>
             </div>
             <div>
-                <p class="text-4xl font-bold text-blue-600">99,9%</p>
+                <p class="text-4xl font-bold text-blue-600">99.9%</p>
                 <p class="mt-2 text-sm text-gray-600">Uptime</p>
             </div>
             <div>
                 <p class="text-4xl font-bold text-blue-600">50+</p>
-                <p class="mt-2 text-sm text-gray-600">Integrationen</p>
+                <p class="mt-2 text-sm text-gray-600">Integrations</p>
             </div>
             <div>
                 <p class="text-4xl font-bold text-blue-600">24/7</p>
@@ -275,12 +275,12 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
 ```html
 <section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-16">Unser Team</h2>
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-16">Our Team</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div class="text-center">
-                <img src="https://placehold.co/200x200" alt="Teamfoto" class="mx-auto h-32 w-32 rounded-full object-cover">
-                <h3 class="mt-4 text-lg font-semibold text-gray-900">Anna Schmidt</h3>
-                <p class="text-sm text-gray-500">CEO & Gründerin</p>
+                <img src="https://placehold.co/200x200" alt="Team photo" class="mx-auto h-32 w-32 rounded-full object-cover">
+                <h3 class="mt-4 text-lg font-semibold text-gray-900">Jane Smith</h3>
+                <p class="text-sm text-gray-500">CEO & Founder</p>
             </div>
         </div>
     </div>
@@ -296,33 +296,33 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
             <!-- Brand -->
             <div>
                 <span class="text-xl font-bold text-white">Logo</span>
-                <p class="mt-4 text-sm">Kurze Beschreibung des Unternehmens oder Produkts.</p>
+                <p class="mt-4 text-sm">Short description of the company or product.</p>
             </div>
             <!-- Links -->
             <div>
-                <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Produkt</h4>
+                <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Product</h4>
                 <ul class="mt-4 space-y-2">
                     <li><a href="#" class="text-sm hover:text-white transition">Features</a></li>
-                    <li><a href="#" class="text-sm hover:text-white transition">Preise</a></li>
+                    <li><a href="#" class="text-sm hover:text-white transition">Pricing</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Unternehmen</h4>
+                <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Company</h4>
                 <ul class="mt-4 space-y-2">
-                    <li><a href="#" class="text-sm hover:text-white transition">Über uns</a></li>
-                    <li><a href="#" class="text-sm hover:text-white transition">Kontakt</a></li>
+                    <li><a href="#" class="text-sm hover:text-white transition">About Us</a></li>
+                    <li><a href="#" class="text-sm hover:text-white transition">Contact</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Rechtliches</h4>
+                <h4 class="text-sm font-semibold text-white uppercase tracking-wider">Legal</h4>
                 <ul class="mt-4 space-y-2">
-                    <li><a href="#" class="text-sm hover:text-white transition">Impressum</a></li>
-                    <li><a href="#" class="text-sm hover:text-white transition">Datenschutz</a></li>
+                    <li><a href="#" class="text-sm hover:text-white transition">Imprint</a></li>
+                    <li><a href="#" class="text-sm hover:text-white transition">Privacy Policy</a></li>
                 </ul>
             </div>
         </div>
         <div class="mt-12 border-t border-gray-800 pt-8 text-center text-sm">
-            &copy; 2026 Firmenname. Alle Rechte vorbehalten.
+            &copy; 2026 Company Name. All rights reserved.
         </div>
     </div>
 </footer>
@@ -339,10 +339,10 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
             <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#features" class="text-sm text-gray-600 hover:text-gray-900 transition">Features</a>
-                <a href="#pricing" class="text-sm text-gray-600 hover:text-gray-900 transition">Preise</a>
-                <a href="#contact" class="text-sm text-gray-600 hover:text-gray-900 transition">Kontakt</a>
+                <a href="#pricing" class="text-sm text-gray-600 hover:text-gray-900 transition">Pricing</a>
+                <a href="#contact" class="text-sm text-gray-600 hover:text-gray-900 transition">Contact</a>
                 <a href="#" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition">
-                    Starten
+                    Get Started
                 </a>
             </div>
 
@@ -359,62 +359,62 @@ Basiert auf Tailwind CSS Showcase: https://tailwindcss.com/showcase
 
 ---
 
-## Page-Pattern-Vorlagen
+## Page Pattern Templates
 
-### SaaS Landing Page (inspiriert von Salient)
+### SaaS Landing Page (inspired by Salient)
 
-Sektionsreihenfolge:
+Section order:
 1. Navigation (fixed, transparent → solid on scroll)
-2. Hero (zentriert, großer Titel + CTA)
-3. Logos/Trust-Bar (Kundenlogos)
-4. Features Grid (3 Spalten)
-5. Feature Highlight (Split: Text + Screenshot)
+2. Hero (centered, large title + CTA)
+3. Logos/Trust Bar (customer logos)
+4. Features Grid (3 columns)
+5. Feature Highlight (split: text + screenshot)
 6. Stats
 7. Testimonials
-8. Pricing (3 Spalten)
+8. Pricing (3 columns)
 9. CTA Banner
 10. Footer
 
-### Portfolio (inspiriert von Spotlight)
+### Portfolio (inspired by Spotlight)
 
-Sektionsreihenfolge:
+Section order:
 1. Navigation (minimal)
-2. Hero (Split: Foto + Intro-Text)
-3. Über mich
-4. Projekte-Grid (Karten mit Bild + Beschreibung)
-5. Skills/Technologien
-6. Kontakt-Formular
+2. Hero (split: photo + intro text)
+3. About Me
+4. Projects Grid (cards with image + description)
+5. Skills/Technologies
+6. Contact Form
 7. Footer (minimal)
 
-### Event/Konferenz (inspiriert von Keynote)
+### Event/Conference (inspired by Keynote)
 
-Sektionsreihenfolge:
+Section order:
 1. Navigation
-2. Hero (Großes Hintergrundbild + Event-Name + Datum)
-3. Speaker-Grid
-4. Programm/Schedule (Timeline)
-5. Venue/Location (Map-Platzhalter)
-6. Sponsoren-Logos
-7. Ticket-CTA
+2. Hero (large background image + event name + date)
+3. Speaker Grid
+4. Program/Schedule (timeline)
+5. Venue/Location (map placeholder)
+6. Sponsor Logos
+7. Ticket CTA
 8. Footer
 
-### Podcast/Media (inspiriert von Transmit)
+### Podcast/Media (inspired by Transmit)
 
-Sektionsreihenfolge:
+Section order:
 1. Navigation
-2. Hero (Cover-Art + Titel + Abonnieren-Buttons)
-3. Letzte Episoden (Liste)
-4. Über den Podcast
-5. Host-Vorstellung
-6. Plattform-Links
+2. Hero (cover art + title + subscribe buttons)
+3. Latest Episodes (list)
+4. About the Podcast
+5. Host Introduction
+6. Platform Links
 7. Footer
 
-### Mobile App Promo (inspiriert von Pocket)
+### Mobile App Promo (inspired by Pocket)
 
-Sektionsreihenfolge:
+Section order:
 1. Navigation
-2. Hero (Phone-Mockup + App-Beschreibung + Store-Badges)
-3. Features (alternierend: Screenshot links/rechts + Text)
+2. Hero (phone mockup + app description + store badges)
+3. Features (alternating: screenshot left/right + text)
 4. Stats/Social Proof
-5. Download-CTA
+5. Download CTA
 6. Footer

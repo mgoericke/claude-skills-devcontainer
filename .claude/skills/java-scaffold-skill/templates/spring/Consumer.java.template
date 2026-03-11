@@ -1,12 +1,12 @@
 /**
- * RabbitMQ-Consumer für {{ENTITY_NAME}}-Nachrichten.
+ * RabbitMQ consumer for {{ENTITY_NAME}} messages.
  *
- * <p>BCE-Architektur: Boundary-Schicht (boundary/messaging)<br>
- * Empfängt Nachrichten aus der Queue und delegiert an den Service.
- * Queue-Name wird über Property konfiguriert (siehe application.properties).
+ * <p>BCE architecture: Boundary layer (boundary/messaging)<br>
+ * Receives messages from the queue and delegates to the service.
+ * Queue name is configured via property (see application.properties).
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.boundary.messaging;
 
@@ -29,7 +29,7 @@ public class {{ENTITY_NAME}}Consumer {
 
     @RabbitListener(queues = "${rabbitmq.queue.{{ENTITY_NAME_LOWER}}}")
     public void handle(String message) {
-        log.info("Nachricht empfangen für {{ENTITY_NAME}}: {}", message);
-        // TODO: Nachricht verarbeiten und an Service delegieren
+        log.info("Message received for {{ENTITY_NAME}}: {}", message);
+        // TODO: Process message and delegate to service
     }
 }

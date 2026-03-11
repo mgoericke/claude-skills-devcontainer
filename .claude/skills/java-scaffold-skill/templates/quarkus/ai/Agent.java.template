@@ -1,18 +1,18 @@
 /**
- * Agentic AI Service – autonomer Agent mit Tool-Zugriff.
+ * Agentic AI Service – autonomous agent with tool access.
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Boundary layer / AI)
  *
- * <p>Agents unterscheiden sich von einfachen AI Services:
+ * <p>Agents differ from simple AI Services:
  * <ul>
- *   <li>Ein Agent hat genau EINE Methode (Single Responsibility)
- *   <li>{@code @Agent} auf der Methode beschreibt den Agent fuer Workflow-Orchestrierung
- *   <li>{@code @RegisterAiService} auf dem Interface erzeugt den CDI-Bean
- *   <li>Agents koennen in Workflows kombiniert werden (Sequence, Parallel, Loop, Supervisor)
+ *   <li>An agent has exactly ONE method (Single Responsibility)
+ *   <li>{@code @Agent} on the method describes the agent for workflow orchestration
+ *   <li>{@code @RegisterAiService} on the interface creates the CDI bean
+ *   <li>Agents can be combined in workflows (Sequence, Parallel, Loop, Supervisor)
  * </ul>
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  * @see <a href="https://quarkus.io/blog/agentic-ai-patterns/">Agentic AI Patterns</a>
  */
 package {{GROUP_ID}}.boundary.ai;
@@ -32,8 +32,8 @@ import {{GROUP_ID}}.control.ai.{{TOOL_CLASS_NAME}};
 public interface {{AGENT_NAME}} {
 
     @SystemMessage("""
-            Du bist ein spezialisierter Agent fuer {{DOMAIN_DESCRIPTION}}.
-            Nutze die verfuegbaren Tools, um die Aufgabe selbststaendig zu loesen.
+            You are a specialized agent for {{DOMAIN_DESCRIPTION}}.
+            Use the available tools to solve the task autonomously.
             """)
     @UserMessage("{{AGENT_TASK_DESCRIPTION}}: {input}")
     @Agent("{{AGENT_DESCRIPTION}}")

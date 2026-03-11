@@ -1,35 +1,35 @@
 ---
 name: blog-post-skill
-description: Erstellt technische Blog Posts im Stil von the-main-thread.com mit strukturiertem Interview und Zielgruppen-Anpassung (Developer, Business Analysts, Projekt Manager). Verwende diesen Skill immer wenn ein Blog Post, Artikel, Tutorial, Anleitung, Erfahrungsbericht oder Fachbeitrag erstellt werden soll – auch bei informellen Anfragen wie "schreib was ueber X", "ich moechte ueber X bloggen" oder "mach einen Artikel draus". Auch verwenden wenn ein bestehender Entwurf in Blog-Post-Format gebracht werden soll.
-argument-hint: "[thema]"
+description: Creates technical blog posts in the style of the-main-thread.com with structured interviews and audience adaptation (Developer, Business Analysts, Project Managers). Use this skill whenever a blog post, article, tutorial, guide, experience report, or technical contribution needs to be created – also for informal requests like "write something about X", "I want to blog about X", or "make an article out of this". Also use when an existing draft should be turned into blog post format.
+argument-hint: "[topic]"
 ---
 
 # Blog Post Skill
 
-Erstellt technische Blog Posts als Markdown-Datei in `docs/` – basierend auf einem
-strukturierten Interview und einem bewährten Template aus erfolgreichen Fachartikeln.
+Creates technical blog posts as Markdown files in `docs/` – based on a
+structured interview and a proven template from successful technical articles.
 
-> **Philosophie:** Ein guter technischer Blog Post erzählt eine Geschichte.
-> Er beginnt mit einem Problem, das der Leser kennt, und endet mit einer Erkenntnis,
-> die über den Code hinausgeht.
+> **Philosophy:** A good technical blog post tells a story.
+> It starts with a problem the reader knows and ends with an insight
+> that goes beyond the code.
 
 ---
 
 ## What This Skill Does
 
-1. **Fragt Sprache und Zielgruppe ab** – Deutsch/Englisch, Developer/BA/PM
-2. **Führt strukturiertes Interview** – Thema, Kernbotschaft, Gliederung, Code-Beispiele
-3. **Generiert Blog Post** – Aus Template mit zielgruppengerechter Sprache und Tiefe
-4. **Erstellt Hero Image** (optional) – Per Hugging Face API (FLUX) als Titelbild
+1. **Asks for language and audience** – German/English, Developer/BA/PM
+2. **Conducts structured interview** – Topic, key message, outline, code examples
+3. **Generates blog post** – From template with audience-appropriate language and depth
+4. **Creates hero image** (optional) – Via Hugging Face API (FLUX) as title image
 
 ## How to Use
 
 ```
-Schreib einen Blog Post über Quarkus und LangChain4j
+Write a blog post about Quarkus and LangChain4j
 ```
 
 ```
-Erstelle einen Artikel über unser DevContainer-Template
+Create an article about our DevContainer template
 ```
 
 ```
@@ -40,137 +40,137 @@ Write a blog post about Java FFM and native AI inference
 
 ## Instructions
 
-> **Vor jeder Ausführung**:
-> 1. `.claude/lessons-learned.md` prüfen
-> 2. Template `templates/blog-post.md.template` laden
+> **Before every execution**:
+> 1. Check `.claude/lessons-learned.md`
+> 2. Load template `templates/blog-post.md.template`
 
-### Schritt 1 – Sprache und Zielgruppe abfragen
+### Step 1 – Ask for language and audience
 
-Sprache und Zielgruppe bestimmen den gesamten Ton, die Tiefe und die Menge an Code-Beispielen im Post. Ohne diese Information wird der Post nicht zielgruppengerecht – daher immer zuerst mit `AskUserQuestion` abfragen.
+Language and audience determine the entire tone, depth, and amount of code examples in the post. Without this information, the post won't be audience-appropriate – therefore always ask first with `AskUserQuestion`.
 
-#### Frage 1 – Sprache
-
-```
-In welcher Sprache soll der Blog Post geschrieben werden?
-```
-
-Optionen:
-- **Deutsch** (Empfohlen) – Fachbegriffe bleiben Englisch, Prosa auf Deutsch
-- **Englisch** – Gesamter Text auf Englisch
-
-#### Frage 2 – Zielgruppe
+#### Question 1 – Language
 
 ```
-Wer ist die primäre Zielgruppe?
+What language should the blog post be written in?
 ```
 
-Optionen:
-- **Developer** – Technisch tiefgehend, viele Code-Beispiele, Architektur-Entscheidungen erklärt, CLI-Befehle, vollständig kompilierbare Snippets
-- **Business Analysts** – Fachlicher Fokus, Code nur illustrativ, Nutzen und Prozesse im Vordergrund, Diagramme statt Implementierungsdetails
-- **Projekt Manager** – Strategischer Blick, Entscheidungshilfen, Risiken/Chancen, Aufwandseinschätzungen, wenig Code
+Options:
+- **German** (Recommended) – Technical terms remain English, prose in German
+- **English** – Entire text in English
 
-### Schritt 2 – Themen-Interview
-
-Das Interview liefert die inhaltliche Grundlage fuer den gesamten Post. Fragen sequenziell stellen – eine Gruppe nach der anderen, damit der Nutzer nicht ueberfordert wird.
-
-#### Gruppe 1 – Kern
-
-| # | Frage | Hinweis |
-|---|-------|---------|
-| 1 | **Was ist das Thema?** | Kurzer Arbeitstitel |
-| 2 | **Welches Problem löst der Artikel?** | Das "Warum" – warum sollte jemand weiterlesen? |
-| 3 | **Was ist die zentrale Erkenntnis / These?** | Der eine Satz, den der Leser mitnehmen soll |
-
-#### Gruppe 2 – Inhalt
-
-| # | Frage | Hinweis |
-|---|-------|---------|
-| 4 | **Welche Hauptabschnitte soll der Post haben?** | 3–6 Abschnitte, grobe Stichworte reichen |
-| 5 | **Gibt es Code-Beispiele?** | Sprache, Framework, Umfang – oder "keine" |
-| 6 | **Gibt es ein konkretes Projekt / Repo als Grundlage?** | Link oder lokaler Pfad – dann Code auslesen |
-
-#### Gruppe 3 – Kontext
-
-| # | Frage | Hinweis |
-|---|-------|---------|
-| 7 | **Gibt es einen persönlichen Aufhänger / eine Anekdote?** | Einstieg mit Erfahrung wirkt authentisch |
-| 8 | **Soll der Post auf eine bestimmte Plattform?** | Substack, Dev.to, Medium, firmeninternes Blog |
-| 9 | **Gewünschte Länge?** | Kurz (~1.000 Wörter), Mittel (~2.500), Lang (~4.500) |
-
-### Schritt 3 – Gliederung erstellen und bestätigen
-
-Vor dem Schreiben eine **kompakte Gliederung** präsentieren:
+#### Question 2 – Audience
 
 ```
-## Gliederung: [Arbeitstitel]
-
-1. Hook – [Einstieg in 1 Satz]
-2. Problemstellung – [Was ist das Problem?]
-3. [Abschnitt 1] – [Kernpunkt]
-4. [Abschnitt 2] – [Kernpunkt]
-5. [Abschnitt 3] – [Kernpunkt]
-6. Fazit – [Zentrale Erkenntnis]
+Who is the primary audience?
 ```
 
-**Erst nach Bestätigung** weiterschreiben.
+Options:
+- **Developer** – Technically deep, many code examples, architecture decisions explained, CLI commands, fully compilable snippets
+- **Business Analysts** – Business focus, code only illustrative, benefits and processes in the foreground, diagrams instead of implementation details
+- **Project Managers** – Strategic perspective, decision aids, risks/opportunities, effort estimates, little code
 
-### Schritt 4 – Blog Post generieren
+### Step 2 – Topic interview
 
-Template `templates/blog-post.md.template` laden und befüllen.
+The interview provides the content foundation for the entire post. Ask questions sequentially – one group at a time, so the user is not overwhelmed.
 
-#### Stilregeln nach Zielgruppe
+#### Group 1 – Core
+
+| # | Question | Hint |
+|---|----------|------|
+| 1 | **What is the topic?** | Short working title |
+| 2 | **What problem does the article solve?** | The "why" – why should someone keep reading? |
+| 3 | **What is the central insight / thesis?** | The one sentence the reader should take away |
+
+#### Group 2 – Content
+
+| # | Question | Hint |
+|---|----------|------|
+| 4 | **What main sections should the post have?** | 3–6 sections, rough keywords are enough |
+| 5 | **Are there code examples?** | Language, framework, scope – or "none" |
+| 6 | **Is there a specific project / repo as a basis?** | Link or local path – then read code from it |
+
+#### Group 3 – Context
+
+| # | Question | Hint |
+|---|----------|------|
+| 7 | **Is there a personal hook / anecdote?** | Starting with experience feels authentic |
+| 8 | **Should the post be for a specific platform?** | Substack, Dev.to, Medium, company blog |
+| 9 | **Desired length?** | Short (~1,000 words), Medium (~2,500), Long (~4,500) |
+
+### Step 3 – Create and confirm outline
+
+Before writing, present a **compact outline**:
+
+```
+## Outline: [Working Title]
+
+1. Hook – [Opening in 1 sentence]
+2. Problem statement – [What is the problem?]
+3. [Section 1] – [Key point]
+4. [Section 2] – [Key point]
+5. [Section 3] – [Key point]
+6. Conclusion – [Central insight]
+```
+
+**Only continue writing after confirmation.**
+
+### Step 4 – Generate blog post
+
+Load and fill template `templates/blog-post.md.template`.
+
+#### Style rules by audience
 
 **Developer:**
-- Problem-First-Einstieg mit persönlicher Erfahrung oder konkretem Szenario
-- Code-Beispiele vollständig und kompilierbar (mit Imports, Package-Deklaration)
-- "Warum"-Abschnitte für Architekturentscheidungen ("Why FFM requires a shared library")
-- Verifizierungsabschnitt mit curl-Befehlen oder Testausgaben
-- Fazit hebt strategische Erkenntnis hervor, nicht nur Zusammenfassung
-- Inline-Code für technische Begriffe (`ProcessBuilder`, `@Blocking`)
-- **Bold** für Schlüsselkonzepte
-- Tabellen für Vergleiche und Konfigurationen
-- ~15–20 Code-Blöcke bei Tutorial-Posts
+- Problem-first opening with personal experience or concrete scenario
+- Code examples complete and compilable (with imports, package declaration)
+- "Why" sections for architecture decisions ("Why FFM requires a shared library")
+- Verification section with curl commands or test output
+- Conclusion highlights strategic insight, not just a summary
+- Inline code for technical terms (`ProcessBuilder`, `@Blocking`)
+- **Bold** for key concepts
+- Tables for comparisons and configurations
+- ~15–20 code blocks for tutorial posts
 
 **Business Analysts:**
-- Einstieg mit fachlichem Problem oder Geschäftsszenario
-- Code nur als Illustration (vereinfacht, Pseudocode erlaubt)
-- Fokus auf Prozessflüsse, Nutzen, fachliche Auswirkungen
-- Diagramme und Tabellen statt Implementierungsdetails
-- Fazit mit Handlungsempfehlung und nächsten Schritten
-- ~3–5 Code-Blöcke maximal
+- Opening with business problem or business scenario
+- Code only as illustration (simplified, pseudocode allowed)
+- Focus on process flows, benefits, business impact
+- Diagrams and tables instead of implementation details
+- Conclusion with recommendations and next steps
+- ~3–5 code blocks maximum
 
-**Projekt Manager:**
-- Einstieg mit strategischer Frage oder Marktbeobachtung
-- Kein Code, außer zur Illustration ("so sieht das in 5 Zeilen aus")
-- Fokus auf Entscheidungen, Risiken, Chancen, Team-Impact
-- Vergleichstabellen für Technologie-Alternativen
-- Fazit mit konkreter Empfehlung und Entscheidungsmatrix
-- ~0–2 Code-Blöcke
+**Project Managers:**
+- Opening with strategic question or market observation
+- No code, except for illustration ("this is what it looks like in 5 lines")
+- Focus on decisions, risks, opportunities, team impact
+- Comparison tables for technology alternatives
+- Conclusion with concrete recommendation and decision matrix
+- ~0–2 code blocks
 
-#### Allgemeine Stilregeln (alle Zielgruppen)
+#### General style rules (all audiences)
 
-Basierend auf dem Stil von [the-main-thread.com](https://www.the-main-thread.com):
+Based on the style of [the-main-thread.com](https://www.the-main-thread.com):
 
-- **Einstieg (Hook):** Erster Absatz erzählt eine Mini-Geschichte oder stellt eine überraschende Behauptung auf. Nie mit "In diesem Artikel…" beginnen.
-- **Ton:** Professionell aber gesprächig. Direkt ohne belehrend zu wirken. Kurze Sätze für Rhythmus, längere für Erklärungen.
-- **Absätze:** Kurz (2–4 Sätze). Einzelne Sätze als eigener Absatz sind erlaubt für Betonung.
-- **Überschriften:** Klar und beschreibend. H2 für Hauptabschnitte, H3 für Unterabschnitte.
-- **Listen:** Ungeordnet für Aufzählungen, nummeriert für Reihenfolgen. Nie mehr als 7 Einträge.
-- **Metaphern:** Technische Konzepte durch alltägliche Vergleiche erklären ("wie ein Praktikant, dem man einarbeitet").
-- **Fazit:** Keine reine Zusammenfassung. Stattdessen eine strategische Erkenntnis, die über den Artikel hinausweist. Gerne mit Antithese oder Wiederholung für Wirkung.
-- **Horizontal Rules (`---`):** Zwischen Hauptabschnitten als visuelle Trenner.
+- **Opening (Hook):** First paragraph tells a mini-story or makes a surprising claim. Never start with "In this article…".
+- **Tone:** Professional but conversational. Direct without being preachy. Short sentences for rhythm, longer ones for explanations.
+- **Paragraphs:** Short (2–4 sentences). Single sentences as their own paragraph are allowed for emphasis.
+- **Headings:** Clear and descriptive. H2 for main sections, H3 for subsections.
+- **Lists:** Unordered for enumerations, numbered for sequences. Never more than 7 entries.
+- **Metaphors:** Explain technical concepts through everyday comparisons ("like an intern you're onboarding").
+- **Conclusion:** Not a mere summary. Instead, a strategic insight that points beyond the article. Antithesis or repetition for effect is welcome.
+- **Horizontal Rules (`---`):** Between main sections as visual separators.
 
-### Schritt 5 – Hero Image (optional)
+### Step 5 – Hero image (optional)
 
-Nach dem Blog Post fragen:
+After the blog post, ask:
 
 ```
-Soll ein Hero Image für den Post generiert werden?
+Should a hero image be generated for the post?
 ```
 
-Falls ja, per Hugging Face API (wie im infografik-skill):
+If yes, via Hugging Face API (as in infografik-skill):
 
-**Prompt-Schema für Blog Hero Images:**
+**Prompt schema for blog hero images:**
 
 ```
 A modern, minimalist hero image for a technical blog post about [TOPIC].
@@ -184,66 +184,66 @@ Format: landscape, 1200x630 pixels (Open Graph).
 curl -s \
   -H "Authorization: Bearer $HF_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"inputs": "DEIN_PROMPT_HIER"}' \
+  -d '{"inputs": "YOUR_PROMPT_HERE"}' \
   "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell" \
   --output "docs/hero_$(date +%Y%m%d_%H%M%S).png"
 ```
 
-### Qualitätscheckliste
+### Quality checklist
 
-Vor dem Präsentieren prüfen:
-- [ ] Sprache und Zielgruppe wurden abgefragt
-- [ ] Gliederung wurde bestätigt
-- [ ] Hook im ersten Absatz (kein "In diesem Artikel…")
-- [ ] Fazit enthält strategische Erkenntnis, nicht nur Zusammenfassung
-- [ ] Code-Beispiele sind vollständig (bei Developer-Zielgruppe)
-- [ ] Horizontal Rules zwischen Hauptabschnitten
-- [ ] Keine Emojis (außer auf Wunsch)
-- [ ] Co-Author-Hinweis am Ende
-- [ ] Wortanzahl entspricht gewünschter Länge (±20%)
+Check before presenting:
+- [ ] Language and audience were asked
+- [ ] Outline was confirmed
+- [ ] Hook in first paragraph (no "In this article…")
+- [ ] Conclusion contains strategic insight, not just a summary
+- [ ] Code examples are complete (for developer audience)
+- [ ] Horizontal rules between main sections
+- [ ] No emojis (unless requested)
+- [ ] Co-author note at the end
+- [ ] Word count matches desired length (±20%)
 
 ---
 
 ## References
 
-| Datei | Beschreibung |
-|-------|-------------|
-| [blog-post.md.template](blog-post.md.template) | Markdown-Template für den Blog Post |
-| `.claude/lessons-learned.md` | Erkenntnisse und Korrekturen |
-| `references/farbpaletten.md` | Farbpaletten für Hero-Image-Generierung (aus infografik-skill) |
+| File | Description |
+|------|-------------|
+| [blog-post.md.template](blog-post.md.template) | Markdown template for the blog post |
+| `.claude/lessons-learned.md` | Findings and corrections |
+| `references/farbpaletten.md` | Color palettes for hero image generation (from infografik-skill) |
 
-### Stilvorbilder
+### Style references
 
-Die Stilregeln basieren auf der Analyse dieser Posts von [the-main-thread.com](https://www.the-main-thread.com):
+The style rules are based on the analysis of these posts from [the-main-thread.com](https://www.the-main-thread.com):
 
-| Post | Typ | Wörter |
-|------|-----|--------|
-| AI Coding Tools & Compounding Engineering | Meinungsartikel mit Tipps | ~1.000 |
-| Local Image Generation (Quarkus, FFM, FLUX) | Tiefes Tutorial | ~4.500 |
-| Multilingual Prompt Injection Guardrails | Tutorial mit Theorie | ~4.000 |
-| Persistent LLM Memory (Quarkus, LangChain4j) | Hands-on Guide | ~4.500 |
+| Post | Type | Words |
+|------|------|-------|
+| AI Coding Tools & Compounding Engineering | Opinion article with tips | ~1,000 |
+| Local Image Generation (Quarkus, FFM, FLUX) | Deep tutorial | ~4,500 |
+| Multilingual Prompt Injection Guardrails | Tutorial with theory | ~4,000 |
+| Persistent LLM Memory (Quarkus, LangChain4j) | Hands-on guide | ~4,500 |
 
 ---
 
 ## Conventions
 
-- **Dateiname:** `docs/blog-<thema-kebab-case>.md`
-- **Sprache Prosa:** Deutsch (default) oder Englisch – je nach Interview
-- **Sprache Code:** Immer Englisch
-- **Fachbegriffe:** Bleiben Englisch, auch in deutschen Posts
-- **Co-Author:** Am Ende des Posts: `*Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via blog-post-skill*`
-- **Hero Image:** `docs/hero_<thema-oder-zeitstempel>.png` – nie überschreiben
+- **Filename:** `docs/blog-<topic-kebab-case>.md`
+- **Prose language:** German (default) or English – depending on interview
+- **Code language:** Always English
+- **Technical terms:** Remain English, even in German posts
+- **Co-Author:** At the end of the post: `*Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via blog-post-skill*`
+- **Hero Image:** `docs/hero_<topic-or-timestamp>.png` – never overwrite
 
-### Position im Workflow
+### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – fachliche Anforderungen
-        ↓
-[java-scaffold-skill]     Projekt aufsetzen
-        ↓
-[review-skill]            Code-Review
-        ↓
-[doc-skill]               Projektdokumentation
-        ↓
-[blog-post-skill]         ◀ Blog Post über das Projekt / die Technologie
+[spec-feature-skill]      optional – business requirements
+        |
+[java-scaffold-skill]     project setup
+        |
+[review-skill]            code review
+        |
+[doc-skill]               project documentation
+        |
+[blog-post-skill]         < blog post about the project / technology
 ```

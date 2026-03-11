@@ -1,13 +1,13 @@
 /**
- * Architektur-Tests für {{GROUP_ID}}.
+ * Architecture tests for {{GROUP_ID}}.
  *
- * <p>Erzwingt BCE-Schichtentrennung, Naming Conventions und saubere Imports
- * zur Build-Zeit. Schlägt ein Test fehl, wurde eine Architektur-Regel verletzt.
+ * <p>Enforces BCE layer separation, naming conventions and clean imports
+ * at build time. If a test fails, an architecture rule has been violated.
  *
- * <p>Framework: Taikai (basiert auf ArchUnit)
+ * <p>Framework: Taikai (based on ArchUnit)
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  * @see <a href="https://github.com/enofex/taikai">Taikai</a>
  * @see <a href="https://www.archunit.org">ArchUnit</a>
  */
@@ -57,7 +57,7 @@ class ArchitectureTest {
                 .namespace(BASE_PACKAGE)
                 .java(java -> java
                         .imports(imports -> imports
-                                // entity-Schicht darf NICHT von boundary abhängen
+                                // entity layer must NOT depend on boundary
                                 .shouldNotImport(BASE_PACKAGE + ".boundary..")
                         )
                 )
@@ -92,7 +92,7 @@ class ArchitectureTest {
         rule.check(importedClasses);
     }
 
-    // ── AI-Schichten (nur bei LangChain4j-Projekten relevant) ──────────────
+    // ── AI layers (only relevant for LangChain4j projects) ──────────────
 
     @Test
     void aiServicesShouldResideInBoundaryAi() {

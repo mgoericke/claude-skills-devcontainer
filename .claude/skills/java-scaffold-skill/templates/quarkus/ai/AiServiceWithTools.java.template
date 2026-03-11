@@ -1,13 +1,13 @@
 /**
- * AI Service mit Tool-Integration (Function Calling).
+ * AI Service with tool integration (Function Calling).
  *
- * <p>Erstellt mit Quarkus 3.x · BCE-Architektur (Boundary-Schicht / AI)
+ * <p>Created with Quarkus 3.x · BCE architecture (Boundary layer / AI)
  *
- * <p>Dieser Service bindet Tools ein, die das LLM bei Bedarf aufrufen kann.
- * Tools werden als CDI-Beans registriert und per {@code @ToolBox} referenziert.
+ * <p>This service integrates tools that the LLM can call as needed.
+ * Tools are registered as CDI beans and referenced via {@code @ToolBox}.
  *
  * @author Development Team
- * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generiert via java-scaffold-skill
+ * @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
  */
 package {{GROUP_ID}}.boundary.ai;
 
@@ -24,9 +24,9 @@ import {{GROUP_ID}}.control.ai.{{TOOL_CLASS_NAME}};
 public interface {{AI_SERVICE_NAME}} {
 
     @SystemMessage("""
-            Du bist ein hilfreicher Assistent fuer {{DOMAIN_DESCRIPTION}}.
-            Du hast Zugriff auf Tools, die du bei Bedarf aufrufen kannst.
-            Nutze die Tools, um praezise Antworten zu geben.
+            You are a helpful assistant for {{DOMAIN_DESCRIPTION}}.
+            You have access to tools that you can call as needed.
+            Use the tools to provide precise answers.
             """)
     @ToolBox({{TOOL_CLASS_NAME}}.class)
     String chat(@UserMessage String userMessage);

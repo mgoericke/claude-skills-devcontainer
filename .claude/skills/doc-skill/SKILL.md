@@ -1,135 +1,135 @@
 ---
 name: doc-skill
-description: Erstellt oder aktualisiert Projektdokumentation als Markdown-Seite in docs/. Analysiert automatisch pom.xml, Properties, docker-compose und Quellcode – fragt nur was aus dem Code nicht hervorgeht. Verwende diesen Skill bei "dokumentiere das Projekt", "schreib eine Doku", "aktualisiere die docs", "erstelle eine README" oder wenn ein neues Projekt eine technische Dokumentation braucht.
+description: Creates or updates project documentation as a Markdown page in docs/. Automatically analyzes pom.xml, properties, docker-compose, and source code – only asks what cannot be derived from the code. Use this skill for "document the project", "write docs", "update the docs", "create a README" or when a new project needs technical documentation.
 argument-hint: "[artifactId]"
 ---
 
 # Doc Skill
 
-Erstellt oder aktualisiert `docs/<artifactId>.md` auf Basis des bestehenden Projekts
-und eines strukturierten Interviews.
+Creates or updates `docs/<artifactId>.md` based on the existing project
+and a structured interview.
 
-> **Philosophie:** Dokumentation ist kein Anhang – sie ist Teil des Produkts.
-> Gute Doku entsteht aus dem Quellcode, nicht neben ihm.
+> **Philosophy:** Documentation is not an appendix – it is part of the product.
+> Good docs emerge from the source code, not alongside it.
 
 ---
 
 ## What This Skill Does
 
-1. **Analysiert das Projekt** – pom.xml, Properties, docker-compose, Quellcode automatisch auswerten
-2. **Schließt Lücken per Interview** – Nur fragen, was aus dem Code nicht hervorgeht
-3. **Erstellt oder aktualisiert** – `docs/<artifactId>.md` aus Template oder gezielt ergänzen
+1. **Analyzes the project** – automatically evaluates pom.xml, properties, docker-compose, source code
+2. **Fills gaps via interview** – only asks what cannot be derived from the code
+3. **Creates or updates** – `docs/<artifactId>.md` from template or targeted additions
 
 ## How to Use
 
 ```
-Dokumentiere das Projekt
+Document the project
 ```
 
 ```
-Erstelle eine Doku für mein Spring Boot Projekt
+Create docs for my Spring Boot project
 ```
 
 ```
-Aktualisiere die docs mit dem neuen Messaging-Feature
+Update the docs with the new messaging feature
 ```
 
 ---
 
 ## Instructions
 
-### Schritt 1 – Projekt analysieren (automatisch)
+### Step 1 – Analyze Project (automatic)
 
-Vor dem Interview vorhandene Projektartefakte lesen und auswerten:
+Before the interview, read and evaluate existing project artifacts:
 
-| Datei | Extrahierte Information |
-|-------|------------------------|
-| `pom.xml` | groupId, artifactId, Framework, aktive Dependencies (DB, Messaging, Keycloak) |
-| `src/main/resources/application.properties` | Konfigurierte Ports, Datenbankname, Realm |
-| `docker-compose.yml` | Services, Ports, Credentials |
-| `specs/*.md` | Vorhandene Feature-Specs als Grundlage für API-Dokumentation |
-| `src/main/java/**/boundary/rest/` | REST-Endpunkte (Pfade, Methoden) |
-| `src/main/java/**/boundary/messaging/` | Messaging-Consumer (Channels) |
-| `src/main/java/**/entity/` | Entities / Datenmodell |
-| `src/main/resources/db/migration/` | Flyway-Migrationen → Datenbankschema |
+| File | Extracted Information |
+|------|---------------------|
+| `pom.xml` | groupId, artifactId, framework, active dependencies (DB, messaging, Keycloak) |
+| `src/main/resources/application.properties` | Configured ports, database name, realm |
+| `docker-compose.yml` | Services, ports, credentials |
+| `specs/*.md` | Existing feature specs as basis for API documentation |
+| `src/main/java/**/boundary/rest/` | REST endpoints (paths, methods) |
+| `src/main/java/**/boundary/messaging/` | Messaging consumers (channels) |
+| `src/main/java/**/entity/` | Entities / data model |
+| `src/main/resources/db/migration/` | Flyway migrations → database schema |
 
-Bereits ermittelte Informationen **nicht erneut abfragen**.
+Already determined information **must not be asked again**.
 
-### Schritt 2 – Interview (nur Lücken schließen)
+### Step 2 – Interview (only fill gaps)
 
-Nur fragen, was aus dem Quellcode nicht eindeutig hervorgeht:
+Only ask what cannot be clearly derived from the source code:
 
-| # | Frage | Nur fragen wenn |
-|---|-------|----------------|
-| 1 | **Kurzbeschreibung des Projekts** (1–2 Sätze: was tut es?) | Kein `README.md` vorhanden |
-| 2 | **Zielgruppe / Nutzer** (interne API, öffentlich, anderes Team?) | Unklar aus dem Code |
-| 3 | **Besondere Konfigurationshinweise** (Secrets, externe Systeme) | Nicht in `application.properties` |
-| 4 | **Bekannte Einschränkungen / offene TODOs** | Immer fragen |
-| 5 | **Sollen alle Abschnitte des Templates befüllt werden?** | Immer fragen – ggf. Abschnitte weglassen |
+| # | Question | Only ask when |
+|---|----------|--------------|
+| 1 | **Brief project description** (1–2 sentences: what does it do?) | No `README.md` present |
+| 2 | **Target audience / users** (internal API, public, other team?) | Unclear from code |
+| 3 | **Special configuration notes** (secrets, external systems) | Not in `application.properties` |
+| 4 | **Known limitations / open TODOs** | Always ask |
+| 5 | **Should all template sections be filled?** | Always ask – some sections may be omitted |
 
-### Schritt 3 – Erstellen oder Aktualisieren
+### Step 3 – Create or Update
 
-**Erstellen:** `docs/<artifactId>.md` existiert nicht
-→ Datei aus Template `templates/project-doc.md.template` erzeugen, alle Platzhalter befüllen.
+**Create:** `docs/<artifactId>.md` does not exist
+→ Generate file from template `templates/project-doc.md.template`, fill all placeholders.
 
-**Aktualisieren:** `docs/<artifactId>.md` existiert bereits
-→ Datei lesen, geänderte/neue Inhalte gezielt ersetzen oder ergänzen.
-→ Bestehende manuelle Ergänzungen des Nutzers **nicht überschreiben** – nur leere oder
-  veraltete Abschnitte aktualisieren.
-→ Am Ende der Datei einen Änderungshinweis ergänzen:
-  `_Zuletzt aktualisiert: {{DATE}} (doc-skill)_`
+**Update:** `docs/<artifactId>.md` already exists
+→ Read file, replace or add changed/new content in a targeted way.
+→ **Do not overwrite** existing manual additions by the user – only update empty or
+  outdated sections.
+→ Add an update note at the end of the file:
+  `_Last updated: {{DATE}} (doc-skill)_`
 
-### Abschnitte des Templates
+### Template Sections
 
-| Abschnitt | Pflicht | Quelle |
-|-----------|---------|--------|
-| Projektübersicht | Ja | Interview + pom.xml |
-| Stack & Versionen | Ja | pom.xml |
-| Lokale Entwicklung | Ja | docker-compose.yml, application.properties |
-| Architektur (BCE) | Ja | Paketstruktur |
-| API-Referenz | Wenn REST vorhanden | boundary/rest/** |
-| Messaging | Wenn RabbitMQ aktiv | boundary/messaging/**, application.properties |
-| Auth / Keycloak | Wenn quarkus-oidc / oauth2-resource-server aktiv | application.properties |
-| Konfigurationsreferenz | Ja | application.properties |
-| Deployment | Ja | Dockerfile, docker-compose.yml |
-| Bekannte Einschränkungen | Ja | Interview |
+| Section | Required | Source |
+|---------|----------|--------|
+| Project Overview | Yes | Interview + pom.xml |
+| Stack & Versions | Yes | pom.xml |
+| Local Development | Yes | docker-compose.yml, application.properties |
+| Architecture (BCE) | Yes | Package structure |
+| API Reference | If REST present | boundary/rest/** |
+| Messaging | If RabbitMQ active | boundary/messaging/**, application.properties |
+| Auth / Keycloak | If quarkus-oidc / oauth2-resource-server active | application.properties |
+| Configuration Reference | Yes | application.properties |
+| Deployment | Yes | Dockerfile, docker-compose.yml |
+| Known Limitations | Yes | Interview |
 
 ---
 
 ## References
 
-| Datei | Beschreibung |
-|-------|-------------|
-| [templates/project-doc.md.template](templates/project-doc.md.template) | Template für die Projektdokumentation |
+| File | Description |
+|------|-------------|
+| [templates/project-doc.md.template](templates/project-doc.md.template) | Template for project documentation |
 
-### Ausgabepfad
+### Output Path
 
 ```
 docs/<artifactId>.md
 ```
 
-Das Verzeichnis `docs/` wird angelegt, falls es nicht existiert.
+The `docs/` directory is created if it does not exist.
 
 ---
 
 ## Conventions
 
-- **Sprache:** Deutsch (Prosa, Überschriften) · Englisch (Code-Blöcke, Pfade)
-- **Dateiname:** `<artifactId>.md` in kebab-case
-- Versionsnummern aus `pom.xml` übernehmen – keine Schätzungen
-- Passwörter / Secrets nur als Platzhalter (`<your-secret>`) – nie echte Werte
-- **Co-Author:** `<!-- Generiert via doc-skill · Co-Author: Claude (claude-sonnet-4-6, Anthropic) -->`
+- **Language:** English in prose, headings, and code blocks
+- **Filename:** `<artifactId>.md` in kebab-case
+- Version numbers taken from `pom.xml` – no guessing
+- Passwords / secrets only as placeholders (`<your-secret>`) – never real values
+- **Co-Author:** `<!-- Generated via doc-skill · Co-Author: Claude (claude-sonnet-4-6, Anthropic) -->`
 
-### Position im Workflow
+### Position in Workflow
 
 ```
-[spec-feature-skill]      optional – fachliche Anforderungen
-        ↓
-[openapi-skill]           wenn OpenAPI Spec vorhanden
-        ↓
-[java-scaffold-skill]     Rahmen: DB, Messaging, Infra
-        ↓
-[review-skill]            Code-Review
-        ↓
-[doc-skill]               ◀ Projektdokumentation
+[spec-feature-skill]      optional – business requirements
+        |
+[openapi-skill]           if OpenAPI spec needed
+        |
+[java-scaffold-skill]     framework: DB, messaging, infra
+        |
+[review-skill]            code review
+        |
+[doc-skill]               <-- project documentation
 ```

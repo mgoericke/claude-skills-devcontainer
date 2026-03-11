@@ -1,30 +1,30 @@
-# Datenzugriff im Chat (MCP)
+# Data Access in Chat (MCP)
 
-Claude Code kann über MCP-Server (Model Context Protocol) direkt auf die laufende
-Infrastruktur zugreifen – natürlichsprachliche Abfragen direkt im Chat.
+Claude Code can access the running infrastructure directly via MCP servers (Model Context Protocol) –
+natural language queries right in the chat.
 
 ---
 
 ## PostgreSQL
 
-Der MCP-Server `@modelcontextprotocol/server-postgres` ist in `.claude/settings.json`
-vorkonfiguriert. Nach dem Scaffolding den Datenbanknamen auf `<artifactId>db` anpassen
-(Standard: `appdb`):
+The MCP server `@modelcontextprotocol/server-postgres` is preconfigured in `.claude/settings.json`.
+After scaffolding, adjust the database name to `<artifactId>db`
+(default: `appdb`):
 
 ```json
 "postgresql://app:app@localhost:5432/<artifactId>db"
 ```
 
-Claude erkennt das Schema automatisch und übersetzt natürliche Sprache in SQL:
+Claude automatically recognizes the schema and translates natural language into SQL:
 
 ```
-Zeige alle Produkte
-Suche Produkte mit einem Preis zwischen 10 und 50
-Wie viele Bestellungen wurden heute angelegt?
-Zeige die letzten 5 Events sortiert nach Erstellungsdatum
+Show all products
+Search for products with a price between 10 and 50
+How many orders were created today?
+Show the last 5 events sorted by creation date
 ```
 
-### Konfiguration (`.claude/settings.json`)
+### Configuration (`.claude/settings.json`)
 
 ```json
 {
@@ -41,19 +41,19 @@ Zeige die letzten 5 Events sortiert nach Erstellungsdatum
 }
 ```
 
-> **Voraussetzung:** Infrastruktur muss laufen (`docker compose up -d`) und
-> die Datenbank muss durch Flyway-Migrationen initialisiert sein.
+> **Prerequisite:** Infrastructure must be running (`docker compose up -d`) and
+> the database must be initialized through Flyway migrations.
 
 ---
 
 ## RabbitMQ
 
-Die Management API (Port 15672) ist ohne zusätzliche Konfiguration erreichbar.
-Claude kann sie direkt über HTTP-Aufrufe abfragen:
+The Management API (port 15672) is accessible without additional configuration.
+Claude can query it directly via HTTP calls:
 
 ```
-Zeige alle Queues und ihre Nachrichtenanzahl
-Wie viele Nachrichten warten in der Queue "orders"?
+Show all queues and their message counts
+How many messages are waiting in the "orders" queue?
 ```
 
-Basis-URL: `http://localhost:15672/api` (Credentials: `app` / `app`)
+Base URL: `http://localhost:15672/api` (Credentials: `app` / `app`)

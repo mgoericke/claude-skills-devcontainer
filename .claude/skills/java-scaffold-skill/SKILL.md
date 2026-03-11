@@ -1,6 +1,6 @@
 ---
 name: java-scaffold-skill
-description: Scaffolding for Java projects with Spring Boot or Quarkus, PostgreSQL, RabbitMQ, LangChain4j AI, and Docker. Generates pom.xml, BCE package structure, Flyway migrations, architecture tests (Taikai), Dockerfile, and docker-compose. Supports AI business applications with LangChain4j (AI Services, Tools/Function Calling, RAG, Guardrails). Use this skill for new Java applications, new entities, Dockerfiles, docker-compose, architecture tests, AI services, or AI integrations – also for "create a new project", "scaffold", "new module", "new entity", "AI Service", "Chatbot", "RAG", "LangChain4j".
+description: Scaffolding for Java projects with Spring Boot or Quarkus, PostgreSQL, RabbitMQ, and LangChain4j AI. Generates pom.xml, BCE package structure, Flyway migrations, architecture tests (Taikai), and application code. Supports AI business applications with LangChain4j (AI Services, Tools/Function Calling, RAG, Guardrails). Use this skill for new Java applications, new entities, architecture tests, AI services, or AI integrations – also for "create a new project", "scaffold", "new module", "new entity", "AI Service", "Chatbot", "RAG", "LangChain4j". For Dockerfiles, docker-compose, and infrastructure, use the infrastructure-skill.
 argument-hint: "[framework] [description]"
 ---
 
@@ -17,12 +17,15 @@ Scaffolding for Java projects with Spring Boot or Quarkus – including AI suppo
 
 1. **Queries project coordinates** – groupId, artifactId, framework (Spring Boot / Quarkus)
 2. **Checks current versions** – Verify Spring Boot, Quarkus, Taikai, LangChain4j online
-3. **Generates project structure** – pom.xml, application.properties, docker-compose.yml
+3. **Generates project structure** – pom.xml, application.properties
 4. **Creates BCE layers** – Entity, Repository, Service, Controller/Resource in BCE pattern
 5. **Creates AI layers** (optional) – AI Service, Tools, RAG, Guardrails via LangChain4j
 6. **Creates Flyway migration** – Initial SQL schema matching the entity
-7. **Creates infrastructure** – Dockerfile, health checks, Swagger UI, Renovate config
+7. **Creates Swagger UI + health check configuration**
 8. **Creates architecture tests** – Taikai-based ArchitectureTest (incl. AI layer rules)
+9. **Creates Renovate config** – automatic dependency update PRs
+
+> **Note:** Dockerfiles, docker-compose, and other infrastructure are handled by the **infrastructure-skill**.
 
 ## How to Use
 
@@ -160,9 +163,9 @@ Generation order:
 12. **AI REST Endpoint** (`boundary/rest/`) – if AI support confirmed
 13. Flyway migration (`db/migration/V1__create_<entity>_table.sql`)
 14. Architecture test (`ArchitectureTest.java`) – incl. AI layer rules if AI support
-15. Dockerfile (Spring: root, Quarkus: `src/main/docker/Dockerfile.jvm`)
-16. `docker-compose.yml` with health checks (for AI: `docker-compose-ai.yml` with PgVector/Ollama)
-17. `renovate.json`
+15. `renovate.json`
+
+> **Next step:** Run `infrastructure-skill` to generate Dockerfile, docker-compose, and other infrastructure.
 
 ### Step 3a – AI Dependencies (Quarkus + LangChain4j)
 
@@ -409,8 +412,6 @@ Renovate automatically creates pull requests for dependency updates and keeps th
 - **Persistence:** Flyway for all migrations – no `ddl-auto=create`
 - **Messaging:** RabbitMQ consumers always in `boundary/messaging/`; Quarkus: `@Blocking` + `@Transactional` for DB access in consumers
 - **AI Tools:** `@Blocking` + `@Transactional` for database access in tools
-- **Dockerfile:** Spring Boot → `./Dockerfile` (root); Quarkus → `src/main/docker/Dockerfile.jvm`
-- **Docker Compose AI:** `pgvector/pgvector:pg17` instead of `postgres:17-alpine` (PgVector extension pre-installed)
 - **Examples:** Domain-neutral (`order`, `product`, `event`, `item`)
 - **Language:** English in comments/docs and code
 - **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
@@ -423,7 +424,9 @@ Renovate automatically creates pull requests for dependency updates and keeps th
         |
 [openapi-skill]           if OpenAPI spec available
         |
-[java-scaffold-skill]     framework: DB, messaging, AI, infra
+[java-scaffold-skill]     application: pom.xml, BCE, AI, Flyway
+        |
+[infrastructure-skill]    Dockerfile, docker-compose, Helm
         |
 [review-skill]            code review
         |

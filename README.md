@@ -9,13 +9,35 @@ Claude handles scaffolding, specification, architecture, and code generation.
 - **Spring Boot 4.x or Quarkus 3.31+** – fully preconfigured, including health checks
 - **PostgreSQL + RabbitMQ + Keycloak** – local infrastructure ready to go via `docker compose up -d`
 - **BCE Architecture** (Boundary / Control / Entity) with automatic architecture tests via Taikai
-- **Spec Driven Development** – structured feature interview produces a spec file before code is written
 - **Flyway** for database migrations – no unsafe `ddl-auto=create`
 - **MCP Data Access** – natural language queries on PostgreSQL directly in the chat
-- **OpenAPI → Java** – generate REST endpoints + DTOs from an OpenAPI 3.x spec (optional)
-- **Project Documentation** – reads source code and configuration, creates `docs/<project>.md`
-- **Infographic Skill** – AI image generation via Hugging Face FLUX.1 (optional)
-- **Review and Findings** – automatic code reviews check templates and generated code against project conventions, architecture rules (BCE), and best practices; found issues (wrong imports, missing dependencies, inconsistencies) are fixed directly
+
+### Skills
+
+Interactive, prompt-driven workflows that guide you through a task step by step.
+
+| Skill | Description |
+|-------|-------------|
+| **java-scaffold-skill** | Scaffolds new Java projects, entities, Dockerfiles, docker-compose, and AI services |
+| **spec-feature-skill** | Structured feature interview that produces a spec file before code is written |
+| **openapi-skill** | Create, extend, or generate Java code from an OpenAPI 3.x spec |
+| **review-skill** | Code review against project conventions, architecture rules (BCE), and best practices |
+| **doc-skill** | Reads source code and configuration, creates project documentation in `docs/` |
+| **blog-post-skill** | Creates technical blog posts with structured interviews and audience adaptation |
+| **frontend-skill** | Web UIs: Dashboards (TailAdmin), Landing Pages, and SPAs with Tailwind CSS |
+| **infografik-skill** | AI image generation via Hugging Face FLUX.1 |
+| **skill-creator** | Create new skills, optimize existing skills, and measure skill performance |
+
+### Agents
+
+Specialized sub-agents that run autonomously and can be executed in parallel for fast feedback.
+
+| Agent | Description |
+|-------|-------------|
+| **security-reviewer** | Security analysis – secrets, auth, input validation, OWASP Top 10 |
+| **architecture-reviewer** | BCE pattern compliance and Taikai architecture rule validation |
+| **performance-reviewer** | N+1 queries, blocking operations, memory leaks, reactive pattern violations |
+| **ai-service-generator** | LangChain4j AI service scaffolding with tools, RAG, and guardrails |
 
 ## Quick Start
 

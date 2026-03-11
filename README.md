@@ -18,7 +18,8 @@ Interactive, prompt-driven workflows that guide you through a task step by step.
 
 | Skill | Description |
 |-------|-------------|
-| **java-scaffold-skill** | Scaffolds new Java projects, entities, Dockerfiles, docker-compose, and AI services |
+| **java-scaffold-skill** | Scaffolds new Java projects, entities, and AI services (pom.xml, BCE, Flyway, Taikai) |
+| **infrastructure-skill** | Dockerfiles, docker-compose, Helm Charts, and CI/CD pipelines |
 | **spec-feature-skill** | Structured feature interview that produces a spec file before code is written |
 | **openapi-skill** | Create, extend, or generate Java code from an OpenAPI 3.x spec |
 | **review-skill** | Code review against project conventions, architecture rules (BCE), and best practices |

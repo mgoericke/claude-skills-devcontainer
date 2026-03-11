@@ -1,6 +1,6 @@
 # Project Context for Claude Code
 
-DevContainer template for Java projects with Spring Boot or Quarkus.
+Java project template with AI-powered development workflow — specialized skills and agents cover the full lifecycle from requirements to deployment.
 
 ## Stack
 
@@ -24,7 +24,8 @@ Check `lessons-learned.md` before every generation.
 | Skill | Trigger |
 |-------|---------|
 | `coworker-skill` | End-to-end project setup, phase-based with review |
-| `java-scaffold-skill` | New project, new entity, Dockerfile, docker-compose, AI Service, LangChain4j |
+| `java-scaffold-skill` | New project, new entity, AI Service, LangChain4j |
+| `infrastructure-skill` | Dockerfile, docker-compose, Helm Charts, CI/CD pipelines |
 | `spec-feature-skill` | Specify a feature before code is written |
 | `openapi-skill` | Create, extend, or generate code from an OpenAPI spec |
 | `review-skill` | Code review, quality check, review changed code |
@@ -38,16 +39,15 @@ Check `lessons-learned.md` before every generation.
 
 **Before every code generation**, dependency versions must be looked up on the internet.
 Versions from memory are forbidden – they may be outdated.
-
-Mandatory URLs:
-- Spring Boot: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent
-- Quarkus: https://mvnrepository.com/artifact/io.quarkus.platform/quarkus-bom
-- Taikai: https://central.sonatype.com/artifact/com.enofex/taikai
-- LangChain4j (for AI projects): https://mvnrepository.com/artifact/io.quarkiverse.langchain4j/quarkus-langchain4j-bom
+Each skill contains the relevant lookup URLs for its scope.
 
 Every generated `pom.xml` must contain:
 - `versions-maven-plugin` (local version check via `./mvnw versions:display-dependency-updates`)
 - `renovate.json` in the project root (automatic update PRs via Renovate Bot)
+
+## General Rules
+
+- **Always read before writing** – never guess file contents, configurations, or versions. Read existing files first, then modify.
 
 ## Coding Standards
 
@@ -70,13 +70,6 @@ Every generated Java file must contain:
 @author Co-Author: Claude (claude-sonnet-4-6, Anthropic) – generated via java-scaffold-skill
 ```
 Properties/YAML files as comment: `# Co-Author: Claude (claude-sonnet-4-6, Anthropic)`
-
-## Dockerfile Conventions
-
-| Framework | Location |
-|-----------|----------|
-| Spring Boot | `./Dockerfile` (project root) |
-| Quarkus | `src/main/docker/Dockerfile.jvm` (Quarkus convention) |
 
 ## Sub-Agents for Parallel Reviews & AI Service Generation
 

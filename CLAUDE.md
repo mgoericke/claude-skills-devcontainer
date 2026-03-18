@@ -33,6 +33,7 @@ Check `lessons-learned.md` before every generation.
 | `infografik` | Infographic, visualization, diagram |
 | `blog-post` | Blog post, article, technical contribution |
 | `frontend` | Web UIs: Simple HTML pages, Dashboards (TailAdmin), Landing Pages (Tailwind CSS) |
+| `arc42` | Arc42 architecture documentation (create, update, German/English) |
 | `skill-creator` | Create new skills, optimize existing skills, measure skill performance |
 
 ## Version Strategy (MANDATORY)
@@ -78,6 +79,7 @@ Specialized sub-agents in `.claude/agents/`:
 - **architecture-reviewer**: BCE pattern & Taikai compliance
 - **performance-reviewer**: N+1 queries, blocking operations, memory leaks
 - **ai-service-generator**: LangChain4j AI service scaffolding with tools, RAG, guardrails
+- **arc42-updater**: Automatic arc42 section updates after architecture changes
 
 **Benefits**: Review in parallel after code changes or generate new AI services.
 **Docs**: See [docs/sub-agents.md](docs/sub-agents.md)

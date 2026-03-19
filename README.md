@@ -11,7 +11,7 @@ Claude handles scaffolding, specification, architecture, and code generation.
 - **BCE Architecture** (Boundary / Control / Entity) with automatic architecture tests via Taikai
 - **Flyway** for database migrations – no unsafe `ddl-auto=create`
 - **MCP Data Access** – natural language queries on PostgreSQL directly in the chat
-- **[Backlog.md](https://github.com/The-Dave-Stack/backlog.md)** – local-first, Git-based task management via MCP. Tasks are stored as Markdown files in `backlog/` and managed directly from Claude Code. Every task description follows the **User Story** pattern: _"As a [user], I want [goal] so that [benefit]"_
+- **[Backlog.md](https://github.com/The-Dave-Stack/backlog.md)** – a full Kanban board that lives right inside your project. Plan, prioritize, and track tasks with status workflows – all versioned in Git alongside your code, no external tools needed. Includes CLI and WebUI for full visibility. Managed directly from Claude Code via MCP. Every task follows the **User Story** pattern: _"As a [user], I want [goal] so that [benefit]"_
 
 ### Skills
 

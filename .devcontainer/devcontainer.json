@@ -95,11 +95,16 @@
   },
 
   // ── Port Forwarding ───────────────────────────────────────────────────────────
+  // Port 4000: Backlog.md Browser (Kanban Board)
   // Port 8080: Application port (Spring Boot / Quarkus)
   // Port 8180: Keycloak Admin Console + OIDC endpoints
   // onAutoForward: "notify" shows a notification when the port becomes active
-  "forwardPorts": [8080, 8180],
+  "forwardPorts": [4000, 8080, 8180],
   "portsAttributes": {
+    "4000": {
+      "label": "Backlog.md Board",
+      "onAutoForward": "notify"
+    },
     "8080": {
       "label": "Application (HTTP)",
       "onAutoForward": "notify"
@@ -119,8 +124,8 @@
   // postCreateCommand: runs once on first container build
   // postStartCommand:  runs on every start – firewall must be re-applied after each restart,
   //                    because iptables rules are not persistent!
-  "postCreateCommand": "chmod +x .devcontainer/init-firewall.sh && echo '✅ Setup complete'",
-  "postStartCommand": "bash .devcontainer/init-firewall.sh",
+  "postCreateCommand": "chmod +x .devcontainer/init-firewall.sh && npm install -g mcp-backlog-md backlog.md && echo '✅ Setup complete'",
+  "postStartCommand": "bash .devcontainer/init-firewall.sh && backlog browser --port 4000 --no-open &",
 
   "remoteUser": "root"
 }

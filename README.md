@@ -119,6 +119,50 @@ docker compose up -d
 | Application (Spring) | http://localhost:8080/actuator/health            |
 | Application (Quarkus)| http://localhost:8080/q/health                   |
 
+## Backlog & Task Management with Backlog.md
+
+This template uses **[Backlog.md](https://github.com/The-Dave-Stack/backlog.md)** for local-first, Git-based task management. All tasks are stored as Markdown files in `backlog/tasks/` and managed directly from Claude Code via MCP.
+
+### Why Backlog.md?
+
+- **Git-native** – tasks live alongside the code, versioned and branchable
+- **No external tools** – no Jira, no Trello, no cloud dependency
+- **MCP integration** – Claude Code can read, create, and edit tasks directly in the chat
+- **User Story format** – every task follows the pattern: _"As a [user], I want [goal] so that [benefit]"_
+
+### Usage
+
+**Create and manage tasks via Claude Code:**
+
+```
+Create a new task for user authentication
+Show me all open tasks
+Move task-001 to "In Progress"
+```
+
+Claude uses the Backlog.md MCP tools automatically – just describe what you need.
+
+**Browse tasks in the browser:**
+
+```bash
+backlog browser --port 4000
+```
+
+This starts a local web UI at [http://localhost:4000](http://localhost:4000) where you can view and manage your backlog visually.
+
+**Configuration:** The backlog is configured in [backlog/config.yaml](backlog/config.yaml). Tasks use the statuses `To Do`, `In Progress`, and `Done`.
+
+### Task Structure
+
+Each task file in `backlog/tasks/` contains:
+
+- **Description** – User Story format (mandatory)
+- **Acceptance Criteria** – clear, testable conditions
+- **Definition of Done** – quality gates
+- **Plan** – implementation steps
+
+For more details, see the [Backlog.md documentation](https://github.com/The-Dave-Stack/backlog.md).
+
 ## Further Documentation
 
 | Topic | Document |
@@ -131,3 +175,4 @@ docker compose up -d
 | Sub-Agents quick-start guide | [docs/agents-quickstart.md](docs/agents-quickstart.md) |
 | Sub-Agents architecture & flows | [docs/agents-architecture.md](docs/agents-architecture.md) |
 | Arc42 architecture documentation | [docs/arc42/](docs/arc42/) |
+| Backlog.md task management | [Backlog.md on GitHub](https://github.com/The-Dave-Stack/backlog.md) |

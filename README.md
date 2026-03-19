@@ -11,6 +11,7 @@ Claude handles scaffolding, specification, architecture, and code generation.
 - **BCE Architecture** (Boundary / Control / Entity) with automatic architecture tests via Taikai
 - **Flyway** for database migrations – no unsafe `ddl-auto=create`
 - **MCP Data Access** – natural language queries on PostgreSQL directly in the chat
+- **[Backlog.md](https://github.com/The-Dave-Stack/backlog.md)** – local-first, Git-based task management via MCP. Tasks are stored as Markdown files in `backlog/` and managed directly from Claude Code. Every task description follows the **User Story** pattern: _"As a [user], I want [goal] so that [benefit]"_
 
 ### Skills
 
@@ -27,6 +28,7 @@ Interactive, prompt-driven workflows that guide you through a task step by step.
 | **blog-post** | Creates technical blog posts with structured interviews and audience adaptation |
 | **frontend** | Web UIs: Simple HTML pages, Dashboards (TailAdmin), Landing Pages with Tailwind CSS |
 | **infografik** | AI image generation via Hugging Face FLUX.1 |
+| **arc42** | Arc42 architecture documentation – analyzes project artifacts, fills all 12 sections with Mermaid diagrams |
 | **skill-creator** | Create new skills, optimize existing skills, and measure skill performance |
 
 ### Agents
@@ -39,6 +41,7 @@ Specialized sub-agents that run autonomously and can be executed in parallel for
 | **architecture-reviewer** | BCE pattern compliance and Taikai architecture rule validation |
 | **performance-reviewer** | N+1 queries, blocking operations, memory leaks, reactive pattern violations |
 | **ai-service-generator** | LangChain4j AI service scaffolding with tools, RAG, and guardrails |
+| **arc42-updater** | Automatically updates arc42 sections when architecture changes occur |
 
 ## Quick Start
 
@@ -127,3 +130,4 @@ docker compose up -d
 | **Sub-Agents overview** | **[docs/sub-agents.md](docs/sub-agents.md)** |
 | Sub-Agents quick-start guide | [docs/agents-quickstart.md](docs/agents-quickstart.md) |
 | Sub-Agents architecture & flows | [docs/agents-architecture.md](docs/agents-architecture.md) |
+| Arc42 architecture documentation | [docs/arc42/](docs/arc42/) |

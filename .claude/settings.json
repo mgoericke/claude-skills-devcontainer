@@ -1,5 +1,9 @@
 {
   "mcpServers": {
+    "backlog-md": {
+      "command": "npx",
+      "args": ["-y", "mcp-backlog-md"]
+    },
     "postgres": {
       "command": "npx",
       "args": [

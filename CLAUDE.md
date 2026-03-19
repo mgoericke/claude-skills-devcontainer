@@ -84,6 +84,32 @@ Specialized sub-agents in `.claude/agents/`:
 **Benefits**: Review in parallel after code changes or generate new AI services.
 **Docs**: See [docs/sub-agents.md](docs/sub-agents.md)
 
+## Backlog & User Stories
+
+### Backlog.md MCP Integration
+
+**Backlog.md** is installed and configured as MCP server (`mcp-backlog-md`).
+**Always** use the Backlog.md MCP tools for reading, creating, and editing backlog tasks.
+The backlog lives in `backlog/` with tasks in `backlog/tasks/`.
+
+### User Story Format (MANDATORY)
+
+Every backlog task description **must** be written as a classical User Story:
+
+```
+As a [type of user], I want [goal] so that [reason/benefit].
+```
+
+German alternative:
+
+```
+Als [Anforderer], möchte ich [Feature] umsetzen, weil [was ich erreichen möchte].
+```
+
+- The **Description** field must always contain a User Story in this format
+- **Acceptance Criteria**, **Definition of Done**, and **Plan** sections should always be fully elaborated — never left empty or as placeholders
+- Existing tasks that already have good acceptance criteria, DoD, and plans should keep them — only the description needs to be reformulated as a User Story if it isn't one already
+
 ## Notes
 
 - `groupId`, `artifactId`, and framework must **always** be asked before scaffolding starts
